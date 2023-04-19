@@ -5,30 +5,28 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 </script>
 
 <template>
-    <Layout>
+    <Layout @click="updateStatus">
         <div class="profile">
             <div class="profile-top-j">
                 <div class="profile-top">
                     <img class="profile-img" :src="testImg" alt="">
                     <div class="flex-info">
-                        <div class="profile-name">{{user.name}} {{user.surname}}</div>
-                        <div class="profile-desc">{{user.status}}</div>
-<!--                        <a href="#" class="profile-info">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
-<!--                                 class="bi bi-info-circle" viewBox="0 0 16 16">-->
-<!--                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>-->
-<!--                                <path-->
-<!--                                    d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>-->
-<!--                            </svg>-->
-<!--                            Подробнее</a>-->
-
-                        <a class="profile-info">Email: {{user.email}}</a>
+                        <div class="profile-name">{{ user.name }} {{ user.surname }}</div>
+                        <div class="profile-desc" v-if="$page.props.auth.user.name !== user.name">{{ user.status }}</div>
+                        <form @submit.prevent="updateStatus" class="profile-desc" v-if="$page.props.auth.user.name === user.name">
+                            <input type="text" v-model="status" :class="{'input': true, 'input-status': true, 'input-status__success': status_success}" placeholder="Ваш статус">
+                        </form>
+                        <a class="profile-info">Email: {{ user.email }}</a>
                     </div>
                 </div>
 
-                <div class="profile-top__b">
+                <div class="profile-top__b" v-if="$page.props.auth.user.name === user.name">
                     <button class="btn btn-primary">Редактировать</button>
-                    <button class="btn btn-primary" type="submit" @click="logoutFun">Выйти</button>
+                    <button class="btn btn-primary" @click="logoutFun">Выйти</button>
+                </div>
+
+                <div class="profile-top__b" v-else-if="$page.props.auth.user.name !== user.name">
+                    <button class="btn btn-primary">Написать сообщение</button>
                 </div>
             </div>
         </div>
@@ -36,52 +34,25 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 
         <div class="content-flex">
             <div class="content-main">
-                <form class="input-news">
-                    <input type="text" class="input" placeholder="Что у вас нового?">
+                <form class="input-news" @submit.prevent="storePost" v-if="$page.props.auth.user.name === user.name">
+                    <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
                     <button type="submit" class="btn btn-primary">Опубликовать</button>
                 </form>
 
                 <div class="posts">
-                    <div class="posts-item">
+                    <div class="posts-item" v-for="item in postsData">
                         <div class="posts-item__flex">
                             <div>
                                 <img class="posts-item__img" :src="testImg" alt="">
                             </div>
                             <div>
-                                <div class="posts-item__title">{{user.name}}
+                                <div class="posts-item__title">{{ user.name }}
                                 </div>
-                                <div class="posts-item__time">6 сен 2022</div>
+                                <div class="posts-item__time">{{ getTime(item.time) }}</div>
                             </div>
                         </div>
 
-                        <div class="posts-item__content">Работаем!</div>
-
-                        <div class="like-flex">
-                            <div class="like">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"
-                                     class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                </svg>
-                            </div>
-                            <div class="like-count">10</div>
-                        </div>
-                    </div>
-
-
-                    <div class="posts-item">
-                        <div class="posts-item__flex">
-                            <div>
-                                <img class="posts-item__img" :src="testImg" alt="">
-                            </div>
-                            <div>
-                                <div class="posts-item__title">{{user.name}}
-                                </div>
-                                <div class="posts-item__time">6 сен 2022</div>
-                            </div>
-                        </div>
-
-                        <div class="posts-item__content">Работаем!</div>
+                        <div class="posts-item__content">{{ item.body }}</div>
 
                         <div class="like-flex">
                             <div class="like">
@@ -99,7 +70,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 
 
             <div class="content-info">
-                <a href="#" class="content-info__title">Друзья {{users}}</a>
+                <a href="#" class="content-info__title">Друзья</a>
 
                 <div class="content-info__flex">
                     <a href="#" class="content-info__item">
@@ -125,15 +96,62 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 
 <script>
 export default {
-    props: ['user'],
+    data() {
+        return {
+            body: '',
+            postsData: this.posts,
+            status: this.user.status,
+            status_success: false
+        }
+    },
+
+    props: ['user', 'posts'],
 
     methods: {
         logoutFun() {
-            axios.post('/logout')
-                .then(() => {
-                    window.location.href = '/login'
-                })
+            axios.post('/logout');
+        },
+
+        storePost() {
+            axios.post(`/post/${this.$page.props.auth.user.id}`, {
+                body: this.body
+            }).then((response) => {
+                this.body = ''
+            })
+        },
+
+        updateStatus() {
+            axios.post('/user/update_status', {
+                status: this.status
+            })
+        },
+
+        getTime(time) {
+            return time.split(':')[0] + ':' + time.split(':')[1]
         }
+    },
+
+    mounted() {
+        window.Echo.channel('store_post')
+            .listen('.store_post', response => {
+                this.postsData.unshift(response.post)
+            })
     }
 }
 </script>
+
+<style scoped lang="sass">
+.input-status
+    padding: 3rem 0
+    border-radius: 0
+    border: none
+    border-bottom: 1px solid #dce1e6
+
+    &:focus
+        border: none
+        border-bottom: 1px solid #67a4d9
+
+    &__success
+        border: none
+        border-bottom: 1px solid #3fc03f !important
+</style>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Resources\Post\PostResource;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +19,17 @@ class ProfileController extends Controller
     public function index($user_login)
     {
         $user = User::where('login', $user_login)->get()[0];
-        return inertia('Profile', compact('user'));
+        $posts = Post::where('user_id', $user->id)->latest()->get();
+        $posts = PostResource::collection($posts)->resolve();
+        return inertia('Profile', compact('user', 'posts'));
+    }
+
+    public function updateStatus(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->status = $request->status;
+        $user->save();
+
+        return $user;
     }
 
     /**

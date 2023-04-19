@@ -24,10 +24,18 @@ use Inertia\Inertia;
 //    ]);
 //});
 
-Route::get('/user/{user_login}', [App\Http\Controllers\ProfileController::class, 'index'])->name('user');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
-//    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+    Route::get('/user/{user_login}', [App\Http\Controllers\ProfileController::class, 'index'])->name('user');
+    Route::post('/user/update_status', [App\Http\Controllers\ProfileController::class, 'updateStatus'])->name('user');
+
+    Route::post('/post/{user}', [App\Http\Controllers\PostController::class, 'store']);
+    Route::post('/post_like/{post}', [App\Http\Controllers\PostController::class, 'postLike']);
+
+    Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index']);
+    Route::post('/messages', [App\Http\Controllers\MessageController::class, 'store']);
+
     Route::get('/friends', [App\Http\Controllers\FriendsController::class, 'index'])->name('friends');
     Route::get('/user', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/user', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
