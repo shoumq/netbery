@@ -5,7 +5,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 </script>
 
 <template>
-    <Layout @click="updateStatus">
+    <Layout>
         <div class="profile">
             <div class="profile-top-j">
                 <div class="profile-top">
@@ -13,8 +13,8 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                     <div class="flex-info">
                         <div class="profile-name">{{ user.name }} {{ user.surname }}</div>
                         <div class="profile-desc" v-if="$page.props.auth.user.name !== user.name">{{ user.status }}</div>
-                        <form @submit.prevent="updateStatus" class="profile-desc" v-if="$page.props.auth.user.name === user.name">
-                            <input type="text" v-model="status" :class="{'input': true, 'input-status': true, 'input-status__success': status_success}" placeholder="Ваш статус">
+                        <form  class="profile-desc" v-if="$page.props.auth.user.name === user.name">
+                            <input @input="updateStatus" type="text" v-model="status" :class="{'input': true, 'input-status': true, 'input-status__success': status_success}" placeholder="Ваш статус">
                         </form>
                         <a class="profile-info">Email: {{ user.email }}</a>
                     </div>
@@ -26,7 +26,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                 </div>
 
                 <div class="profile-top__b" v-else-if="$page.props.auth.user.name !== user.name">
-                    <button class="btn btn-primary">Написать сообщение</button>
+                    <button class="btn btn-primary" @click="createDialog">Написать сообщение</button>
                 </div>
             </div>
         </div>
@@ -54,16 +54,16 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 
                         <div class="posts-item__content">{{ item.body }}</div>
 
-                        <div class="like-flex">
-                            <div class="like">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"
-                                     class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                </svg>
-                            </div>
-                            <div class="like-count">10</div>
-                        </div>
+<!--                        <div class="like-flex">-->
+<!--                            <form @click="likePost(item.id, item.likes)" class="like">-->
+<!--                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"-->
+<!--                                     class="bi bi-heart-fill" viewBox="0 0 16 16">-->
+<!--                                    <path fill-rule="evenodd"-->
+<!--                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>-->
+<!--                                </svg>-->
+<!--                            </form>-->
+<!--                            <div class="like-count">{{ item.likes }}</div>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
@@ -110,12 +110,13 @@ export default {
     methods: {
         logoutFun() {
             axios.post('/logout');
+            window.location.href = '/login/'
         },
 
         storePost() {
             axios.post(`/post/${this.$page.props.auth.user.id}`, {
                 body: this.body
-            }).then((response) => {
+            }).then(() => {
                 this.body = ''
             })
         },
@@ -128,6 +129,20 @@ export default {
 
         getTime(time) {
             return time.split(':')[0] + ':' + time.split(':')[1]
+        },
+
+        likePost(id, count) {
+            axios.post('/post_like/' + id)
+            count = 2
+            return count
+        },
+
+        createDialog() {
+            axios.post('/create_dialog/', {
+                id: this.user.id
+            }).then(response => {
+                window.location.href = `/chat/${response.data}`
+            })
         }
     },
 
@@ -135,6 +150,11 @@ export default {
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
                 this.postsData.unshift(response.post)
+            })
+
+        window.Echo.channel('store_like')
+            .listen('.store_like', response => {
+                console.log(response)
             })
     }
 }

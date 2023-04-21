@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('dialogs', function (Blueprint $table) {
             $table->id();
-            $table->text('from_name');
-            $table->text('from_id');
-            $table->text('dialog_id');
-            $table->text('body');
+            $table->text('user_one');
+            $table->text('user_two');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('dialogs');
     }
 };

@@ -9,7 +9,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
         <div class="friends">
             <div class="friends-title__flex">
                 <a href="#" class="friends-title friends-title__active">Друзья</a>
-                <a href="#" class="friends-title">Найти друзей</a>
+                <a href="/users" class="friends-title">Найти друзей</a>
             </div>
 
             <div class="search">

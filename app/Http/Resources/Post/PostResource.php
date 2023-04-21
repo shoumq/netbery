@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Post;
 
+use App\Models\Like;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
@@ -19,6 +20,7 @@ class PostResource extends JsonResource
             'user_id' => $this->user_id,
             'body' => $this->body,
             'time' => date($this->created_at),
+            'likes' => count(Like::where('post_id', $this->id)->get())
         ];
     }
 }

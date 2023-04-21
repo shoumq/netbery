@@ -82,6 +82,7 @@ main .profile-top {
   display: flex;
   align-items: center;
   gap: 20rem;
+  color: #333333 !important;
 }
 @media (max-width: 768px) {
   main .profile-top {
