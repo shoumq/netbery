@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StoreLikeEvent;
 use App\Events\StorePostEvent;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\Post\PostResource;
@@ -33,5 +34,9 @@ class PostController extends Controller
         $like->post_id = $post->id;
         $like->like = '1';
         $like->save();
+
+        event(new StoreLikeEvent($like));
+
+        return $like;
     }
 }

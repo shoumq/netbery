@@ -17,16 +17,18 @@ class StoreMessageEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     private Message $message;
+    private int $dialog_id;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Message $message)
+    public function __construct(Message $message, int $dialog_id)
     {
         //
         $this->message = $message;
+        $this->dialog_id = $dialog_id;
     }
 
     /**
@@ -37,7 +39,7 @@ class StoreMessageEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('store_message'),
+            new Channel('store_message_' . $this->dialog_id),
         ];
     }
 

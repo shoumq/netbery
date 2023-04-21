@@ -5,16 +5,21 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 </script>
 
 <template>
-    <Layout @click="updateStatus">
+    <Layout>
         <div class="profile">
             <div class="profile-top-j">
                 <div class="profile-top">
                     <img class="profile-img" :src="testImg" alt="">
                     <div class="flex-info">
                         <div class="profile-name">{{ user.name }} {{ user.surname }}</div>
-                        <div class="profile-desc" v-if="$page.props.auth.user.name !== user.name">{{ user.status }}</div>
-                        <form @submit.prevent="updateStatus" class="profile-desc" v-if="$page.props.auth.user.name === user.name">
-                            <input type="text" v-model="status" :class="{'input': true, 'input-status': true, 'input-status__success': status_success}" placeholder="Ваш статус">
+                        <div class="profile-desc" v-if="$page.props.auth.user.name !== user.name">{{
+                                user.status
+                            }}
+                        </div>
+                        <form class="profile-desc" v-if="$page.props.auth.user.name === user.name">
+                            <input @input="updateStatus" type="text" v-model="status"
+                                   :class="{'input': true, 'input-status': true, 'input-status__success': status_success}"
+                                   placeholder="Ваш статус">
                         </form>
                         <a class="profile-info">Email: {{ user.email }}</a>
                     </div>
@@ -26,7 +31,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                 </div>
 
                 <div class="profile-top__b" v-else-if="$page.props.auth.user.name !== user.name">
-                    <button class="btn btn-primary">Написать сообщение</button>
+                    <button class="btn btn-primary" @click="createDialog">Написать сообщение</button>
                 </div>
             </div>
         </div>
@@ -53,40 +58,36 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                         </div>
 
                         <div class="posts-item__content">{{ item.body }}</div>
-
-                        <div class="like-flex">
-                            <div class="like">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray"
-                                     class="bi bi-heart-fill" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                          d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                </svg>
-                            </div>
-                            <div class="like-count">10</div>
-                        </div>
                     </div>
                 </div>
             </div>
 
 
             <div class="content-info">
-                <a href="#" class="content-info__title">Друзья</a>
+                <div class="content-info__item2">
+                    <a href="#" class="content-info__title">Знакомые</a>
+                    <div class="content-info__flex">
+                        <a :href="'/user/' + checkLogin(item.user_one_login, item.user_two_login, checkHome)"
+                           class="content-info__item" v-for="item in friendsData">
+                            <img class="content-info__item-img" :src="testImg" alt="">
+                            <div class="content-info__item-title">
+                                {{ checkName(item.user_one, item.user_two, checkHome).split(' ')[0] }}
+                            </div>
+                        </a>
+                    </div>
+                </div>
 
-                <div class="content-info__flex">
-                    <a href="#" class="content-info__item">
-                        <img class="content-info__item-img" :src="testImg" alt="">
-                        <div class="content-info__item-title">Андрей</div>
-                    </a>
-
-                    <a href="#" class="content-info__item">
-                        <img class="content-info__item-img" :src="testImg" alt="">
-                        <div class="content-info__item-title">Андрей</div>
-                    </a>
-
-                    <a href="#" class="content-info__item">
-                        <img class="content-info__item-img" :src="testImg" alt="">
-                        <div class="content-info__item-title">Андрей</div>
-                    </a>
+                <div class="content-info__item2" v-if="communities.length !== 0">
+                    <a href="#" class="content-info__title">Подписки</a>
+                    <div class="content-info__flex2">
+                        <a :href="'/community/' + item.communities[0].id"
+                           class="content-info__item3" v-for="item in communities">
+                            <img class="content-info__item-img" :src="testImg" alt="">
+                            <div class="content-info__item-title">
+                                {{ item.communities[0].title }}
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,21 +102,24 @@ export default {
             body: '',
             postsData: this.posts,
             status: this.user.status,
-            status_success: false
+            status_success: false,
+            friendsData: this.friends,
+            checkHome: this.$page.props.auth.user.name === this.user.name
         }
     },
 
-    props: ['user', 'posts'],
+    props: ['user', 'posts', 'friends', 'communities'],
 
     methods: {
         logoutFun() {
             axios.post('/logout');
+            window.location.href = '/login/'
         },
 
         storePost() {
             axios.post(`/post/${this.$page.props.auth.user.id}`, {
                 body: this.body
-            }).then((response) => {
+            }).then(() => {
                 this.body = ''
             })
         },
@@ -128,13 +132,67 @@ export default {
 
         getTime(time) {
             return time.split(':')[0] + ':' + time.split(':')[1]
+        },
+
+        likePost(id, count) {
+            axios.post('/post_like/' + id)
+            count = 2
+            return count
+        },
+
+        createDialog() {
+            axios.post('/create_dialog/', {
+                id: this.user.id
+            }).then(response => {
+                window.location.href = `/chat/${response.data}`
+            })
+        },
+
+        checkName(name1, name2, home) {
+            if (home === true) {
+                if (name1 === this.$page.props.auth.user.name + ' ' + this.$page.props.auth.user.surname) {
+                    return name2
+                } else {
+                    return name1
+                }
+            } else {
+                if (name1 === this.$page.props.auth.user.name + ' ' + this.$page.props.auth.user.surname) {
+                    return name1
+                } else {
+                    return name2
+                }
+            }
+
+        },
+
+        checkLogin(name1, name2, home) {
+            if (home === true) {
+                if (name1 === this.$page.props.auth.user.login) {
+                    return name2
+                } else {
+                    return name1
+                }
+            } else {
+                if (name1 === this.$page.props.auth.user.name + ' ' + this.$page.props.auth.user.surname) {
+                    return name1
+                } else {
+                    return name2
+                }
+            }
         }
     },
 
     mounted() {
+        console.log(this.friendsData)
+
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
                 this.postsData.unshift(response.post)
+            })
+
+        window.Echo.channel('store_like')
+            .listen('.store_like', response => {
+                console.log(response)
             })
     }
 }
@@ -154,4 +212,10 @@ export default {
     &__success
         border: none
         border-bottom: 1px solid #3fc03f !important
+
+.posts
+    margin-top: 0 !important
+
+.input-news
+    margin-bottom: 30rem
 </style>

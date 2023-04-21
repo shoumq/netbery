@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Resources\Post;
+namespace App\Http\Resources\Community;
 
-use App\Models\Like;
+use App\Models\Community;
+use App\Models\Community_subscriber;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource extends JsonResource
+class CommunityResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +18,8 @@ class PostResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'user_id' => $this->user_id,
-            'body' => $this->body,
-            'time' => date($this->created_at),
-            'likes' => count(Like::where('post_id', $this->id)->get())
+            'communities' => Community::where('id', $this->community_id)->get(),
+            'users' => User::where('id', $this->user_id)->get(),
         ];
     }
 }

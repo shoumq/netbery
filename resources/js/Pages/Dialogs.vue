@@ -12,25 +12,15 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             </div>
 
             <div class="chat-content" ref="container">
-                <div class="messages-item" v-for="item in messagesData">
+                <a class="messages-item" v-for="item in dialogsData" :href="'/chat/' + item.id" >
                     <a :href="'/user/' + item.login" class="messages-item__img">
                         <img :src="testImg" alt="">
                     </a>
                     <div>
-                        <div>
-                            <a :href="'/user/' + item.login" class="messages-item__name">{{ item.name }}
-                                {{ item.surname }}</a>
-                            <a :href="'/user/' + item.login" class="messages-item__time">{{ item.time }}</a>
-                        </div>
-                        <div class="messages-item__body">{{ item.body }}</div>
+                        <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}</a>
                     </div>
-                </div>
+                </a>
             </div>
-
-            <form class="messages-input" @submit.prevent="storeMessage">
-                <input type="text" class="input" placeholder="Введите сообщение" v-model="body">
-                <button class="btn btn-primary" type="submit">Отправить</button>
-            </form>
         </div>
     </Layout>
 </template>
@@ -41,11 +31,11 @@ export default {
     data() {
         return {
             body: '',
-            messagesData: this.messages
+            dialogsData: this.dialogs
         }
     },
 
-    props: ['messages'],
+    props: ['dialogs'],
 
     methods: {
         logoutFun() {
@@ -60,17 +50,42 @@ export default {
                 const container = this.$refs.container;
                 container.scrollTop = container.scrollHeight;
             })
+        },
+
+        checkName(name1, name2) {
+            if (name1 === this.$page.props.auth.user.name + ' ' + this.$page.props.auth.user.surname) {
+                return name2
+            } else {
+                return name1
+            }
         }
     },
 
-    mounted() {
-        const container = this.$refs.container;
-        container.scrollTop = container.scrollHeight;
-
-        window.Echo.channel('store_message')
-            .listen('.store_message', response => {
-                this.messagesData.push(response.message)
-            })
-    }
+    // mounted() {
+    //     const container = this.$refs.container;
+    //     container.scrollTop = container.scrollHeight;
+    //
+    //     window.Echo.channel('store_message')
+    //         .listen('.store_message', response => {
+    //             this.dialogsData.push(response.message)
+    //         })
+    // }
 }
 </script>
+
+<style scoped>
+.chat-content {
+    gap: 0 !important;
+}
+
+.messages-item {
+    display: flex;
+    align-items: center !important;
+    border-bottom: 1px solid #dce1e6;
+    padding: 10rem 0;
+}
+
+.messages-item:last-child {
+    border-bottom: none;
+}
+</style>

@@ -16,16 +16,20 @@ body {
 }
 
 .container {
-  max-width: 1200rem;
+  max-width: 1150rem;
   margin-inline: auto;
   padding: 0 15rem;
 }
 
 header {
-  background-color: #4878a4;
+  background-color: white;
   padding: 15rem 0;
   box-shadow: 0 0 4rem #cbcbcb;
   margin-bottom: 10rem;
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 999999;
 }
 header .header {
   display: flex;
@@ -33,13 +37,21 @@ header .header {
 }
 header .header-title {
   font-size: 17rem;
-  color: white;
+  color: #4878a4;
   font-weight: 600;
+  letter-spacing: 1rem;
+  font-family: "Roboto", sans-serif;
+}
+header .header-title svg {
+  width: 20rem;
+  height: 20rem;
 }
 
 main {
   display: flex;
   gap: 20rem;
+  position: relative;
+  top: 65rem;
 }
 main .nav {
   display: flex;
@@ -82,6 +94,7 @@ main .profile-top {
   display: flex;
   align-items: center;
   gap: 20rem;
+  color: #333333 !important;
 }
 @media (max-width: 768px) {
   main .profile-top {
@@ -106,6 +119,11 @@ main .profile-top__b {
   display: flex;
   flex-direction: column;
   gap: 15rem;
+}
+@media (max-width: 768px) {
+  main .profile-top__b {
+    flex-direction: row;
+  }
 }
 main .profile-name {
   font-size: 18rem;
@@ -143,6 +161,11 @@ main .profile .flex-info {
   flex-direction: column;
   gap: 4rem;
 }
+@media (max-width: 768px) {
+  main .profile .flex-info {
+    width: 170rem;
+  }
+}
 main .profile-img {
   width: 110rem;
   height: 110rem;
@@ -153,8 +176,8 @@ main .profile-img {
 }
 @media (max-width: 768px) {
   main .profile-img {
-    width: 80rem;
-    height: 80rem;
+    width: 60rem;
+    height: 60rem;
   }
 }
 main .content-flex {
@@ -177,11 +200,10 @@ main .content-main {
   }
 }
 main .content-info {
-  width: 300rem;
-  border: 1rem solid #dce1e6;
-  background-color: white;
-  border-radius: 10rem;
-  padding: 15rem;
+  width: 400rem;
+  display: flex;
+  flex-direction: column;
+  gap: 20rem;
 }
 @media (max-width: 768px) {
   main .content-info {
@@ -196,13 +218,38 @@ main .content-info__title {
 main .content-info__flex {
   margin-top: 10rem;
   display: flex;
-  justify-content: space-between;
+}
+main .content-info__flex2 {
+  margin-top: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 8rem;
+}
+main .content-info__item2 {
+  border: 1rem solid #dce1e6;
+  background-color: white;
+  border-radius: 10rem;
+  padding: 15rem;
+}
+main .content-info__item3 {
+  display: flex;
+  align-items: center;
+  gap: 10rem;
+}
+main .content-info__item3 img {
+  width: 40rem;
+  height: 40rem;
+}
+main .content-info__item3 .content-info__item-title {
+  color: #333333;
 }
 main .content-info__item {
   display: flex;
   flex-direction: column;
   align-items: center;
   color: black;
+  flex: 0 0 33.333%;
 }
 main .content-info__item-img {
   border: 1rem solid #dce1e6;
@@ -212,7 +259,7 @@ main .content-info__item-img {
   border-radius: 50%;
 }
 main .content-info__item-title {
-  font-size: 12rem;
+  font-size: 13rem;
   margin-top: 3rem;
 }
 main .input {
@@ -325,6 +372,9 @@ main .friends-input {
 }
 main .friends-flex {
   margin-top: 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 main .friends-flex__item {
   border: none;
@@ -382,6 +432,11 @@ main .chat .messages-item {
   display: flex;
   gap: 11rem;
   align-items: flex-start;
+  border-radius: 5rem;
+  padding-inline: 3rem;
+}
+main .chat .messages-item:hover {
+  background-color: rgba(51, 51, 51, 0.05);
 }
 main .chat .messages-item__img {
   width: 40rem;
@@ -443,6 +498,33 @@ main .form .btn {
   margin-top: 10rem;
 }
 
+.dropmenu {
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  z-index: 999999;
+  box-shadow: 0 0 8rem gray;
+  top: 54rem;
+  padding: 13rem 0;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 7rem;
+  }
+  .nav .text {
+    font-size: 10rem;
+    color: #333333;
+  }
+  .nav-item {
+    display: flex;
+    gap: 10rem;
+    align-items: center;
+  }
+}
 .btn {
   outline: none;
   border: none;
@@ -463,7 +545,7 @@ main .form .btn {
   color: white;
 }
 .btn-primary:hover {
-  background-color: #005b8a;
+  background-color: #3578bb;
 }
 
 /*# sourceMappingURL=style.css.map */

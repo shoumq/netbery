@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('communities', function (Blueprint $table) {
             $table->id();
-            $table->text('from_name');
-            $table->text('from_id');
-            $table->text('dialog_id');
-            $table->text('body');
+            $table->text('title');
+            $table->text('status');
+            $table->text('image');
+            $table->text('isVerified');
+            $table->text('admin');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('communities');
     }
 };

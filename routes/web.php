@@ -33,10 +33,23 @@ Route::middleware('auth')->group(function () {
     Route::post('/post/{user}', [App\Http\Controllers\PostController::class, 'store']);
     Route::post('/post_like/{post}', [App\Http\Controllers\PostController::class, 'postLike']);
 
+    Route::get('/chat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'chat']);
     Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index']);
-    Route::post('/messages', [App\Http\Controllers\MessageController::class, 'store']);
+    Route::post('/messages/{dialog_id}', [App\Http\Controllers\MessageController::class, 'store']);
+    Route::post('/create_dialog', [App\Http\Controllers\MessageController::class, 'createDialog']);
 
     Route::get('/friends', [App\Http\Controllers\FriendsController::class, 'index'])->name('friends');
+    Route::post('/search_friends', [App\Http\Controllers\FriendsController::class, 'search'])->name('search_friends');
+
+    Route::get('/communities', [App\Http\Controllers\CommunityController::class, 'index'])->name('community');
+    Route::get('/community/{community}', [App\Http\Controllers\CommunityController::class, 'getCommunity']);
+    Route::get('/create_community', [App\Http\Controllers\CommunityController::class, 'create'])->name('create_community');
+    Route::post('/create_community', [App\Http\Controllers\CommunityController::class, 'store']);
+    Route::post('/create_community_post/{community}', [App\Http\Controllers\CommunityController::class, 'storePost']);
+    Route::post('/subscribe_community/{community}', [App\Http\Controllers\CommunityController::class, 'subscribe']);
+    Route::post('/unsubscribe_community/{community}', [App\Http\Controllers\CommunityController::class, 'unsubscribe']);
+
+    Route::get('/users', [App\Http\Controllers\FriendsController::class, 'allUsers'])->name('allUsers');
     Route::get('/user', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/user', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/user', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');

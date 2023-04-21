@@ -24,6 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-//        return redirect('/');
+        return redirect('/user/' . Auth::user()->login);
     }
 }

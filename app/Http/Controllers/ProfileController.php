@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Resources\Community\CommunityResource;
+use App\Http\Resources\Dialog\DialogResource;
+use App\Http\Resources\Message\MessageResource;
 use App\Http\Resources\Post\PostResource;
+use App\Models\Community_subscriber;
+use App\Models\Dialog;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -19,9 +25,18 @@ class ProfileController extends Controller
     public function index($user_login)
     {
         $user = User::where('login', $user_login)->get()[0];
+
         $posts = Post::where('user_id', $user->id)->latest()->get();
         $posts = PostResource::collection($posts)->resolve();
-        return inertia('Profile', compact('user', 'posts'));
+
+        $friends = Dialog::where('user_one', $user->id)
+            ->orWhere('user_two', $user->id)->get();
+        $friends = DialogResource::collection($friends)->resolve();
+
+        $communities = Community_subscriber::where('user_id', $user->id)->get();
+        $communities = CommunityResource::collection($communities)->resolve();
+
+        return inertia('Profile', compact('user', 'posts', 'friends', 'communities'));
     }
 
     public function updateStatus(Request $request) {

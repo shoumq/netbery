@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('community_subscribers', function (Blueprint $table) {
             $table->id();
-            $table->text('from_name');
-            $table->text('from_id');
-            $table->text('dialog_id');
-            $table->text('body');
+            $table->text('community_id');
+            $table->text('user_id');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('community_subscribers');
     }
 };

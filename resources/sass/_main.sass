@@ -14,15 +14,20 @@ body
     background-color: #f4f5f6
 
 .container
-    max-width: 1200rem
+    max-width: 1150rem
     margin-inline: auto
     padding: 0 15rem
 
 header
-    background-color: $blue
+    //background-color: $blue
+    background-color: white
     padding: 15rem 0
     box-shadow: 0 0 4rem #cbcbcb
     margin-bottom: 10rem
+    position: fixed
+    left: 0
+    right: 0
+    z-index: 999999
 
     .header
         display: flex
@@ -30,12 +35,20 @@ header
 
         &-title
             font-size: 17rem
-            color: white
+            color: $blue
             font-weight: 600
+            letter-spacing: 1rem
+            font-family: 'Roboto', sans-serif
+
+            svg
+                width: 20rem
+                height: 20rem
 
 main
     display: flex
     gap: 20rem
+    position: relative
+    top: 65rem
 
     .nav
         display: flex
@@ -77,6 +90,7 @@ main
             display: flex
             align-items: center
             gap: 20rem
+            color: #333333 !important
 
             @media (max-width: 768px)
                 justify-content: space-between
@@ -97,6 +111,9 @@ main
                 display: flex
                 flex-direction: column
                 gap: 15rem
+
+                @media (max-width: 768px)
+                    flex-direction: row
 
         &-name
             font-size: 18rem
@@ -128,6 +145,9 @@ main
             flex-direction: column
             gap: 4rem
 
+            @media (max-width: 768px)
+                width: 170rem
+
         &-img
             width: 110rem
             height: 110rem
@@ -137,8 +157,8 @@ main
             border: 1rem solid #dce1e6
 
             @media (max-width: 768px)
-                width: 80rem
-                height: 80rem
+                width: 60rem
+                height: 60rem
 
     .content
         &-flex
@@ -157,11 +177,10 @@ main
                 order: 2
 
         &-info
-            width: 300rem
-            border: 1rem solid #dce1e6
-            background-color: white
-            border-radius: 10rem
-            padding: 15rem
+            width: 400rem
+            display: flex
+            flex-direction: column
+            gap: 20rem
 
             @media (max-width: 768px)
                 width: calc(100% - 30rem)
@@ -174,13 +193,38 @@ main
             &__flex
                 margin-top: 10rem
                 display: flex
-                justify-content: space-between
+
+            &__flex2
+                margin-top: 10rem
+                display: flex
+                flex-direction: column
+                justify-content: start
+                gap: 8rem
+
+            &__item2
+                border: 1rem solid #dce1e6
+                background-color: white
+                border-radius: 10rem
+                padding: 15rem
+
+            &__item3
+                display: flex
+                align-items: center
+                gap: 10rem
+
+                img
+                    width: 40rem
+                    height: 40rem
+
+                .content-info__item-title
+                    color: #333333
 
             &__item
                 display: flex
                 flex-direction: column
                 align-items: center
                 color: black
+                flex: 0 0 33.333%
 
                 &-img
                     border: 1rem solid #dce1e6
@@ -190,7 +234,7 @@ main
                     border-radius: 50%
 
                 &-title
-                    font-size: 12rem
+                    font-size: 13rem
                     margin-top: 3rem
 
     .input
@@ -304,6 +348,9 @@ main
 
         &-flex
             margin-top: 20rem
+            display: flex
+            flex-direction: column
+            gap: 0
 
             &__item
                 border: none
@@ -360,6 +407,11 @@ main
                 display: flex
                 gap: 11rem
                 align-items: flex-start
+                border-radius: 5rem
+                padding-inline: 3rem
+
+                &:hover
+                    background-color: rgba(51, 51, 51, 0.05)
 
                 &__img
                     width: 40rem
@@ -420,3 +472,29 @@ main
 
         .btn
             margin-top: 10rem
+
+
+.dropmenu
+    position: fixed
+    left: 0
+    right: 0
+    background: #ffffff
+    z-index: 999999
+    box-shadow: 0 0 8rem gray
+    top: 54rem
+    padding: 13rem 0
+
+@media (max-width: 768px)
+    .nav
+        display: flex
+        flex-direction: column
+        gap: 7rem
+
+        .text
+            font-size: 10rem
+            color: #333333
+
+        &-item
+            display: flex
+            gap: 10rem
+            align-items: center
