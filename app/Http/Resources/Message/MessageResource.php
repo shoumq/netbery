@@ -21,6 +21,7 @@ class MessageResource extends JsonResource
             'login' => User::where('id', $this->from_id)->get()[0]->login,
             'id' => $this->id,
             'user_id' => $this->from_id,
+            'img_id' => User::where('id', $this->from_id)->get()[0]->img_id,
             'body' => $this->body,
             'time' => date($this->created_at),
         ];

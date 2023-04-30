@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Resources\Community;
+namespace App\Http\Resources\News;
 
 use App\Models\Community;
-use App\Models\Community_subscriber;
-use App\Models\User;
+use App\Models\Community_post;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CommunityResource extends JsonResource
+class NewsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,9 +17,8 @@ class CommunityResource extends JsonResource
     public function toArray($request)
     {
         return [
-//            'communities' => Community::where('id', $this->id)->get(),
-            'communities' => Community::where('id', $this->community_id)->get(),
-            'users' => User::where('id', $this->user_id)->get(),
+            'posts' => Community_post::where('community_id', $this->community_id)->get(),
+            'community' => Community::where('id', $this->community_id)->get(),
         ];
     }
 }

@@ -6,9 +6,12 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\Community\CommunityResource;
 use App\Http\Resources\Dialog\DialogResource;
 use App\Http\Resources\Message\MessageResource;
+use App\Http\Resources\News\NewsResource;
 use App\Http\Resources\Post\PostResource;
+use App\Models\Community;
 use App\Models\Community_subscriber;
 use App\Models\Dialog;
+use App\Models\Image_users;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
@@ -19,6 +22,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Symfony\Component\Console\Input\Input;
 
 class ProfileController extends Controller
 {
@@ -30,21 +34,62 @@ class ProfileController extends Controller
         $posts = PostResource::collection($posts)->resolve();
 
         $friends = Dialog::where('user_one', $user->id)
-            ->orWhere('user_two', $user->id)->get();
+            ->orWhere('user_two', $user->id)->inRandomOrder()->limit(3)->get();
         $friends = DialogResource::collection($friends)->resolve();
 
-        $communities = Community_subscriber::where('user_id', $user->id)->get();
+        $communities = Community_subscriber::where('user_id', $user->id)->inRandomOrder()->limit(3)->get();
         $communities = CommunityResource::collection($communities)->resolve();
 
         return inertia('Profile', compact('user', 'posts', 'friends', 'communities'));
     }
 
-    public function updateStatus(Request $request) {
+    public function updateStatus(Request $request)
+    {
         $user = User::find(Auth::user()->id);
         $user->status = $request->status;
         $user->save();
 
         return $user;
+    }
+
+    public function news()
+    {
+        $posts = Community_subscriber::where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+        $posts = NewsResource::collection($posts)->resolve();
+        $result = array();
+        for ($i = 0; $i < count($posts); $i++) {
+            if (count($posts[$i]['posts']) > 0) {
+//                $result[] = $posts[$i];
+                array_push($result, $posts[$i]);
+            }
+        }
+
+        return inertia('News', compact('posts', 'result'));
+    }
+
+    public function updateImage(Request $request)
+    {
+        $name = $request->file('file')->getClientOriginalName();
+        $size = $request->file('file')->getSize();
+
+        $request->file('file')->storeAs('public/images/', $name);
+
+        $photo = new Image_users();
+        $photo->name = $name;
+        $photo->size = $size;
+        $photo->user_id = Auth::user()->id;
+        $photo->save();
+
+        $user = User::find(Auth::user()->id);
+        $user->img_id = $name;
+        $user->save();
+
+        return $user;
+    }
+
+    public function test()
+    {
+        return inertia('test');
     }
 
     /**

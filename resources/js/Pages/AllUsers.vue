@@ -21,7 +21,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                 <div class="profile friends-flex__item" v-for="item in usersData">
                     <div class="profile-top-j">
                         <a :href="'/user/' + item.login" class="profile-top">
-                            <img class="profile-img" :src="testImg" alt="">
+                            <img class="profile-img" :src="'../storage/images/' + item.img_id" alt="">
                             <div class="flex-info">
                                 <div class="profile-name">{{ item.name }} {{ item.surname }}</div>
                                 <div class="profile-desc">{{ item.status }}</div>
@@ -29,7 +29,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                             </div>
                         </a>
 
-                        <button @click="createDialog" class="btn btn-primary" v-if="item.id !== $page.props.auth.user.id">Написаить сообщение</button>
+<!--                        <button @click="createDialog" class="btn btn-primary" v-if="item.id !== $page.props.auth.user.id">Написаить сообщение</button>-->
                     </div>
                 </div>
             </div>

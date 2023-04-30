@@ -148,6 +148,15 @@ main
             @media (max-width: 768px)
                 width: 170rem
 
+            .flex
+                display: flex
+                align-items: center
+                gap: 7rem
+
+                svg
+                    width: 16rem
+                    height: 16rem
+
         &-img
             width: 110rem
             height: 110rem
@@ -289,18 +298,26 @@ main
                 border: 1rem solid #dce1e6
 
     .like
-        background-color: rgba(51, 51, 51, 0.16)
+        margin-top: 10rem
+        background-color: rgba(51, 51, 51, 0.09)
         display: flex
         align-items: center
-        width: 40rem
-        height: 24rem
+        max-width: 37rem
+        height: 28rem
         text-align: center
         border-radius: 10rem
         cursor: pointer
         user-select: none
+        font-size: 13rem
+        justify-content: space-between
+        padding: 0 10rem
 
-        svg
-            margin: auto
+        &_is
+            background: rgba(255, 0, 0, 0.2)
+            box-shadow: 0 0 4rem rgba(255, 0, 0, 0.2)
+
+        //svg
+        //    margin: auto
 
         &-count
             font-size: 15rem
@@ -350,11 +367,11 @@ main
             margin-top: 20rem
             display: flex
             flex-direction: column
-            gap: 0
+            gap: 10rem
 
             &__item
-                border: none
                 border-radius: 0
+                border: none
                 border-bottom: 1px solid #dce1e6
                 width: 100%
                 padding: 15rem 0
@@ -382,7 +399,7 @@ main
             height: 77vh
             display: flex
             flex-direction: column
-            gap: 30rem
+            gap: 20rem
             padding: 15rem 0
             overflow-y: scroll
 
@@ -428,6 +445,10 @@ main
                 &__name
                     font-size: 15rem
                     color: #333333
+
+                &__mess
+                    font-size: 13rem
+                    color: #575757
 
                 &__time
                     font-size: 12rem

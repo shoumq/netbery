@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('surname')->default('');
             $table->string('status')->default('');
             $table->string('login')->default('');
-            $table->string('img_id')->default('def_img');
+            $table->string('img_id')->default('i.png');
             $table->string('email')->unique();
+            $table->string('admin')->default('0');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

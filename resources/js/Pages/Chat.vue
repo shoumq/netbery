@@ -8,13 +8,16 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
     <Layout>
         <div class="chat">
             <div class="chat-title">
-                <a :href="'/user/' + checkLogin(dialogData.user_one_login, dialogData.user_two_login)">{{ checkName(dialogData.user_one, dialogData.user_two) }}</a>
+                <a :href="'/user/' + checkLogin(dialogData.user_one_login, dialogData.user_two_login)">{{
+                        checkName(dialogData.user_one, dialogData.user_two)
+                    }}</a>
             </div>
 
             <div class="chat-content" ref="container">
                 <div class="messages-item" v-for="item in messagesData">
                     <a :href="'/user/' + item.login" class="messages-item__img">
-                        <img :src="testImg" alt="">
+                        <img :src="'../storage/images/' + item.img_id"
+                             alt="">
                     </a>
                     <div>
                         <div>
@@ -73,6 +76,14 @@ export default {
 
         checkLogin(name1, name2) {
             if (name1 === this.$page.props.auth.user.login) {
+                return name2
+            } else {
+                return name1
+            }
+        },
+
+        checkImage(name1, name2) {
+            if (name1 === this.$page.props.auth.user.img_id) {
                 return name2
             } else {
                 return name1
