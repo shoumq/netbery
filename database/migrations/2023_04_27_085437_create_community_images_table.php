@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('communities', function (Blueprint $table) {
+        Schema::create('community_images', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
-            $table->text('status');
-            $table->string('img_id')->default('i.png');
-            $table->text('isVerified');
-            $table->text('admin');
+            $table->text('name');
+            $table->text('size');
+            $table->text('community_id');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('communities');
+        Schema::dropIfExists('community_images');
     }
 };

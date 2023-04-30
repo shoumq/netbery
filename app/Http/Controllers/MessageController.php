@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DialogEvent;
 use App\Events\StoreMessageEvent;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Resources\Dialog\DialogResource;
@@ -9,6 +10,7 @@ use App\Http\Resources\Message\MessageResource;
 use App\Models\Dialog;
 use App\Models\Message;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,9 +19,13 @@ class MessageController extends Controller
     public function index()
     {
         $dialogs = Dialog::where('user_one', Auth::user()->id)
-            ->orWhere('user_two', Auth::user()->id)->get();
+            ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $dialogs = DialogResource::collection($dialogs)->resolve();
-        return inertia('Dialogs', compact('dialogs'));
+        $dialogs_id = $dialogs;
+
+//        event(new DialogEvent($dialogs->id));
+
+        return inertia('Dialogs', compact('dialogs', 'dialogs_id'));
     }
 
     public function chat(Dialog $dialog_id)
@@ -41,6 +47,10 @@ class MessageController extends Controller
         $message->dialog_id = $dialog_id->id;
         $message->body = $request->body;
         $message->save();
+
+        $dialogs_id = Dialog::find($dialog_id->id);
+        $dialogs_id->updated_at = Carbon::now();
+        $dialogs_id->save();
 
         event(new StoreMessageEvent($message, $dialog_id->id));
 

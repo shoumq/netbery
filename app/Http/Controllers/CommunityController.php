@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CommunityPostRequest;
 use App\Http\Resources\Community\CommunityResource;
+use App\Http\Resources\Community\MyCommunityResource;
+use App\Http\Resources\Community\UsersCommunityResource;
 use App\Models\Community;
+use App\Models\Community_image;
 use App\Models\Community_post;
 use App\Models\Community_subscriber;
+use App\Models\Image_users;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
@@ -20,6 +25,13 @@ class CommunityController extends Controller
         return inertia('Community/Community', compact('communities'));
     }
 
+    public function myCommunity(User $user)
+    {
+        $communities = Community_subscriber::where('user_id', $user->id)->get();
+        $communities = MyCommunityResource::collection($communities)->resolve();
+        return inertia('Community/MyCommunity', compact('communities', 'user'));
+    }
+
     public function create()
     {
         return inertia('Community/Create');
@@ -31,7 +43,6 @@ class CommunityController extends Controller
         $community->title = $request->title;
         $community->status = $request->status;
         $community->isVerified = '0';
-        $community->image = '';
         $community->admin = Auth::user()->id;
         $community->save();
 
@@ -48,7 +59,7 @@ class CommunityController extends Controller
         $posts = Community_post::where('community_id', $community->id)->latest()->get();
 
         $communities_sub = Community_subscriber::where('community_id', $community->id)->get();
-        $communities_sub = CommunityResource::collection($communities_sub)->resolve();
+        $communities_sub = UsersCommunityResource::collection($communities_sub)->resolve();
 
         $isSub = count(Community_subscriber::where('user_id', Auth::user()->id)
             ->where('community_id', $community->id)->get());
@@ -79,11 +90,41 @@ class CommunityController extends Controller
         }
     }
 
-    public function unsubscribe(Community $community) {
+    public function unsubscribe(Community $community)
+    {
         $community_sub = Community_subscriber::where('user_id', Auth::user()->id)
             ->where('community_id', $community->id)->first();
         $community_sub->delete();
 
         return $community_sub;
+    }
+
+    public function updateStatus(Community $community, Request $request)
+    {
+        $community = Community::find($community->id);
+        $community->status = $request->status;
+        $community->save();
+
+        return $community;
+    }
+
+    public function updateImage(Request $request)
+    {
+        $name = $request->file('file')->getClientOriginalName();
+        $size = $request->file('file')->getSize();
+
+        $request->file('file')->storeAs('public/images/', $name);
+
+        $photo = new Community_image();
+        $photo->name = $name;
+        $photo->size = $size;
+        $photo->community_id = $request->community_id;
+        $photo->save();
+
+        $community = Community::find($request->community_id);
+        $community->img_id = $name;
+        $community->save();
+
+        return $community;
     }
 }

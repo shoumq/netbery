@@ -166,6 +166,15 @@ main .profile .flex-info {
     width: 170rem;
   }
 }
+main .profile .flex-info .flex {
+  display: flex;
+  align-items: center;
+  gap: 7rem;
+}
+main .profile .flex-info .flex svg {
+  width: 16rem;
+  height: 16rem;
+}
 main .profile-img {
   width: 110rem;
   height: 110rem;
@@ -314,18 +323,23 @@ main .posts-item__img {
   border: 1rem solid #dce1e6;
 }
 main .like {
-  background-color: rgba(51, 51, 51, 0.16);
+  margin-top: 10rem;
+  background-color: rgba(51, 51, 51, 0.09);
   display: flex;
   align-items: center;
-  width: 40rem;
-  height: 24rem;
+  max-width: 37rem;
+  height: 28rem;
   text-align: center;
   border-radius: 10rem;
   cursor: pointer;
   user-select: none;
+  font-size: 13rem;
+  justify-content: space-between;
+  padding: 0 10rem;
 }
-main .like svg {
-  margin: auto;
+main .like_is {
+  background: rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 4rem rgba(255, 0, 0, 0.2);
 }
 main .like-count {
   font-size: 15rem;
@@ -374,11 +388,11 @@ main .friends-flex {
   margin-top: 20rem;
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 10rem;
 }
 main .friends-flex__item {
-  border: none;
   border-radius: 0;
+  border: none;
   border-bottom: 1px solid #dce1e6;
   width: 100%;
   padding: 15rem 0;
@@ -406,7 +420,7 @@ main .chat-content {
   height: 77vh;
   display: flex;
   flex-direction: column;
-  gap: 30rem;
+  gap: 20rem;
   padding: 15rem 0;
   overflow-y: scroll;
 }
@@ -453,6 +467,10 @@ main .chat .messages-item__img img {
 main .chat .messages-item__name {
   font-size: 15rem;
   color: #333333;
+}
+main .chat .messages-item__mess {
+  font-size: 13rem;
+  color: #575757;
 }
 main .chat .messages-item__time {
   font-size: 12rem;
@@ -546,6 +564,9 @@ main .form .btn {
 }
 .btn-primary:hover {
   background-color: #3578bb;
+}
+.btn-primary:disabled {
+  background-color: #82a9d2;
 }
 
 /*# sourceMappingURL=app.css.map */

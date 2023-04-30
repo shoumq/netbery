@@ -14,6 +14,7 @@ defineProps({
 const form = useForm({
     email: '',
     password: '',
+    processing: true,
     remember: true,
 });
 
@@ -49,3 +50,4 @@ const submit = () => {
         </form>
     </GuestLayout>
 </template>
+
