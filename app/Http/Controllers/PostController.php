@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DeletePostEvent;
 use App\Events\StoreLikeEvent;
 use App\Events\StorePostEvent;
 use App\Http\Requests\PostRequest;
@@ -27,6 +28,14 @@ class PostController extends Controller
         event(new StorePostEvent($post));
 
         return PostResource::make($post)->resolve();
+    }
+
+    public function delete(Post $post) {
+        $del_p = Post::find($post->id);
+        $del_p->delete();
+
+//        event(new DeletePostEvent($del_p));
+//        return PostResource::make($del_p)->resolve();
     }
 
     public function postLike(Post $post)
@@ -58,44 +67,9 @@ class PostController extends Controller
 
             return response()->json([
                 "likes" => count($count_global),
+                "my_like" => count(Like::where('post_id', $post->id)
+                    ->where('from_id', Auth::user()->id)->get())
             ]);
         }
-
-    }
-
-    public function postLike2(Post $post)
-    {
-        $like = new Like;
-        $like->from_id = Auth::user()->id;
-        $like->post_id = $post->id;
-        $like->like = '1';
-        $like->save();
-
-        $count_global = Like::where('post_id', $post->id)->get();
-
-        return response()->json([
-            "likes" => count($count_global),
-            "my_like" => count(Like::where('post_id', $post->id)
-                ->where('from_id', Auth::user()->id)->get()),
-            "like_id" => Like::where('post_id', $post->id)
-                ->where('from_id', Auth::user()->id)->first()
-        ]);
-    }
-
-    public function deleteLike(Post $post)
-    {
-        $count_mine = Like::where('post_id', $post->id)
-            ->where('from_id', Auth::user()->id)->first();
-        $like = Like::find($count_mine->id);
-        $like->delete();
-
-        return response()->json([
-            "del" => "success"
-        ]);
-    }
-
-    public function checkLike(Post $post)
-    {
-        return (Like::where('post_id', $post->id)->get());
     }
 }

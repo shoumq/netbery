@@ -336,6 +336,7 @@ main .like {
   font-size: 13rem;
   justify-content: space-between;
   padding: 0 10rem;
+  transition: 0.2s;
 }
 main .like_is {
   background: rgba(255, 0, 0, 0.2);
@@ -482,6 +483,13 @@ main .chat .messages-item__body {
   font-size: 13rem;
   color: #333333;
 }
+main .del-flex {
+  display: flex;
+  justify-content: space-between;
+}
+main .del {
+  cursor: pointer;
+}
 main .form {
   max-width: 400rem;
   margin: auto;
@@ -514,6 +522,12 @@ main .form-input .error {
 }
 main .form .btn {
   margin-top: 10rem;
+}
+main .svg {
+  width: 16rem;
+  height: 16rem;
+  display: flex;
+  align-items: center;
 }
 
 .dropmenu {

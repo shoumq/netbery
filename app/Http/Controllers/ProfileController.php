@@ -19,6 +19,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -56,10 +57,10 @@ class ProfileController extends Controller
     {
         $posts = Community_subscriber::where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $posts = NewsResource::collection($posts)->resolve();
+
         $result = array();
         for ($i = 0; $i < count($posts); $i++) {
             if (count($posts[$i]['posts']) > 0) {
-//                $result[] = $posts[$i];
                 array_push($result, $posts[$i]);
             }
         }
@@ -100,6 +101,7 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'user' => Auth::user()
         ]);
     }
 
@@ -117,6 +119,45 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.edit');
+    }
+
+    public function setName(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->name = $request->name;
+        $user->save();
+
+        return response()->json([
+            "response" => "name success"
+        ]);
+    }
+
+    public function setSurname(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->surname = $request->surname;
+        $user->save();
+
+        return response()->json([
+            "response" => "surname success"
+        ]);
+    }
+
+    public function setEmail(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->email = $request->email;
+        $user->save();
+
+        return response()->json([
+            "response" => "email success"
+        ]);
+    }
+
+    public function setPassword(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->fill(['password' => Hash::make($request->password)])->save();
+
+        return response()->json([
+            "response" => "password success"
+        ]);
     }
 
     /**

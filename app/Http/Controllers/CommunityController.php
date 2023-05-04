@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CommunityPostRequest;
 use App\Http\Resources\Community\CommunityResource;
 use App\Http\Resources\Community\MyCommunityResource;
+use App\Http\Resources\Community\PostCommunityResource;
 use App\Http\Resources\Community\UsersCommunityResource;
+use App\Http\Resources\Post\PostResource;
 use App\Models\Community;
 use App\Models\Community_image;
+use App\Models\Community_like;
 use App\Models\Community_post;
 use App\Models\Community_subscriber;
 use App\Models\Image_users;
+use App\Models\Like;
+use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,6 +62,7 @@ class CommunityController extends Controller
     public function getCommunity(Community $community)
     {
         $posts = Community_post::where('community_id', $community->id)->latest()->get();
+        $posts = PostCommunityResource::collection($posts)->resolve();
 
         $communities_sub = Community_subscriber::where('community_id', $community->id)->get();
         $communities_sub = UsersCommunityResource::collection($communities_sub)->resolve();
@@ -75,6 +81,41 @@ class CommunityController extends Controller
         $community_post->save();
 
         return $community_post;
+    }
+
+    public function postLike(Post $post)
+    {
+        if (count(Community_like::where('post_id', $post->id)
+                ->where('from_id', Auth::user()->id)->get()) == 0) {
+            $like = new Community_like;
+            $like->from_id = Auth::user()->id;
+            $like->post_id = $post->id;
+            $like->like = '1';
+            $like->save();
+
+            $count_global = Community_like::where('post_id', $post->id)->get();
+
+            return response()->json([
+                "likes" => count($count_global),
+                "my_like" => count(Community_like::where('post_id', $post->id)
+                    ->where('from_id', Auth::user()->id)->get()),
+                "like_id" => Community_like::where('post_id', $post->id)
+                    ->where('from_id', Auth::user()->id)->first()
+            ]);
+        } else {
+            $count_mine = Community_like::where('post_id', $post->id)
+                ->where('from_id', Auth::user()->id)->first();
+            $like = Community_like::find($count_mine->id);
+            $like->delete();
+
+            $count_global = Community_like::where('post_id', $post->id)->get();
+
+            return response()->json([
+                "likes" => count($count_global),
+                "my_like" => count(Community_like::where('post_id', $post->id)
+                    ->where('from_id', Auth::user()->id)->get())
+            ]);
+        }
     }
 
     public function subscribe(Community $community)

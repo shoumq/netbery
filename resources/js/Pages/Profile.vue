@@ -1,7 +1,6 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
 
-let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmizcwUKw/Ms4qi0pf9Bk.jpg?size=1620x2160&quality=95&sign=31e693c2d9c4f43335c97945ffbe8e66&type=album'
 </script>
 
 <template>
@@ -12,7 +11,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                     <img class="profile-img" :src="'../storage/images/' + filenameData" alt=""
                          v-if="$page.props.auth.user.id !== user.id">
 
-                    <label class="input-file" v-else-if="$page.props.auth.user.id === user.id">
+                    <label class="input-file" v-else-if="$page.props.auth.user.id === user.id" style="cursor:pointer;">
                         <input type="file" name="file" class="file-input" @change="storeImage">
                         <img class="profile-img" :src="'../storage/images/' + filenameData" alt="">
                     </label>
@@ -45,7 +44,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                 </div>
 
                 <div class="profile-top__b" v-if="$page.props.auth.user.id === user.id">
-                    <button class="btn btn-primary">Редактировать</button>
+                    <a href="/user/" class="btn btn-primary">Редактировать</a>
                     <button class="btn btn-primary" @click="logoutFun">Выйти</button>
                 </div>
 
@@ -60,25 +59,42 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             <div class="content-main">
                 <form class="input-news" @submit.prevent="storePost" v-if="$page.props.auth.user.name === user.name">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
-                    <button type="submit" class="btn btn-primary">Опубликовать</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg"
+                             viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                        </svg>
+                    </button>
                 </form>
 
                 <div class="posts">
-                    <div class="posts-item" v-for="item in postsData">
-                        <div class="posts-item__flex">
-                            <div>
-                                <img class="posts-item__img" :src="'../storage/images/' + filenameData" alt="">
-                            </div>
-                            <div>
-                                <div class="posts-item__title">{{ user.name }}
+                    <div class="posts-item" v-for="(item, index) in postsData" :key="index">
+                        <div class="del-flex">
+                            <div class="posts-item__flex">
+                                <div>
+                                    <img class="posts-item__img" :src="'../storage/images/' + filenameData" alt="">
                                 </div>
-                                <div class="posts-item__time">{{ getTime(item.time) }}</div>
+                                <div>
+                                    <div class="posts-item__title">{{ user.name }}
+                                    </div>
+                                    <div class="posts-item__time">{{ getTime(item.time) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="del" @click="deletePost(item.id)"
+                                 v-if="item.user_id === $page.props.auth.user.id">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="red" class="bi bi-trash3 svg"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                </svg>
                             </div>
                         </div>
 
                         <div class="posts-item__content">{{ item.body }}</div>
 
-                        <div :class="{'like': true, 'like_is': false}"
+                        <div :class="{'like': true, 'like_is': item.your_like === 1}"
                              @click="storeLike(item.id)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                  class="bi bi-heart" viewBox="0 0 16 16">
@@ -109,7 +125,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                 </div>
 
                 <div class="content-info__item2" v-if="communities.length !== 0">
-                    <a href="#" class="content-info__title">Подписки</a>
+                    <a :href="'/my_communities/' + user.id" class="content-info__title">Подписки</a>
                     <div class="content-info__flex2">
                         <a :href="'/community/' + item.communities[0].id"
                            class="content-info__item3" v-for="item in communities">
@@ -140,7 +156,6 @@ export default {
             filename: '',
             file: '',
             filenameData: this.user.img_id,
-            like: 0
         }
     },
 
@@ -160,19 +175,20 @@ export default {
             })
         },
 
-        getBool(bool) {
-            return bool === 1;
+        deletePost(post_id) {
+            axios.get('/delete_post/' + post_id)
+                .then((response) => {
+                    this.postsData.splice(this.postsData.findIndex(x => x.id === post_id), 1)
+                    console.log(response.data)
+                })
         },
 
         storeLike(post_id) {
             axios.get('/post_like/' + post_id)
                 .then((response) => {
                     this.postsData.find(x => x.id === parseInt(post_id)).likes = response.data.likes
+                    this.postsData.find(x => x.id === parseInt(post_id)).your_like = response.data.my_like
                 })
-        },
-
-        checkCountLike() {
-            axios.get('/post_like_check/' + '1')
         },
 
         updateStatus() {
@@ -257,10 +273,14 @@ export default {
     },
 
     mounted() {
-        this.checkCountLike();
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
                 this.postsData.unshift(response.post)
+            })
+
+        window.Echo.channel('delete_post')
+            .listen('.delete_post', response => {
+                console.log(response)
             })
 
         // window.Echo.channel('store_like')
@@ -277,6 +297,7 @@ export default {
     border-radius: 0
     border: none
     border-bottom: 1px solid #dce1e6
+    width: 400rem
 
     &:focus
         border: none
@@ -294,4 +315,10 @@ export default {
 
 .file-input
     display: none
+
+.input-file
+    transition: 0.3s
+
+    &:hover
+        filter: brightness(60%)
 </style>

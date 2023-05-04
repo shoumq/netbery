@@ -57,7 +57,11 @@ import Layout from '@/Layouts/Layout.vue';
                 <form class="input-news" @submit.prevent="storePost"
                       v-if="$page.props.auth.user.id === parseInt(community.admin)">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
-                    <button type="submit" class="btn btn-primary">Опубликовать</button>
+                    <button type="submit" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg" viewBox="0 0 16 16">
+                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                        </svg>
+                    </button>
                 </form>
 
                 <div class="posts">
@@ -67,12 +71,23 @@ import Layout from '@/Layouts/Layout.vue';
                                 <img class="posts-item__img"  :src="'../storage/images/' + filenameData" alt="">
                             </div>
                             <div>
-                                <div class="posts-item__title">{{ community.title }}
+                                <div class="posts-item__title">{{ item.community_title }}
                                 </div>
-                                <div class="posts-item__time">{{ getTime(item.created_at) }}</div>
+                                <div class="posts-item__time">{{ item.time }}</div>
                             </div>
                         </div>
+
                         <div class="posts-item__content">{{ item.body }}</div>
+
+                        <div :class="{'like': true, 'like_is': item.your_like === 1}"
+                             @click="storeLike(item.id)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                 class="bi bi-heart" viewBox="0 0 16 16">
+                                <path
+                                    d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                            {{ item.likes }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -122,6 +137,15 @@ export default {
                 this.body = ''
                 this.postsData.unshift(response.data)
             })
+        },
+
+        storeLike(post_id) {
+            axios.get('/community/post_like/' + post_id)
+                .then((response) => {
+                    this.postsData.find(x => x.id === parseInt(post_id)).likes = response.data.likes
+                    this.postsData.find(x => x.id === parseInt(post_id)).your_like = response.data.my_like
+                    console.log(response)
+                })
         },
 
         subscribeCommunity() {
@@ -194,4 +218,10 @@ export default {
 .file-input
     display: none
 
+.input-file
+    transition: 0.3s
+    cursor: pointer
+
+    &:hover
+        filter: brightness(60%)
 </style>

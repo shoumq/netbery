@@ -32,9 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/update_image', [App\Http\Controllers\ProfileController::class, 'updateImage']);
 
     Route::post('/post/{user}', [App\Http\Controllers\PostController::class, 'store']);
+    Route::get('/delete_post/{post}', [App\Http\Controllers\PostController::class, 'delete']);
     Route::get('/post_like/{post}', [App\Http\Controllers\PostController::class, 'postLike']);
-    Route::get('/delete_like/{post}', [App\Http\Controllers\PostController::class, 'deleteLike']);
-    Route::get('/post_like_check/{post}', [App\Http\Controllers\PostController::class, 'checkLike']);
 
     Route::get('/chat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'chat']);
     Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index']);
@@ -54,11 +53,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/unsubscribe_community/{community}', [App\Http\Controllers\CommunityController::class, 'unsubscribe']);
     Route::post('/community/update_status/{community}', [App\Http\Controllers\CommunityController::class, 'updateStatus']);
     Route::post('/community/update_image', [App\Http\Controllers\CommunityController::class, 'updateImage']);
+    Route::get('/community/post_like/{post}', [App\Http\Controllers\CommunityController::class, 'postLike']);
 
     Route::get('/news', [App\Http\Controllers\ProfileController::class, 'news']);
 
     Route::get('/users', [App\Http\Controllers\FriendsController::class, 'allUsers'])->name('allUsers');
     Route::get('/user', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/user/set_name', [App\Http\Controllers\ProfileController::class, 'setName']);
+    Route::post('/user/set_surname', [App\Http\Controllers\ProfileController::class, 'setSurname']);
+    Route::post('/user/set_email', [App\Http\Controllers\ProfileController::class, 'setEmail']);
+    Route::post('/user/set_password', [App\Http\Controllers\ProfileController::class, 'setPassword']);
     Route::patch('/user', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/user', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
