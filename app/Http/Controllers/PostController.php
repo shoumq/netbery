@@ -7,6 +7,7 @@ use App\Events\StoreLikeEvent;
 use App\Events\StorePostEvent;
 use App\Http\Requests\PostRequest;
 use App\Http\Resources\Post\PostResource;
+use App\Models\Community_post;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
@@ -33,9 +34,11 @@ class PostController extends Controller
     public function delete(Post $post) {
         $del_p = Post::find($post->id);
         $del_p->delete();
+    }
 
-//        event(new DeletePostEvent($del_p));
-//        return PostResource::make($del_p)->resolve();
+    public function comm_delete(Community_post $post) {
+        $del_p = Community_post::find($post->id);
+        $del_p->delete();
     }
 
     public function postLike(Post $post)

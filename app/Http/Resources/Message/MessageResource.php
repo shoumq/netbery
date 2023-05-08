@@ -24,6 +24,7 @@ class MessageResource extends JsonResource
             'img_id' => User::where('id', $this->from_id)->get()[0]->img_id,
             'body' => $this->body,
             'time' => date($this->created_at),
+            'dialog_id' => $this->dialog_id,
         ];
     }
 }

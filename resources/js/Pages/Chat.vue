@@ -31,7 +31,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             </div>
 
             <form class="messages-input" @submit.prevent="storeMessage">
-                <input type="text" class="input input-mes" placeholder="Введите сообщение" v-model="body">
+                <input type="text" class="input input-mes" placeholder="Введите сообщение" v-model="body" autofocus>
                 <button class="btn btn-primary" type="submit">Отправить</button>
             </form>
         </div>
@@ -111,4 +111,7 @@ export default {
 
 .messages-item
     background: white !important
+
+input
+    border-radius: 100rem !important
 </style>

@@ -5,7 +5,7 @@ import Layout from '@/Layouts/Layout.vue';
 
 <template>
     <Layout>
-        <div class="profile">
+        <div class="profile" @click="uved2">
             <div class="profile-top-j">
                 <div class="profile-top">
                     <img class="profile-img" :src="'../storage/images/' + filenameData" alt=""
@@ -45,7 +45,7 @@ import Layout from '@/Layouts/Layout.vue';
 
                 <div class="profile-top__b" v-if="$page.props.auth.user.id === user.id">
                     <a href="/user/" class="btn btn-primary">Редактировать</a>
-                    <button class="btn btn-primary" @click="logoutFun">Выйти</button>
+                    <button class="btn btn-danger" @click="logoutFun">Выйти</button>
                 </div>
 
                 <div class="profile-top__b" v-else-if="$page.props.auth.user.id !== user.id">
@@ -57,7 +57,8 @@ import Layout from '@/Layouts/Layout.vue';
 
         <div class="content-flex">
             <div class="content-main">
-                <form class="input-news" @submit.prevent="storePost" v-if="$page.props.auth.user.name === user.name">
+                <form class="input-news dir" @submit.prevent="storePost"
+                      v-if="$page.props.auth.user.name === user.name">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg"
@@ -140,6 +141,26 @@ import Layout from '@/Layouts/Layout.vue';
             </div>
         </div>
     </Layout>
+
+    <div class="main_dialog">
+        <dialog open class="dialog1" v-for="(item, index) in alerts" :key="index">
+            <div class="dialog" v-if="this.$page.props.auth.user.id !== parseInt(item.message.user_id)">
+                <div class="form">
+                    <div class="dialog-title">{{ dialogsId.find(x => x.id === parseInt(item.message.dialog_id)).user }}</div>
+                    <div class="dialog-message">{{ item.message.body }}</div>
+                </div>
+                <form method="dialog">
+                    <button class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path
+                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </dialog>
+    </div>
 </template>
 
 
@@ -156,15 +177,39 @@ export default {
             filename: '',
             file: '',
             filenameData: this.user.img_id,
+            alerts: [],
+            uvedVar: false,
+            dialogsId: [],
+            dialogsName: []
         }
     },
 
-    props: ['user', 'posts', 'friends', 'communities'],
+    props: ['user', 'posts', 'friends', 'communities', 'dialogs'],
 
     methods: {
         logoutFun() {
             axios.post('/logout');
             window.location.href = '/login/'
+        },
+
+        getDialogsId() {
+            for (let i = 0; i < this.dialogs.length; i++) {
+                if (this.dialogs[i].user_two !== this.$page.props.auth.user.name + ' ' + this.$page.props.auth.user.surname) {
+                    this.dialogsId.push(
+                        {
+                            'id': this.dialogs[i].id,
+                            'user': this.dialogs[i].user_two
+                        }
+                    );
+                } else {
+                    this.dialogsId.push(
+                        {
+                            'id': this.dialogs[i].id,
+                            'user': this.dialogs[i].user_one
+                        }
+                    );
+                }
+            }
         },
 
         storePost() {
@@ -269,10 +314,20 @@ export default {
                     return name2
                 }
             }
-        }
+        },
+
+        uved() {
+            let audio = new Audio('../storage/uved.mp3');
+            audio.autoplay = true;
+            audio.muted = false
+            audio.volume = 0.5
+            audio.play();
+        },
     },
 
     mounted() {
+        this.getDialogsId();
+
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
                 this.postsData.unshift(response.post)
@@ -283,10 +338,21 @@ export default {
                 console.log(response)
             })
 
-        // window.Echo.channel('store_like')
-        //     .listen('.store_like', response => {
-        //         console.log(response)
-        //     })
+
+        for (let i = 0; i < this.dialogsId.length; i++) {
+            window.Echo.channel('store_message_' + this.dialogsId[i].id)
+                .listen('.store_message', response => {
+                    this.alerts.unshift(response)
+
+                    setTimeout(() => {
+                        this.alerts.length = 0;
+                    }, 10000)
+
+                    if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
+                        this.uved();
+                    }
+                })
+        }
     }
 }
 </script>
@@ -321,4 +387,14 @@ export default {
 
     &:hover
         filter: brightness(60%)
+
+.dir
+    background: white
+    padding: 15rem
+    border-radius: 10rem
+    border: 1rem solid #dce1e6
+
+    input
+        background: #f4f5f6
+        border-radius: 100rem
 </style>

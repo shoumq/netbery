@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div @click="uved2">
         <header>
             <div class="container">
                 <div class="header">
@@ -137,6 +137,12 @@ export default {
         isMobile() {
             return screen.width <= 760;
         },
+
+        uved2() {
+            let audio = new Audio('../storage/uved.mp3');
+            audio.volume = 0
+            audio.play();
+        }
     },
 
     created() {
@@ -149,5 +155,56 @@ export default {
 .nav-item svg {
     width: 16rem;
     height: 16rem;
+}
+
+.dialog1 {
+    position: relative;
+    bottom: 30rem;
+    left: 30rem;
+    background: white;
+    border: 1rem solid #dce1e6;
+    min-width: 230rem;
+}
+
+.dialog {
+    background: white;
+    padding: 15rem;
+    display: flex;
+    gap: 13rem;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.main_dialog {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10rem;
+}
+
+.dialog .btn {
+    padding: 3rem 7rem;
+}
+
+.dialog svg {
+    width: 12rem;
+    height: 12rem;
+}
+
+.dialog .form {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.dialog-title {
+    font-size: 14rem;
+}
+
+.dialog-message {
+    font-size: 14rem;
+    color: #494949;
 }
 </style>

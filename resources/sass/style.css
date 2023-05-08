@@ -21,6 +21,10 @@ body {
   padding: 0 15rem;
 }
 
+input {
+  border-radius: 100rem;
+}
+
 header {
   background-color: white;
   padding: 15rem 0;
@@ -383,7 +387,7 @@ main .friends-title__flex {
 }
 main .friends-input {
   width: calc(100% - 25rem);
-  border-radius: 5rem;
+  border-radius: 100rem;
 }
 main .friends-flex {
   margin-top: 20rem;
@@ -562,7 +566,7 @@ main .svg {
   border: none;
   cursor: pointer;
   padding: 8rem 20rem;
-  border-radius: 5rem;
+  border-radius: 100rem;
   transition: 0.2s;
   font-size: 15rem;
 }
@@ -573,14 +577,21 @@ main .svg {
   }
 }
 .btn-primary {
-  background-color: #4878a4;
+  background-color: #327fef;
   color: white;
 }
 .btn-primary:hover {
-  background-color: #3578bb;
+  background-color: #1c67d5;
 }
 .btn-primary:disabled {
   background-color: #82a9d2;
+}
+.btn-danger {
+  background-color: #fd6363;
+  color: white;
+}
+.btn-danger:hover {
+  background-color: #ff4f4f;
 }
 
 /*# sourceMappingURL=style.css.map */

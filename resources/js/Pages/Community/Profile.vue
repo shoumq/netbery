@@ -54,7 +54,7 @@ import Layout from '@/Layouts/Layout.vue';
 
         <div class="content-flex">
             <div class="content-main">
-                <form class="input-news" @submit.prevent="storePost"
+                <form class="input-news dir" @submit.prevent="storePost"
                       v-if="$page.props.auth.user.id === parseInt(community.admin)">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
                     <button type="submit" class="btn btn-primary">
@@ -66,14 +66,24 @@ import Layout from '@/Layouts/Layout.vue';
 
                 <div class="posts">
                     <div class="posts-item" v-for="item in postsData">
-                        <div class="posts-item__flex">
-                            <div>
-                                <img class="posts-item__img"  :src="'../storage/images/' + filenameData" alt="">
-                            </div>
-                            <div>
-                                <div class="posts-item__title">{{ item.community_title }}
+                        <div class="del-flex">
+                            <div class="posts-item__flex">
+                                <div>
+                                    <img class="posts-item__img" :src="'../storage/images/' + filenameData" alt="">
                                 </div>
-                                <div class="posts-item__time">{{ item.time }}</div>
+                                <div>
+                                    <div class="posts-item__title">{{ community.title }}
+                                    </div>
+                                    <div class="posts-item__time">{{ getTime(community.created_at) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="del" v-if="$page.props.auth.user.id === parseInt(community.admin)" @click="deletePost(item.id)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="red" class="bi bi-trash3 svg"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                </svg>
                             </div>
                         </div>
 
@@ -146,6 +156,10 @@ export default {
                     this.postsData.find(x => x.id === parseInt(post_id)).your_like = response.data.my_like
                     console.log(response)
                 })
+        },
+
+        deletePost(post_id) {
+
         },
 
         subscribeCommunity() {
@@ -224,4 +238,13 @@ export default {
 
     &:hover
         filter: brightness(60%)
+
+.dir
+    background: white
+    padding: 15rem
+    border-radius: 10rem
+    border: 1rem solid #dce1e6
+
+    input
+        background: #f4f5f6
 </style>

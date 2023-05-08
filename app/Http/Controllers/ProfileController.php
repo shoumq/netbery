@@ -41,7 +41,11 @@ class ProfileController extends Controller
         $communities = Community_subscriber::where('user_id', $user->id)->inRandomOrder()->limit(3)->get();
         $communities = CommunityResource::collection($communities)->resolve();
 
-        return inertia('Profile', compact('user', 'posts', 'friends', 'communities'));
+        $dialogs = Dialog::where('user_one', Auth::user()->id)
+            ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+        $dialogs = DialogResource::collection($dialogs)->resolve();
+
+        return inertia('Profile', compact('user', 'posts', 'friends', 'communities', 'dialogs'));
     }
 
     public function updateStatus(Request $request)
