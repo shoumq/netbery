@@ -18,7 +18,9 @@ import Layout from '@/Layouts/Layout.vue';
 
                     <div class="flex-info">
                         <div class="flex">
-                            <div class="profile-name">{{ user.name }} {{ user.surname }}</div>
+                            <div class="profile-name">{{ user.name }} {{ user.surname }}
+                                <div :class="{'round': true, 'round-green': isOnline}"></div>
+                            </div>
                             <div v-if="user.admin === '1'">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#0d6efd" class="bi bi-patch-check"
                                      viewBox="0 0 16 16">
@@ -29,6 +31,8 @@ import Layout from '@/Layouts/Layout.vue';
                                 </svg>
                             </div>
                         </div>
+
+                        <div class="last_net" v-if="!isOnline">В сети: {{ lastOnline }}</div>
 
                         <div class="profile-desc" v-if="$page.props.auth.user.name !== user.name">{{
                                 user.status
@@ -146,7 +150,10 @@ import Layout from '@/Layouts/Layout.vue';
         <dialog open class="dialog1" v-for="(item, index) in alerts" :key="index">
             <div class="dialog" v-if="this.$page.props.auth.user.id !== parseInt(item.message.user_id)">
                 <div class="form">
-                    <div class="dialog-title">{{ dialogsId.find(x => x.id === parseInt(item.message.dialog_id)).user }}</div>
+                    <div class="dialog-title">{{
+                            dialogsId.find(x => x.id === parseInt(item.message.dialog_id)).user
+                        }}
+                    </div>
                     <div class="dialog-message">{{ item.message.body }}</div>
                 </div>
                 <form method="dialog">
@@ -180,7 +187,10 @@ export default {
             alerts: [],
             uvedVar: false,
             dialogsId: [],
-            dialogsName: []
+            dialogsName: [],
+            onlineTime: '',
+            isOnline: false,
+            lastOnline: ''
         }
     },
 
@@ -212,6 +222,27 @@ export default {
             }
         },
 
+        updateUserTime() {
+            axios.get('/update_online/')
+        },
+
+        getUserTime() {
+            axios.get('/get_online/' + this.user.id)
+                .then((response) => {
+                    this.isOnline = parseInt(response.data.result.split(':')[0]) === 0 && parseInt(response.data.result.split(':')[1]) === 0 && parseInt(response.data.result.split(':')[2]) < 20;
+                    if (this.isOnline === false) {
+                        this.lastOnline = response.data.time
+                    } else {
+                        this.lastOnline = ''
+                    }
+
+                    this.onlineTime = {
+                        "seconds": parseInt(response.data.result.split(':')[2]),
+                        "user_id": this.$page.props.auth.user.id
+                    }
+                })
+        },
+
         storePost() {
             axios.post(`/post/${this.$page.props.auth.user.id}`, {
                 body: this.body
@@ -224,7 +255,6 @@ export default {
             axios.get('/delete_post/' + post_id)
                 .then((response) => {
                     this.postsData.splice(this.postsData.findIndex(x => x.id === post_id), 1)
-                    console.log(response.data)
                 })
         },
 
@@ -326,7 +356,9 @@ export default {
     },
 
     mounted() {
+        this.updateUserTime();
         this.getDialogsId();
+        this.getUserTime();
 
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
@@ -346,24 +378,43 @@ export default {
 
                     setTimeout(() => {
                         this.alerts.length = 0;
-                    }, 10000)
+                    }, 30000)
 
                     if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
                         this.uved();
                     }
                 })
         }
+
+        setInterval(this.updateUserTime, 10000)
+        setInterval(this.getUserTime, 10000)
     }
 }
 </script>
 
 <style scoped lang="sass">
+.round
+    width: 10rem
+    height: 10rem
+    background: gray
+    border-radius: 100rem
+
+    @media (max-width: 768px)
+        width: 7rem
+        height: 7rem
+
+    &-green
+        background: #13c930
+
 .input-status
     padding: 3rem 0
     border-radius: 0
     border: none
     border-bottom: 1px solid #dce1e6
     width: 400rem
+
+    @media (max-width: 768px)
+        width: 100%
 
     &:focus
         border: none
@@ -397,4 +448,10 @@ export default {
     input
         background: #f4f5f6
         border-radius: 100rem
+
+.last_net
+    font-size: 12rem
+    margin-top: -2rem
+    margin-bottom: 5rem
+    color: gray
 </style>

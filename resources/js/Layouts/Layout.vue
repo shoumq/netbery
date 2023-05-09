@@ -142,7 +142,7 @@ export default {
             let audio = new Audio('../storage/uved.mp3');
             audio.volume = 0
             audio.play();
-        }
+        },
     },
 
     created() {
@@ -182,6 +182,25 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 10rem;
+}
+
+@media (max-width: 768px) {
+    .main_dialog {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+
+    .dialog {
+        position: fixed;
+        bottom: 15rem;
+        left: 15rem;
+        right: 15rem;
+        border: 1rem solid #dce1e6;
+        box-shadow: 0 0 4rem #e1e1e1;
+    }
 }
 
 .dialog .btn {

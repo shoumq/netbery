@@ -15,6 +15,7 @@ use App\Models\Image_users;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -164,6 +165,34 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function updateOnline() {
+        $user = User::find(Auth::user()->id);
+
+        $totalDuration = Carbon::now()->diffInSeconds($user->updated_at);
+
+        $user->updated_at = Carbon::now();
+        $user->save();
+
+
+        return response()->json([
+            "user" => $user->updated_at,
+            "now" => Carbon::now(),
+            "result" => gmdate('H:i:s', $totalDuration)
+        ]);
+    }
+
+    public function getOnline(User $user) {
+        Carbon::setLocale('ru');
+
+        $user = User::find($user->id);
+
+        $totalDuration = Carbon::now()->diffInSeconds($user->updated_at);
+
+        return response()->json([
+            "result" => gmdate('H:i:s', $totalDuration),
+            "time" => $user->updated_at->diffForHumans()
+        ]);
+    }
     /**
      * Delete the user's account.
      */

@@ -66,6 +66,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/user', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/user', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('/update_online/', [App\Http\Controllers\ProfileController::class, 'updateOnline']);
+    Route::get('/get_online/{user}', [App\Http\Controllers\ProfileController::class, 'getOnline']);
+
     Route::get('/test', [App\Http\Controllers\ProfileController::class, 'test']);
 });
 
