@@ -211,6 +211,7 @@ export default {
     border: none
     border-bottom: 1px solid #dce1e6
     width: 500rem
+    box-shadow: none
 
     &:focus
         border: none

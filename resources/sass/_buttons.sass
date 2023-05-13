@@ -12,12 +12,16 @@
         padding: 6rem 12rem
 
     &-primary
-        background-color: #327fef
+        //background-color: #327fef
         color: white
+        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1),0 2rem 14rem rgba(0, 0, 0, 0.1)
+        background: linear-gradient(#3b84ee, #1b59b2)
+        transition: background 0.3s ease-out
+        background-size: 1rem 200rem
 
         &:hover
             background-color: #1c67d5
-
+            background-position: 100rem
 
         &:disabled
             background-color: #82a9d2
@@ -29,4 +33,14 @@
 
         &:hover
             background-color: #ff4f4f
+
+
+    &-outline
+        background-color: #fff
+        border: 1px solid #070538
+        color: #333333
+
+        &:hover
+            background-color: #ff4f4f
+
 

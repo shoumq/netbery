@@ -21,6 +21,7 @@ body
 input
     // round
     border-radius: 100rem
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.09),0 2rem 14rem rgba(0, 0, 0, 0.09)
 
 header
     //background-color: $blue
@@ -215,9 +216,14 @@ main
                 font-weight: 600
                 color: #333333
 
+                @media (max-width: 768px)
+                    font-size: 13rem
+
             &__flex
                 margin-top: 10rem
                 display: flex
+                transition: .3s
+                gap: 10rem
 
             &__flex2
                 margin-top: 10rem
@@ -249,7 +255,14 @@ main
                 flex-direction: column
                 align-items: center
                 color: black
-                flex: 0 0 33.333%
+                flex: 0 0 30%
+                padding: 5rem 0
+                transition: .2s
+                border-radius: 5rem
+                box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08),0 2rem 14rem rgba(0, 0, 0, 0.08)
+
+                &:hover
+                    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.13),0 2rem 14rem rgba(0, 0, 0, 0.13)
 
                 &-img
                     border: 1rem solid #dce1e6
@@ -259,8 +272,8 @@ main
                     border-radius: 50%
 
                     @media (max-width: 768px)
-                        width: 50rem
-                        height: 50rem
+                        width: 55rem
+                        height: 55rem
 
                 &-title
                     font-size: 13rem
@@ -282,6 +295,41 @@ main
 
             input
                 width: 100%
+
+    .gallery
+        margin-bottom: 30rem
+
+        .title
+            font-size: 14rem
+            margin-bottom: 15rem
+            color: #333333
+            font-weight: 600
+
+        &-img
+            margin-top: 15rem
+
+        &-img
+            .img
+                display: flex
+                gap: 7rem
+                border-radius: 0
+                overflow: hidden
+
+                img
+                    width: 100%
+                    margin-right: 4rem
+                    height: 160rem
+                    object-fit: cover
+                    cursor: pointer
+                    transition: .4s
+                    border: 1px solid #dce1e6
+                    border-radius: 5rem
+                    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08),0 2rem 14rem rgba(0, 0, 0, 0.08)
+
+                a
+                    flex: 0 0 159rem
+                    width: 100rem
+
 
     .posts
         margin-top: 30rem
@@ -349,10 +397,14 @@ main
         padding: 0 10rem
         transition: 0.2s
 
+        @media (max-width: 768px)
+            height: 22rem
+            padding: 0 7rem
+
         &_is
             background: rgba(255, 0, 0, 0.2)
-            box-shadow: 0 0 4rem rgba(255, 0, 0, 0.2)
-
+            //box-shadow: 0 0 4rem rgba(255, 0, 0, 0.2)
+            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.17),0 2rem 14rem rgba(0, 0, 0, 0.17)
         //svg
         //    margin: auto
 
@@ -418,6 +470,12 @@ main
                 &:last-child
                     border: none
 
+            &__2
+                display: flex
+                justify-content: space-between
+                align-items: center
+                border-bottom: 1px solid #dce1e6
+
     .chat
         border: 1rem solid #dce1e6
         background: white
@@ -429,12 +487,20 @@ main
             color: #333333
             border-bottom: 1px solid #dce1e6
             padding-bottom: 15rem
+            display: flex
+            flex-direction: column
 
             a
                 color: #333333
+                display: flex
+                align-items: center
+                gap: 7rem
+
+            &__time
+                font-size: 11rem
 
         &-content
-            height: 77vh
+            height: 75vh
             display: flex
             flex-direction: column
             gap: 20rem
@@ -553,7 +619,8 @@ main
     right: 0
     background: #ffffff
     z-index: 999999
-    box-shadow: 0 0 8rem gray
+    //box-shadow: 0 0 8rem gray
+    border: 1rem solid #dce1e6
     top: 54rem
     padding: 13rem 0
 
@@ -571,3 +638,80 @@ main
             display: flex
             gap: 10rem
             align-items: center
+
+    .svg_mob_nav
+        width: 13rem !important
+        height: 13rem !important
+
+
+.round
+    width: 10rem
+    height: 10rem
+    background: gray
+    border-radius: 100rem
+
+    @media (max-width: 768px)
+        width: 7rem
+        height: 7rem
+
+    &-green
+        background: #13c930
+        animation-name: round-green
+        animation-duration: 1.5s
+        animation-iteration-count: infinite
+
+@keyframes round-green
+    0%
+        background: #13c930
+    50%
+        background: #158c0c
+    100%
+        background: #13c930
+
+
+.dialog
+    &_img
+        position: absolute
+        top: 0
+        right: 0
+        left: 0
+        width: 100%
+
+    &2
+        position: relative
+        height: 90vh
+        width: 100%
+        border: 1rem solid #dce1e6
+
+        @media (max-width: 768px)
+            height: auto
+
+    .name
+        font-size: 15rem
+
+    &_flex
+        display: flex
+        justify-content: space-between
+        align-items: center
+        width: 100%
+        padding-bottom: 15rem
+        border-bottom: 1px solid #dce1e6
+
+    .img
+        text-align: center
+        img
+            margin-top: 30rem
+            object-fit: cover
+            width: 700rem
+            height: 750rem
+
+            @media (max-width: 768px)
+                width: 100%
+                height: 100%
+                margin-top: 10rem
+
+.dialog-block
+    display: block !important
+
+    @media (max-width: 768px)
+        top: 65rem

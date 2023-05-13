@@ -10,7 +10,10 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             <div class="chat-title">
                 <a :href="'/user/' + checkLogin(dialogData.user_one_login, dialogData.user_two_login)">{{
                         checkName(dialogData.user_one, dialogData.user_two)
-                    }}</a>
+                    }}
+                    <div :class="{'round': true, 'round-green': isOnline}"></div>
+                </a>
+                <div class="chat-title__time" v-if="!isOnline">В сети: {{ lastOnline }}</div>
             </div>
 
             <div class="chat-content" ref="container">
@@ -45,7 +48,9 @@ export default {
         return {
             body: '',
             messagesData: this.messages,
-            dialogData: this.dialog[0]
+            dialogData: this.dialog[0],
+            isOnline: false,
+            lastOnline: []
         }
     },
 
@@ -74,6 +79,14 @@ export default {
             }
         },
 
+        checkId(name1, name2) {
+            if (name1 === this.$page.props.auth.user.id) {
+                return name2
+            } else {
+                return name1
+            }
+        },
+
         checkLogin(name1, name2) {
             if (name1 === this.$page.props.auth.user.login) {
                 return name2
@@ -88,10 +101,30 @@ export default {
             } else {
                 return name1
             }
-        }
+        },
+
+        getUserTime() {
+            axios.get('/get_online/' + this.checkId(this.dialogData.user_one_id, this.dialogData.user_two_id))
+                .then((response) => {
+                    this.isOnline = parseInt(response.data.result.split(':')[0]) === 0 && parseInt(response.data.result.split(':')[1]) === 0 && parseInt(response.data.result.split(':')[2]) < 15;
+                    if (this.isOnline === false) {
+                        this.lastOnline = response.data.time
+                    } else {
+                        this.lastOnline = ''
+                    }
+
+                    this.onlineTime = {
+                        "seconds": parseInt(response.data.result.split(':')[2]),
+                        "user_id": this.$page.props.auth.user.id
+                    }
+                })
+        },
     },
 
     mounted() {
+        this.getUserTime();
+        setInterval(this.getUserTime, 5000)
+
         const container = this.$refs.container;
         container.scrollTop = container.scrollHeight;
 

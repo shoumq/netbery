@@ -46,7 +46,9 @@ class ProfileController extends Controller
             ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $dialogs = DialogResource::collection($dialogs)->resolve();
 
-        return inertia('Profile', compact('user', 'posts', 'friends', 'communities', 'dialogs'));
+        $images = Image_users::where('user_id', $user->id)->get();
+
+        return inertia('Profile', compact('user', 'posts', 'friends', 'communities', 'dialogs', 'images'));
     }
 
     public function updateStatus(Request $request)
@@ -63,6 +65,10 @@ class ProfileController extends Controller
         $posts = Community_subscriber::where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $posts = NewsResource::collection($posts)->resolve();
 
+        $dialogs = Dialog::where('user_one', Auth::user()->id)
+            ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+        $dialogs = DialogResource::collection($dialogs)->resolve();
+
         $result = array();
         for ($i = 0; $i < count($posts); $i++) {
             if (count($posts[$i]['posts']) > 0) {
@@ -70,7 +76,7 @@ class ProfileController extends Controller
             }
         }
 
-        return inertia('News', compact('posts', 'result'));
+        return inertia('News', compact('posts', 'result', 'dialogs'));
     }
 
     public function updateImage(Request $request)
@@ -96,6 +102,30 @@ class ProfileController extends Controller
     public function test()
     {
         return inertia('test');
+    }
+
+    public function pagePhotos(User $user)
+    {
+        $images = Image_users::where('user_id', $user->id)->get();
+        return inertia('Images', compact('images', 'user'));
+    }
+
+    public function addImage(Request $request)
+    {
+        $name = $request->file('file')->getClientOriginalName();
+        $size = $request->file('file')->getSize();
+
+        $request->file('file')->storeAs('public/images/', $name);
+
+        $photo = new Image_users();
+        $photo->name = $name;
+        $photo->size = $size;
+        $photo->user_id = Auth::user()->id;
+        $photo->save();
+
+        return response()->json([
+            "filename" => $name
+        ]);
     }
 
     /**
@@ -126,7 +156,8 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
-    public function setName(Request $request) {
+    public function setName(Request $request)
+    {
         $user = User::find(Auth::user()->id);
         $user->name = $request->name;
         $user->save();
@@ -136,7 +167,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function setSurname(Request $request) {
+    public function setSurname(Request $request)
+    {
         $user = User::find(Auth::user()->id);
         $user->surname = $request->surname;
         $user->save();
@@ -146,7 +178,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function setEmail(Request $request) {
+    public function setEmail(Request $request)
+    {
         $user = User::find(Auth::user()->id);
         $user->email = $request->email;
         $user->save();
@@ -156,7 +189,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function setPassword(Request $request) {
+    public function setPassword(Request $request)
+    {
         $user = User::find(Auth::user()->id);
         $user->fill(['password' => Hash::make($request->password)])->save();
 
@@ -165,7 +199,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function updateOnline() {
+    public function updateOnline()
+    {
         $user = User::find(Auth::user()->id);
 
         $totalDuration = Carbon::now()->diffInSeconds($user->updated_at);
@@ -181,7 +216,8 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function getOnline(User $user) {
+    public function getOnline(User $user)
+    {
         Carbon::setLocale('ru');
 
         $user = User::find($user->id);
@@ -193,6 +229,7 @@ class ProfileController extends Controller
             "time" => $user->updated_at->diffForHumans()
         ]);
     }
+
     /**
      * Delete the user's account.
      */

@@ -5,7 +5,32 @@ import Layout from '@/Layouts/Layout.vue';
 
 <template>
     <Layout>
-        <div class="profile" @click="uved2">
+        <div class="dialog_img">
+            <dialog open class="dialog2" ref="imgDialogRef" role="dialog" aria-modal="true">
+                <div class="dialog dialog-block">
+                    <div class="dialog_flex">
+                        <div>
+                            <div class="name">{{ user.name }} {{ user.surname }}</div>
+                        </div>
+                        <form method="dialog">
+                            <button class="btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                     class="bi bi-x-lg" viewBox="0 0 16 16">
+                                    <path
+                                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="img">
+                        <img :src="'../storage/images/' + currentImage" alt="">
+                    </div>
+                </div>
+            </dialog>
+        </div>
+
+        <div class="profile">
             <div class="profile-top-j">
                 <div class="profile-top">
                     <img class="profile-img" :src="'../storage/images/' + filenameData" alt=""
@@ -49,7 +74,7 @@ import Layout from '@/Layouts/Layout.vue';
 
                 <div class="profile-top__b" v-if="$page.props.auth.user.id === user.id">
                     <a href="/user/" class="btn btn-primary">Редактировать</a>
-                    <button class="btn btn-danger" @click="logoutFun">Выйти</button>
+                    <button class="btn btn-primary" @click="logoutFun">Выйти</button>
                 </div>
 
                 <div class="profile-top__b" v-else-if="$page.props.auth.user.id !== user.id">
@@ -61,6 +86,30 @@ import Layout from '@/Layouts/Layout.vue';
 
         <div class="content-flex">
             <div class="content-main">
+                <div class="dir gallery" v-if="userImages.length !== 0">
+                    <a :href="'/images/' + user.id" class="title">Фотографии</a>
+
+                    <div class="gallery-img">
+                        <div class="img">
+                            <a @click="showDialog(userImages.at(-1))">
+                                <img :src="'../storage/images/' + userImages.at(-1)" v-if="userImages.at(-1)" alt="">
+                            </a>
+                            <a @click="showDialog(userImages.at(-2))"
+                               v-if="userImages.at(-2)">
+                                <img :src="'../storage/images/' + userImages.at(-2)" alt="">
+                            </a>
+                            <a @click="showDialog(userImages.at(-3))"
+                               v-if="userImages.at(-3)">
+                                <img :src="'../storage/images/' + userImages.at(-3)" alt="">
+                            </a>
+                            <a @click="showDialog(userImages.at(-4))"
+                               v-if="userImages.at(-4)">
+                                <img :src="'../storage/images/' + userImages.at(-4)" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <form class="input-news dir" @submit.prevent="storePost"
                       v-if="$page.props.auth.user.name === user.name">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
@@ -190,16 +239,24 @@ export default {
             dialogsName: [],
             onlineTime: '',
             isOnline: false,
-            lastOnline: ''
+            lastOnline: '',
+            userImages: [],
+            imgDialog: this.$refs.imgDialogRef,
+            currentImage: 'i.png'
         }
     },
 
-    props: ['user', 'posts', 'friends', 'communities', 'dialogs'],
+    props: ['user', 'posts', 'friends', 'communities', 'dialogs', 'images'],
 
     methods: {
         logoutFun() {
             axios.post('/logout');
             window.location.href = '/login/'
+        },
+
+        showDialog(name_img) {
+            this.$refs.imgDialogRef.show()
+            this.currentImage = name_img
         },
 
         getDialogsId() {
@@ -235,12 +292,15 @@ export default {
                     } else {
                         this.lastOnline = ''
                     }
-
-                    this.onlineTime = {
-                        "seconds": parseInt(response.data.result.split(':')[2]),
-                        "user_id": this.$page.props.auth.user.id
-                    }
                 })
+        },
+
+        getUserImages() {
+            for (let i = 0; i < this.images.length; i++) {
+                if (this.images[i].name.split('.').at(-1) === 'jpg' || this.images[i].name.split('.').at(-1) === 'jpeg' || this.images[i].name.split('.').at(-1) === 'png') {
+                    this.userImages.push(this.images[i].name)
+                }
+            }
         },
 
         storePost() {
@@ -294,6 +354,7 @@ export default {
             axios.post(`/user/update_image/`, formData)
                 .then(() => {
                     this.filenameData = this.filename;
+                    this.userImages.push(this.filename)
                 })
         },
 
@@ -356,9 +417,12 @@ export default {
     },
 
     mounted() {
+        this.getUserImages();
         this.updateUserTime();
         this.getDialogsId();
         this.getUserTime();
+
+        this.$refs.imgDialogRef.close();
 
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
@@ -393,25 +457,13 @@ export default {
 </script>
 
 <style scoped lang="sass">
-.round
-    width: 10rem
-    height: 10rem
-    background: gray
-    border-radius: 100rem
-
-    @media (max-width: 768px)
-        width: 7rem
-        height: 7rem
-
-    &-green
-        background: #13c930
-
 .input-status
     padding: 3rem 0
     border-radius: 0
     border: none
     border-bottom: 1px solid #dce1e6
     width: 400rem
+    box-shadow: none
 
     @media (max-width: 768px)
         width: 100%
@@ -454,4 +506,7 @@ export default {
     margin-top: -2rem
     margin-bottom: 5rem
     color: gray
+
+    @media (max-width: 768px)
+        font-size: 10rem
 </style>

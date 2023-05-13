@@ -44,15 +44,15 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                                 </div>
                                 <div class="posts-item__content">{{ i.body }}</div>
 
-<!--                                <div :class="{'like': true, 'like_is': i.your_like === 1}"-->
-<!--                                     @click="storeLike(i.id)">-->
-<!--                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
-<!--                                         class="bi bi-heart" viewBox="0 0 16 16">-->
-<!--                                        <path-->
-<!--                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>-->
-<!--                                    </svg>-->
-<!--                                    {{ i.likes }}-->
-<!--                                </div>-->
+                                <!--                                <div :class="{'like': true, 'like_is': i.your_like === 1}"-->
+                                <!--                                     @click="storeLike(i.id)">-->
+                                <!--                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"-->
+                                <!--                                         class="bi bi-heart" viewBox="0 0 16 16">-->
+                                <!--                                        <path-->
+                                <!--                                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>-->
+                                <!--                                    </svg>-->
+                                <!--                                    {{ i.likes }}-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -60,17 +60,44 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             </div>
         </div>
     </Layout>
+
+    <div class="main_dialog">
+        <dialog open class="dialog1" v-for="(item, index) in alerts" :key="index">
+            <div class="dialog" v-if="this.$page.props.auth.user.id !== parseInt(item.message.user_id)">
+                <div class="form">
+                    <div class="dialog-title">{{
+                            dialogsId.find(x => x.id === parseInt(item.message.dialog_id)).user
+                        }}
+                    </div>
+                    <div class="dialog-message">{{ item.message.body }}</div>
+                </div>
+                <form method="dialog">
+                    <button class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path
+                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </dialog>
+    </div>
 </template>
 
 
 <script>
 export default {
-    props: ['posts', 'result'],
+    props: ['posts', 'result', 'dialogs'],
 
     data() {
         return {
             body: '',
-            postsData: this.result
+            postsData: this.result,
+            alerts: [],
+            uvedVar: false,
+            dialogsId: [],
+            dialogsName: [],
         }
     },
 
@@ -80,17 +107,61 @@ export default {
                 body: this.body
             }).then((response) => {
                 this.body = ''
-                postsData.unshift(response.data)
+                this.postsData.unshift(response.data)
             })
         },
 
         getTime(time) {
             return time.split(':')[0] + ':' + time.split(':')[1]
-        }
+        },
+
+        getDialogsId() {
+            for (let i = 0; i < this.dialogs.length; i++) {
+                if (this.dialogs[i].user_two !== this.$page.props.auth.user.name + ' ' + this.$page.props.auth.user.surname) {
+                    this.dialogsId.push(
+                        {
+                            'id': this.dialogs[i].id,
+                            'user': this.dialogs[i].user_two
+                        }
+                    );
+                } else {
+                    this.dialogsId.push(
+                        {
+                            'id': this.dialogs[i].id,
+                            'user': this.dialogs[i].user_one
+                        }
+                    );
+                }
+            }
+        },
+
+        uved() {
+            let audio = new Audio('../storage/uved.mp3');
+            audio.autoplay = true;
+            audio.muted = false
+            audio.volume = 0.5
+            audio.play();
+        },
     },
 
     mounted() {
-        console.log(this.postsData)
+        this.getDialogsId();
+
+        for (let i = 0; i < this.dialogsId.length; i++) {
+            window.Echo.channel('store_message_' + this.dialogsId[i].id)
+                .listen('.store_message', response => {
+                    this.alerts.unshift(response)
+                    this.uved();
+
+                    setTimeout(() => {
+                        this.alerts.length = 0;
+                    }, 30000)
+
+                    if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
+                        this.uved();
+                    }
+                })
+        }
     }
 }
 </script>

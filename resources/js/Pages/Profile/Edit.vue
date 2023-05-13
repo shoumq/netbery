@@ -86,6 +86,9 @@ export default {
     border-radius: 10rem
     font-size: 13rem
 
+    @media (max-width: 768px)
+        font-size: 12rem
+
 .dir
     display: block
     background: white
@@ -98,4 +101,7 @@ export default {
         margin-bottom: 15rem
         width: 500rem
         background: #f4f5f6
+
+        @media (max-width: 768px)
+            width: calc(100% - 20rem)
 </style>

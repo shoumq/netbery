@@ -1,7 +1,5 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
-
-let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmizcwUKw/Ms4qi0pf9Bk.jpg?size=1620x2160&quality=95&sign=31e693c2d9c4f43335c97945ffbe8e66&type=album'
 </script>
 
 <template>
@@ -20,7 +18,8 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                                  alt="">
                         </a>
                         <div class="flex-c">
-                            <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}</a>
+                            <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}
+                                {{ getUserTime(parseInt(checkId(item.user_one_id, item.user_two_id))) }}</a>
                             <a class="messages-item__mess"
                                v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:
                                 {{ item.last_message_body[0].body }}</a>
@@ -39,7 +38,9 @@ export default {
     data() {
         return {
             body: '',
-            dialogsData: this.dialogs
+            dialogsData: this.dialogs,
+            isOnline: false,
+            lastOnline: []
         }
     },
 
@@ -68,24 +69,34 @@ export default {
             }
         },
 
+        checkId(name1, name2) {
+            if (name1 === this.$page.props.auth.user.id) {
+                return name2
+            } else {
+                return name1
+            }
+        },
+
         checkImage(name1, name2) {
             if (name1 === this.$page.props.auth.user.img_id) {
                 return name2
             } else {
                 return name1
             }
-        }
+        },
+
+        getUserTime(user_id) {
+            axios.get('/get_online/' + user_id)
+                .then((response) => {
+                    return parseInt(response.data.result.split(':')[0]) === 0 && parseInt(response.data.result.split(':')[1]) === 0 && parseInt(response.data.result.split(':')[2]) < 20;
+                })
+        },
     },
 
-    // mounted() {
-    //     const container = this.$refs.container;
-    //     container.scrollTop = container.scrollHeight;
-    //
-    //     window.Echo.channel('store_message')
-    //         .listen('.store_message', response => {
-    //             this.dialogsData.push(response.message)
-    //         })
-    // }
+    mounted() {
+        this.getUserTime();
+        setInterval(this.getUserTime, 10000);
+    }
 }
 </script>
 

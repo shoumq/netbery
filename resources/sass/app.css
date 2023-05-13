@@ -23,6 +23,7 @@ body {
 
 input {
   border-radius: 100rem;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.09), 0 2rem 14rem rgba(0, 0, 0, 0.09);
 }
 
 header {
@@ -244,9 +245,16 @@ main .content-info__title {
   font-weight: 600;
   color: #333333;
 }
+@media (max-width: 768px) {
+  main .content-info__title {
+    font-size: 13rem;
+  }
+}
 main .content-info__flex {
   margin-top: 10rem;
   display: flex;
+  transition: 0.3s;
+  gap: 10rem;
 }
 main .content-info__flex2 {
   margin-top: 10rem;
@@ -278,7 +286,14 @@ main .content-info__item {
   flex-direction: column;
   align-items: center;
   color: black;
-  flex: 0 0 33.333%;
+  flex: 0 0 30%;
+  padding: 5rem 0;
+  transition: 0.2s;
+  border-radius: 5rem;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08), 0 2rem 14rem rgba(0, 0, 0, 0.08);
+}
+main .content-info__item:hover {
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.13), 0 2rem 14rem rgba(0, 0, 0, 0.13);
 }
 main .content-info__item-img {
   border: 1rem solid #dce1e6;
@@ -289,8 +304,8 @@ main .content-info__item-img {
 }
 @media (max-width: 768px) {
   main .content-info__item-img {
-    width: 50rem;
-    height: 50rem;
+    width: 55rem;
+    height: 55rem;
   }
 }
 main .content-info__item-title {
@@ -315,6 +330,39 @@ main .input-news {
 }
 main .input-news input {
   width: 100%;
+}
+main .gallery {
+  margin-bottom: 30rem;
+}
+main .gallery .title {
+  font-size: 14rem;
+  margin-bottom: 15rem;
+  color: #333333;
+  font-weight: 600;
+}
+main .gallery-img {
+  margin-top: 15rem;
+}
+main .gallery-img .img {
+  display: flex;
+  gap: 7rem;
+  border-radius: 0;
+  overflow: hidden;
+}
+main .gallery-img .img img {
+  width: 100%;
+  margin-right: 4rem;
+  height: 160rem;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.4s;
+  border: 1px solid #dce1e6;
+  border-radius: 5rem;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08), 0 2rem 14rem rgba(0, 0, 0, 0.08);
+}
+main .gallery-img .img a {
+  flex: 0 0 159rem;
+  width: 100rem;
 }
 main .posts {
   margin-top: 30rem;
@@ -390,9 +438,15 @@ main .like {
   padding: 0 10rem;
   transition: 0.2s;
 }
+@media (max-width: 768px) {
+  main .like {
+    height: 22rem;
+    padding: 0 7rem;
+  }
+}
 main .like_is {
   background: rgba(255, 0, 0, 0.2);
-  box-shadow: 0 0 4rem rgba(255, 0, 0, 0.2);
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.17), 0 2rem 14rem rgba(0, 0, 0, 0.17);
 }
 main .like-count {
   font-size: 15rem;
@@ -454,6 +508,12 @@ main .friends-flex__item {
 main .friends-flex__item:last-child {
   border: none;
 }
+main .friends-flex__2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #dce1e6;
+}
 main .chat {
   border: 1rem solid #dce1e6;
   background: white;
@@ -465,12 +525,20 @@ main .chat-title {
   color: #333333;
   border-bottom: 1px solid #dce1e6;
   padding-bottom: 15rem;
+  display: flex;
+  flex-direction: column;
 }
 main .chat-title a {
   color: #333333;
+  display: flex;
+  align-items: center;
+  gap: 7rem;
+}
+main .chat-title__time {
+  font-size: 11rem;
 }
 main .chat-content {
-  height: 77vh;
+  height: 75vh;
   display: flex;
   flex-direction: column;
   gap: 20rem;
@@ -588,7 +656,7 @@ main .svg {
   right: 0;
   background: #ffffff;
   z-index: 999999;
-  box-shadow: 0 0 8rem gray;
+  border: 1rem solid #dce1e6;
   top: 54rem;
   padding: 13rem 0;
 }
@@ -608,7 +676,96 @@ main .svg {
     gap: 10rem;
     align-items: center;
   }
+  .svg_mob_nav {
+    width: 13rem !important;
+    height: 13rem !important;
+  }
 }
+.round {
+  width: 10rem;
+  height: 10rem;
+  background: gray;
+  border-radius: 100rem;
+}
+@media (max-width: 768px) {
+  .round {
+    width: 7rem;
+    height: 7rem;
+  }
+}
+.round-green {
+  background: #13c930;
+  animation-name: round-green;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes round-green {
+  0% {
+    background: #13c930;
+  }
+  50% {
+    background: #158c0c;
+  }
+  100% {
+    background: #13c930;
+  }
+}
+.dialog_img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+}
+.dialog2 {
+  position: relative;
+  height: 90vh;
+  width: 100%;
+  border: 1rem solid #dce1e6;
+}
+@media (max-width: 768px) {
+  .dialog2 {
+    height: auto;
+  }
+}
+.dialog .name {
+  font-size: 15rem;
+}
+.dialog_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-bottom: 15rem;
+  border-bottom: 1px solid #dce1e6;
+}
+.dialog .img {
+  text-align: center;
+}
+.dialog .img img {
+  margin-top: 30rem;
+  object-fit: cover;
+  width: 700rem;
+  height: 750rem;
+}
+@media (max-width: 768px) {
+  .dialog .img img {
+    width: 100%;
+    height: 100%;
+    margin-top: 10rem;
+  }
+}
+
+.dialog-block {
+  display: block !important;
+}
+@media (max-width: 768px) {
+  .dialog-block {
+    top: 65rem;
+  }
+}
+
 .btn {
   outline: none;
   border: none;
@@ -625,11 +782,15 @@ main .svg {
   }
 }
 .btn-primary {
-  background-color: #327fef;
   color: white;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1), 0 2rem 14rem rgba(0, 0, 0, 0.1);
+  background: linear-gradient(#3b84ee, #1b59b2);
+  transition: background 0.3s ease-out;
+  background-size: 1rem 200rem;
 }
 .btn-primary:hover {
   background-color: #1c67d5;
+  background-position: 100rem;
 }
 .btn-primary:disabled {
   background-color: #82a9d2;
@@ -639,6 +800,14 @@ main .svg {
   color: white;
 }
 .btn-danger:hover {
+  background-color: #ff4f4f;
+}
+.btn-outline {
+  background-color: #fff;
+  border: 1px solid #070538;
+  color: #333333;
+}
+.btn-outline:hover {
   background-color: #ff4f4f;
 }
 
