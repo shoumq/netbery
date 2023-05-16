@@ -1,15 +1,17 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
-
-let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmizcwUKw/Ms4qi0pf9Bk.jpg?size=1620x2160&quality=95&sign=31e693c2d9c4f43335c97945ffbe8e66&type=album'
+import {Link, Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Люди</title>
+    </Head>
     <Layout>
         <div class="friends">
             <div class="friends-title__flex">
 <!--                <a href="#" class="friends-title friends-title__active">Друзья</a>-->
-                <a href="#" class="friends-title">Все люди</a>
+                <Link href="#" class="friends-title">Все люди</Link>
             </div>
 
             <div class="search">
@@ -20,14 +22,14 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             <div class="friends-flex">
                 <div class="profile friends-flex__item" v-for="item in usersData">
                     <div class="profile-top-j">
-                        <a :href="'/user/' + item.login" class="profile-top">
+                        <Link :href="'/user/' + item.login" class="profile-top">
                             <img class="profile-img" :src="'../storage/images/' + item.img_id" alt="">
                             <div class="flex-info">
                                 <div class="profile-name">{{ item.name }} {{ item.surname }}</div>
                                 <div class="profile-desc">{{ item.status }}</div>
-                                <a class="profile-info">Email: {{ item.email }}</a>
+                                <Link class="profile-info">Email: {{ item.email }}</Link>
                             </div>
-                        </a>
+                        </Link>
 
 <!--                        <button @click="createDialog" class="btn btn-primary" v-if="item.id !== $page.props.auth.user.id">Написаить сообщение</button>-->
                     </div>

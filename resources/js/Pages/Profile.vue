@@ -1,30 +1,45 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
-
+import {Link, Head} from '@inertiajs/vue3';
 </script>
 
 <template>
+    <Head>
+        <title>{{ user.name }} {{ user.surname }}</title>
+    </Head>
     <Layout>
         <div class="dialog_img">
             <dialog open class="dialog2" ref="imgDialogRef" role="dialog" aria-modal="true">
                 <div class="dialog dialog-block">
-                    <div class="dialog_flex">
-                        <div>
-                            <div class="name">{{ user.name }} {{ user.surname }}</div>
-                        </div>
-                        <form method="dialog">
-                            <button class="btn">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                     class="bi bi-x-lg" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
 
                     <div class="img">
                         <img :src="'../storage/images/' + currentImage" alt="">
+
+                        <div class="img-info">
+                            <div class="dialog_flex">
+                                <div class="name">{{ user.name }} {{ user.surname }}</div>
+
+                                <form method="dialog">
+                                    <button class="btn">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                             class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path
+                                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div style="font-size: 20rem">{{ currentTime }}</div>
+
+                            <div class="del" @click="deleteImage">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="red" class="bi bi-trash3 svg"
+                                     viewBox="0 0 16 16">
+                                    <path
+                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </dialog>
@@ -73,7 +88,7 @@ import Layout from '@/Layouts/Layout.vue';
                 </div>
 
                 <div class="profile-top__b" v-if="$page.props.auth.user.id === user.id">
-                    <a href="/user/" class="btn btn-primary">Редактировать</a>
+                    <Link href="/user/" class="btn btn-primary">Редактировать</Link>
                     <button class="btn btn-primary" @click="logoutFun">Выйти</button>
                 </div>
 
@@ -87,24 +102,25 @@ import Layout from '@/Layouts/Layout.vue';
         <div class="content-flex">
             <div class="content-main">
                 <div class="dir gallery" v-if="userImages.length !== 0">
-                    <a :href="'/images/' + user.id" class="title">Фотографии</a>
+                    <Link :href="'/images/' + user.id" class="title">Фотографии</Link>
 
                     <div class="gallery-img">
                         <div class="img">
-                            <a @click="showDialog(userImages.at(-1))">
-                                <img :src="'../storage/images/' + userImages.at(-1)" v-if="userImages.at(-1)" alt="">
+                            <a @click="showDialog(userImages.at(-1).name, userImages.at(-1).created_at, userImages.at(-1).id)">
+                                <img :src="'../storage/images/' + userImages.at(-1).name" v-if="userImages.at(-1)"
+                                     alt="">
                             </a>
-                            <a @click="showDialog(userImages.at(-2))"
+                            <a @click="showDialog(userImages.at(-2).name, userImages.at(-2).created_at, userImages.at(-2).id)"
                                v-if="userImages.at(-2)">
-                                <img :src="'../storage/images/' + userImages.at(-2)" alt="">
+                                <img :src="'../storage/images/' + userImages.at(-2).name" alt="">
                             </a>
-                            <a @click="showDialog(userImages.at(-3))"
+                            <a @click="showDialog(userImages.at(-3).name, userImages.at(-3).created_at, userImages.at(-3).id)"
                                v-if="userImages.at(-3)">
-                                <img :src="'../storage/images/' + userImages.at(-3)" alt="">
+                                <img :src="'../storage/images/' + userImages.at(-3).name" alt="">
                             </a>
-                            <a @click="showDialog(userImages.at(-4))"
+                            <a @click="showDialog(userImages.at(-4).name, userImages.at(-4).created_at, userImages.at(-4).id)"
                                v-if="userImages.at(-4)">
-                                <img :src="'../storage/images/' + userImages.at(-4)" alt="">
+                                <img :src="'../storage/images/' + userImages.at(-4).name" alt="">
                             </a>
                         </div>
                     </div>
@@ -112,7 +128,8 @@ import Layout from '@/Layouts/Layout.vue';
 
                 <form class="input-news dir" @submit.prevent="storePost"
                       v-if="$page.props.auth.user.name === user.name">
-                    <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
+                    <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body"
+                           autocomplete="off">
                     <button type="submit" class="btn btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg"
                              viewBox="0 0 16 16">
@@ -164,9 +181,9 @@ import Layout from '@/Layouts/Layout.vue';
 
             <div class="content-info">
                 <div class="content-info__item2" v-if="friendsData.length !== 0">
-                    <a href="#" class="content-info__title">Знакомые</a>
+                    <Link href="#" class="content-info__title">Знакомые</Link>
                     <div class="content-info__flex">
-                        <a :href="'/user/' + checkLogin(item.user_one_login, item.user_two_login, checkHome)"
+                        <Link :href="'/user/' + checkLogin(item.user_one_login, item.user_two_login, checkHome)"
                            class="content-info__item" v-for="item in friendsData">
                             <img class="content-info__item-img"
                                  :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img, checkHome)"
@@ -174,21 +191,21 @@ import Layout from '@/Layouts/Layout.vue';
                             <div class="content-info__item-title">
                                 {{ checkName(item.user_one, item.user_two, checkHome).split(' ')[0] }}
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
 
                 <div class="content-info__item2" v-if="communities.length !== 0">
-                    <a :href="'/my_communities/' + user.id" class="content-info__title">Подписки</a>
+                    <Link :href="'/my_communities/' + user.id" class="content-info__title">Подписки</Link>
                     <div class="content-info__flex2">
-                        <a :href="'/community/' + item.communities[0].id"
+                        <Link :href="'/community/' + item.communities[0].id"
                            class="content-info__item3" v-for="item in communities">
                             <img class="content-info__item-img" :src="'../storage/images/' + item.communities[0].img_id"
                                  alt="">
                             <div class="content-info__item-title">
                                 {{ item.communities[0].title }}
                             </div>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -242,7 +259,11 @@ export default {
             lastOnline: '',
             userImages: [],
             imgDialog: this.$refs.imgDialogRef,
-            currentImage: 'i.png'
+
+            //  Dialog
+            currentImage: 'i.png',
+            currentTime: '2',
+            currentId: '',
         }
     },
 
@@ -254,9 +275,11 @@ export default {
             window.location.href = '/login/'
         },
 
-        showDialog(name_img) {
+        showDialog(name_img, time_img, id_img) {
             this.$refs.imgDialogRef.show()
             this.currentImage = name_img
+            this.currentTime = time_img.split(':')[0].split('T')[0]
+            this.currentId = id_img
         },
 
         getDialogsId() {
@@ -298,7 +321,7 @@ export default {
         getUserImages() {
             for (let i = 0; i < this.images.length; i++) {
                 if (this.images[i].name.split('.').at(-1) === 'jpg' || this.images[i].name.split('.').at(-1) === 'jpeg' || this.images[i].name.split('.').at(-1) === 'png') {
-                    this.userImages.push(this.images[i].name)
+                    this.userImages.push(this.images[i])
                 }
             }
         },
@@ -313,7 +336,7 @@ export default {
 
         deletePost(post_id) {
             axios.get('/delete_post/' + post_id)
-                .then((response) => {
+                .then(() => {
                     this.postsData.splice(this.postsData.findIndex(x => x.id === post_id), 1)
                 })
         },
@@ -342,6 +365,15 @@ export default {
             }).then(response => {
                 window.location.href = `/chat/${response.data}`
             })
+        },
+
+        deleteImage() {
+            axios.get(`/del_images/${this.currentId}`)
+                .then(() => {
+                    let del_element = this.userImages.findIndex(x => x.id === this.currentId)
+                    this.userImages.splice(del_element, 1)
+                    this.$refs.imgDialogRef.close()
+                })
         },
 
         storeImage(event) {
@@ -417,10 +449,10 @@ export default {
     },
 
     mounted() {
+        this.getUserTime();
         this.getUserImages();
         this.updateUserTime();
         this.getDialogsId();
-        this.getUserTime();
 
         this.$refs.imgDialogRef.close();
 

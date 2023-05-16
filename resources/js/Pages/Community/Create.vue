@@ -1,8 +1,12 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
+import {Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Создать сообщество</title>
+    </Head>
     <Layout>
         <form class="form" @submit.prevent="submit">
             <div class="form-title">Создать сообщество</div>

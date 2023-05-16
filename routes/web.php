@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/create_community', [App\Http\Controllers\CommunityController::class, 'create'])->name('create_community');
     Route::post('/create_community', [App\Http\Controllers\CommunityController::class, 'store']);
     Route::post('/create_community_post/{community}', [App\Http\Controllers\CommunityController::class, 'storePost']);
+    Route::get('/delete_community_post/{post}', [App\Http\Controllers\CommunityController::class, 'deletePost']);
     Route::post('/subscribe_community/{community}', [App\Http\Controllers\CommunityController::class, 'subscribe']);
     Route::post('/unsubscribe_community/{community}', [App\Http\Controllers\CommunityController::class, 'unsubscribe']);
     Route::post('/community/update_status/{community}', [App\Http\Controllers\CommunityController::class, 'updateStatus']);
@@ -56,6 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/community/post_like/{post}', [App\Http\Controllers\CommunityController::class, 'postLike']);
 
     Route::get('/news', [App\Http\Controllers\ProfileController::class, 'news']);
+
+//    Route::get('/aichat', [App\Http\Controllers\CommunityController::class, 'chatGPT']);
 
     Route::get('/users', [App\Http\Controllers\FriendsController::class, 'allUsers'])->name('allUsers');
     Route::get('/user', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
@@ -68,6 +71,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/images/{user}', [App\Http\Controllers\ProfileController::class, 'pagePhotos']);
     Route::post('/add_images', [App\Http\Controllers\ProfileController::class, 'addImage']);
+    Route::get('/del_images/{id}', [App\Http\Controllers\ProfileController::class, 'delImage']);
 
     Route::get('/update_online/', [App\Http\Controllers\ProfileController::class, 'updateOnline']);
     Route::get('/get_online/{user}', [App\Http\Controllers\ProfileController::class, 'getOnline']);

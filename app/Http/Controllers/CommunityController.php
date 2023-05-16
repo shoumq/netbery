@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 use Inertia\ResponseFactory;
+use Orhanerday\OpenAi\OpenAi;
 
 class CommunityController extends Controller
 {
@@ -70,7 +71,9 @@ class CommunityController extends Controller
         $isSub = count(Community_subscriber::where('user_id', Auth::user()->id)
             ->where('community_id', $community->id)->get());
 
-        return inertia('Community/Profile', compact('community', 'posts', 'communities_sub', 'isSub'));
+        $admin = User::find($community->admin);
+
+        return inertia('Community/Profile', compact('community', 'posts', 'communities_sub', 'isSub', 'admin'));
     }
 
     public function storePost(Community $community, CommunityPostRequest $request)
@@ -81,6 +84,12 @@ class CommunityController extends Controller
         $community_post->save();
 
         return $community_post;
+    }
+
+    public function deletePost(Community_post $post)
+    {
+        $del_p = Community_post::find($post->id);
+        $del_p->delete();
     }
 
     public function postLike(Post $post)
@@ -168,4 +177,23 @@ class CommunityController extends Controller
 
         return $community;
     }
+
+
+//    public function chatGPT()
+//    {
+//        $open_ai_key = "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";
+//        $open_ai = new OpenAi($open_ai_key);
+//        $open_ai->setORG("org-i1EaYCZUoqt2PvO9C5VpgOLs");
+//
+//        $complete = $open_ai->completion([
+//            'model' => 'text-davinci-002',
+//            'prompt' => 'Hello',
+//            'temperature' => 0.9,
+//            'max_tokens' => 150,
+//            'frequency_penalty' => 0,
+//            'presence_penalty' => 0.6,
+//        ]);
+//
+//        return json_decode($complete, true);
+//    }
 }

@@ -1,22 +1,26 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
+import {Link, Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Сообщения</title>
+    </Head>
     <Layout>
         <div class="chat">
             <div class="chat-title">
-                <a href="/">Мессенджер</a>
+                <Link href="/">Мессенджер</Link>
             </div>
 
             <div class="chat-content" ref="container">
                 <div v-for="item in dialogsData">
-                    <a class="messages-item" :href="'/chat/' + item.id"
+                    <Link class="messages-item" :href="'/chat/' + item.id"
                        v-if="item.last_message_body.length !== 0">
-                        <a :href="'/user/' + item.login" class="messages-item__img">
+                        <Link :href="'/user/' + item.login" class="messages-item__img">
                             <img :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img)"
                                  alt="">
-                        </a>
+                        </Link>
                         <div class="flex-c">
                             <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}
                                 {{ getUserTime(parseInt(checkId(item.user_one_id, item.user_two_id))) }}</a>
@@ -25,7 +29,7 @@ import Layout from '@/Layouts/Layout.vue';
                                 {{ item.last_message_body[0].body }}</a>
                             <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>
                         </div>
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -1,15 +1,17 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
-
-let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmizcwUKw/Ms4qi0pf9Bk.jpg?size=1620x2160&quality=95&sign=31e693c2d9c4f43335c97945ffbe8e66&type=album'
+import {Link, Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Знакомые</title>
+    </Head>
     <Layout>
         <div class="friends">
             <div class="friends-title__flex">
-                <a href="#" class="friends-title friends-title__active">Знакомые</a>
-                <a href="/users" class="friends-title">Все люди</a>
+                <Link href="#" class="friends-title friends-title__active">Знакомые</Link>
+                <Link href="/users" class="friends-title">Все люди</Link>
             </div>
 
             <div class="search">

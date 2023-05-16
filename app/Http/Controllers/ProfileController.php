@@ -128,6 +128,11 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function delImage($id)
+    {
+        Image_users::destroy($id);
+    }
+
     /**
      * Display the user's profile form.
      */

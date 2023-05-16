@@ -1,16 +1,18 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
-
-let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmizcwUKw/Ms4qi0pf9Bk.jpg?size=1620x2160&quality=95&sign=31e693c2d9c4f43335c97945ffbe8e66&type=album'
+import {Link, Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Сообщества</title>
+    </Head>
     <Layout>
         <div class="friends">
             <div class="friends-title__flex">
-                <a href="/communities" class="friends-title friends-title__active">Все сообщества</a>
-                <a :href="'/my_communities/' + $page.props.auth.user.id" class="friends-title">Мои сообщества</a>
-                <a :href="route('create_community')" class="friends-title">Создать сообщество</a>
+                <Link href="/communities" class="friends-title friends-title__active">Все сообщества</Link>
+                <Link :href="'/my_communities/' + $page.props.auth.user.id" class="friends-title">Мои сообщества</Link>
+                <Link :href="route('create_community')" class="friends-title">Создать сообщество</Link>
             </div>
 
             <div class="search">
@@ -19,7 +21,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
             </div>
 
             <div class="friends-flex">
-                <a :href="'/community/' + item.id" class="profile friends-flex__item" v-for="item in communities">
+                <Link :href="'/community/' + item.id" class="profile friends-flex__item" v-for="item in communities">
                     <div class="profile-top-j">
                         <div class="profile-top">
                             <img class="profile-img" :src="'../storage/images/' + item.img_id" alt="">
@@ -42,7 +44,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 
                         <!--                        <button class="btn btn-primary">Подписаться</button>-->
                     </div>
-                </a>
+                </Link>
             </div>
         </div>
     </Layout>

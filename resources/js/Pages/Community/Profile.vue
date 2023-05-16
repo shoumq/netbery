@@ -1,15 +1,20 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
+import {Link, Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>{{ community.title }}</title>
+    </Head>
     <Layout>
         <div class="profile">
             <div class="profile-top-j">
                 <div class="profile-top">
-<!--                    <img class="profile-img" :src="'../storage/images/' + community.img_id" alt="">-->
+                    <!--                    <img class="profile-img" :src="'../storage/images/' + community.img_id" alt="">-->
 
-                    <img class="profile-img" :src="'../storage/images/' + filenameData" alt="" v-if="$page.props.auth.user.id !== parseInt(community.admin)">
+                    <img class="profile-img" :src="'../storage/images/' + filenameData" alt=""
+                         v-if="$page.props.auth.user.id !== parseInt(community.admin)">
 
                     <label class="input-file" v-else-if="$page.props.auth.user.id === parseInt(community.admin)">
                         <input type="file" name="file" class="file-input" @change="storeImage">
@@ -58,8 +63,10 @@ import Layout from '@/Layouts/Layout.vue';
                       v-if="$page.props.auth.user.id === parseInt(community.admin)">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body">
                     <button type="submit" class="btn btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg" viewBox="0 0 16 16">
-                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg"
+                             viewBox="0 0 16 16">
+                            <path
+                                d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
                         </svg>
                     </button>
                 </form>
@@ -78,7 +85,8 @@ import Layout from '@/Layouts/Layout.vue';
                                 </div>
                             </div>
 
-                            <div class="del" v-if="$page.props.auth.user.id === parseInt(community.admin)" @click="deletePost(item.id)">
+                            <div class="del" v-if="$page.props.auth.user.id === parseInt(community.admin)"
+                                 @click="deletePost(item.id)">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="red" class="bi bi-trash3 svg"
                                      viewBox="0 0 16 16">
                                     <path
@@ -106,16 +114,30 @@ import Layout from '@/Layouts/Layout.vue';
             <div class="content-info">
 
                 <div class="content-info__item2">
-                    <a href="#" class="content-info__title">Подписчики</a>
+                    <Link href="#" class="content-info__title">Подписчики</Link>
                     <div class="content-info__flex">
-                        <a :href="'/user/' + item.users[0].login"
+                        <Link :href="'/user/' + item.users[0].login"
                            class="content-info__item" v-for="item in communities_sub">
                             <img class="content-info__item-img" :src="'../storage/images/' + item.users[0].img_id"
                                  alt="">
                             <div class="content-info__item-title">
                                 {{ item.users[0].name }}
                             </div>
-                        </a>
+                        </Link>
+                    </div>
+                </div>
+
+                <div class="content-info__item2">
+                    <Link href="#" class="content-info__title">Администратор</Link>
+                    <div class="content-info__flex2">
+                        <Link :href="'/user/' + admin.login"
+                           class="content-info__item3">
+                            <img class="content-info__item-img" :src="'../storage/images/' + admin.img_id"
+                                 alt="">
+                            <div class="content-info__item-title">
+                                {{ admin.name }} {{ admin.surname }}
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -137,7 +159,7 @@ export default {
         }
     },
 
-    props: ['community', 'posts', 'communities_sub', 'isSub'],
+    props: ['community', 'posts', 'communities_sub', 'isSub', 'admin'],
 
     methods: {
         storePost() {
@@ -159,7 +181,10 @@ export default {
         },
 
         deletePost(post_id) {
-
+            axios.get(`/delete_community_post/${post_id}`)
+                .then((resp) => {
+                    this.postsData.splice(this.postsData.findIndex(x => x.id === post_id), 1)
+                })
         },
 
         subscribeCommunity() {
@@ -213,6 +238,9 @@ export default {
     width: 500rem
     box-shadow: none
 
+    @media (max-width: 768px)
+        width: 100%
+
     &:focus
         border: none
         border-bottom: 1px solid #67a4d9
@@ -226,6 +254,9 @@ export default {
 
 .input-news
     margin-bottom: 30rem
+
+    input
+        border-radius: 100rem !important
 
 .flex-info
     gap: 12rem !important

@@ -1,7 +1,6 @@
 <script setup>
 import {ref} from 'vue';
-
-const showingNavigationDropdown = ref(false);
+import {Link} from '@inertiajs/vue3'
 </script>
 
 <template>
@@ -9,8 +8,8 @@ const showingNavigationDropdown = ref(false);
         <header>
             <div class="container">
                 <div class="header">
-                    <a :href="route('friends')" class="header-title">НЕТБЕРИ</a>
-                    <a href="/login" class="header-title">Войти</a>
+                    <Link :href="route('friends')" class="header-title">НЕТБЕРИ</Link>
+                    <Link href="/login" class="header-title">Войти</Link>
                 </div>
             </div>
         </header>

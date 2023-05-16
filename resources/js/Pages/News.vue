@@ -1,10 +1,12 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
-
-let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmizcwUKw/Ms4qi0pf9Bk.jpg?size=1620x2160&quality=95&sign=31e693c2d9c4f43335c97945ffbe8e66&type=album'
+import {Link, Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Новости</title>
+    </Head>
     <Layout>
         <div class="content-flex">
             <div class="content-main">
@@ -20,13 +22,13 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                         <div v-for="i in item.posts">
                             <div class="posts-item">
                                 <div class="posts-item__flex">
-                                    <a :href="'/community/' + item.community[0].id">
+                                    <Link :href="'/community/' + item.community[0].id">
                                         <img class="posts-item__img"
                                              :src="'../storage/images/' + item.community[0].img_id"
                                              alt="">
-                                    </a>
+                                    </Link>
                                     <div>
-                                        <a :href="'/community/' + item.community[0].id" class="flex">
+                                        <Link :href="'/community/' + item.community[0].id" class="flex">
                                             <div class="posts-item__title">{{ item.community[0].title }}</div>
                                             <div v-if="item.community[0].isVerified === '1'">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="#0d6efd"
@@ -38,7 +40,7 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
                                                         d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
                                                 </svg>
                                             </div>
-                                        </a>
+                                        </Link>
                                         <div class="posts-item__time">{{ getTime(i.created_at) }}</div>
                                     </div>
                                 </div>
@@ -87,6 +89,8 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
 
 
 <script>
+import {Link} from '@inertiajs/vue3';
+
 export default {
     props: ['posts', 'result', 'dialogs'],
 

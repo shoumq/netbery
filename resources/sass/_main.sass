@@ -21,7 +21,11 @@ body
 input
     // round
     border-radius: 100rem
-    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.09),0 2rem 14rem rgba(0, 0, 0, 0.09)
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.03),0 2rem 14rem rgba(0, 0, 0, 0.03)
+    transition: .1s
+
+    &:focus
+        box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08),0 2rem 14rem rgba(0, 0, 0, 0.08)
 
 header
     //background-color: $blue
@@ -181,6 +185,7 @@ main
             object-fit: cover
             object-position: 50% 50%
             border: 1rem solid #dce1e6
+            box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08),0 2rem 14rem rgba(0, 0, 0, 0.08)
 
             @media (max-width: 768px)
                 width: 60rem
@@ -679,7 +684,7 @@ main
 
     &2
         position: relative
-        height: 90vh
+        height: 100%
         width: 100%
         border: 1rem solid #dce1e6
 
@@ -694,16 +699,22 @@ main
         justify-content: space-between
         align-items: center
         width: 100%
-        padding-bottom: 15rem
+        padding-bottom: 10rem
         border-bottom: 1px solid #dce1e6
 
     .img
-        text-align: center
+        display: flex
+        justify-content: space-between
+        gap: 20rem
+
+        &-info
+            width: 100%
+
         img
-            margin-top: 30rem
             object-fit: cover
-            width: 700rem
-            height: 750rem
+            width: 800rem
+            height: 100%
+            border: 1px solid #dce1e6
 
             @media (max-width: 768px)
                 width: 100%
