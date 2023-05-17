@@ -37,7 +37,7 @@ import {Link, Head} from "@inertiajs/vue3";
                         <form class="profile-desc" v-if="$page.props.auth.user.id === parseInt(community.admin)">
                             <input @input="updateStatus" type="text" v-model="status"
                                    :class="{'input': true, 'input-status': true}"
-                                   placeholder="Ваш статус">
+                                   placeholder="Ваш статус" spellcheck="false">
                         </form>
                         <div class="profile-desc" v-else>{{
                                 community.status
@@ -47,7 +47,8 @@ import {Link, Head} from "@inertiajs/vue3";
                 </div>
 
                 <div class="profile-top__b" v-if="$page.props.auth.user.name !== community.title">
-                    <button class="btn btn-primary" @click="subscribeCommunity" v-if="isSubData === 0">Подписаться
+                    <button class="btn btn-primary" @click="subscribeCommunity" v-if="isSubData === 0">
+                        Подписаться
                     </button>
                     <button class="btn btn-primary" @click="unsubscribeCommunity" v-else-if="isSubData === 1">
                         Отписаться
@@ -117,7 +118,7 @@ import {Link, Head} from "@inertiajs/vue3";
                     <Link href="#" class="content-info__title">Подписчики</Link>
                     <div class="content-info__flex">
                         <Link :href="'/user/' + item.users[0].login"
-                           class="content-info__item" v-for="item in communities_sub">
+                              class="content-info__item" v-for="item in communities_sub">
                             <img class="content-info__item-img" :src="'../storage/images/' + item.users[0].img_id"
                                  alt="">
                             <div class="content-info__item-title">
@@ -131,7 +132,7 @@ import {Link, Head} from "@inertiajs/vue3";
                     <Link href="#" class="content-info__title">Администратор</Link>
                     <div class="content-info__flex2">
                         <Link :href="'/user/' + admin.login"
-                           class="content-info__item3">
+                              class="content-info__item3">
                             <img class="content-info__item-img" :src="'../storage/images/' + admin.img_id"
                                  alt="">
                             <div class="content-info__item-title">
@@ -176,13 +177,12 @@ export default {
                 .then((response) => {
                     this.postsData.find(x => x.id === parseInt(post_id)).likes = response.data.likes
                     this.postsData.find(x => x.id === parseInt(post_id)).your_like = response.data.my_like
-                    console.log(response)
                 })
         },
 
         deletePost(post_id) {
             axios.get(`/delete_community_post/${post_id}`)
-                .then((resp) => {
+                .then(() => {
                     this.postsData.splice(this.postsData.findIndex(x => x.id === post_id), 1)
                 })
         },
@@ -222,7 +222,6 @@ export default {
             axios.post(`/community/update_image/`, formData)
                 .then(() => {
                     this.filenameData = this.filename;
-                    console.log(this.filenameData)
                 })
         },
     },

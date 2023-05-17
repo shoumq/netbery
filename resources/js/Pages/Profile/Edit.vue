@@ -1,29 +1,27 @@
 <script setup>
 import Layout from '@/Layouts/Layout.vue';
+import {Head} from "@inertiajs/vue3";
 </script>
 
 <template>
+    <Head>
+        <title>Реадкитровать профиль</title>
+    </Head>
     <Layout>
         <div class="main">
             <div class="dir">
+                <div class="dir_title">Общее</div>
                 <input type="text" placeholder="Введите имя" class="input input-status" v-model="name">
-                <button class="btn btn-primary" @click="setName">Подтвердить имя</button>
-            </div>
-
-            <div class="dir">
                 <input type="text" placeholder="Введите фамилию" class="input input-status" v-model="surname">
-                <button class="btn btn-primary" @click="setSurname">Подтвердить фамилию</button>
-            </div>
-
-            <div class="dir">
                 <input type="text" placeholder="Введите почту" class="input input-status" v-model="email">
-                <button class="btn btn-primary" @click="setEmail">Подтвердить почту</button>
+                <button class="btn btn-primary" @click="updateProfile">Подтвердить</button>
             </div>
 
             <div class="dir">
+                <div class="dir_title">Пароль</div>
                 <input type="text" placeholder="Введите пароль" class="input input-status" v-model="pass1">
                 <input type="text" placeholder="Повторите пароль" class="input input-status" v-model="pass2">
-                <button class="btn btn-primary" @click="setPassword">Подтвердить пароль</button>
+                <button class="btn btn-primary" @click="setPassword">Подтвердить</button>
             </div>
         </div>
     </Layout>
@@ -44,20 +42,10 @@ export default {
     props: ['user'],
 
     methods: {
-        setName() {
-            axios.post('/user/set_name/', {
-                name: this.name
-            })
-        },
-
-        setSurname() {
-            axios.post('/user/set_surname/', {
-                surname: this.surname
-            })
-        },
-
-        setEmail() {
-            axios.post('/user/set_email/', {
+        updateProfile() {
+            axios.post('/update_profile/', {
+                name: this.name,
+                surname: this.surname,
                 email: this.email
             })
         },
@@ -72,7 +60,7 @@ export default {
                     })
             }
         }
-    }
+    },
 }
 </script>
 
@@ -95,6 +83,12 @@ export default {
     padding: 12rem
     border-radius: 10rem
     border: 1rem solid #dce1e6
+
+    &_title
+        font-size: 15rem
+        margin-bottom: 14rem
+        font-weight: 500
+        color: #484848
 
     input
         display: block

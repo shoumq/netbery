@@ -7,6 +7,7 @@ import {Link, Head} from '@inertiajs/vue3';
     <Head>
         <title>{{ user.name }} {{ user.surname }}</title>
     </Head>
+    <div class="dialog_wrapper" ref="dialog_wrapper"></div>
     <Layout>
         <div class="dialog_img">
             <dialog open class="dialog2" ref="imgDialogRef" role="dialog" aria-modal="true">
@@ -20,7 +21,7 @@ import {Link, Head} from '@inertiajs/vue3';
                                 <div class="name">{{ user.name }} {{ user.surname }}</div>
 
                                 <form method="dialog">
-                                    <button class="btn">
+                                    <button class="btn" @click="closeModal">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                              class="bi bi-x-lg" viewBox="0 0 16 16">
                                             <path
@@ -30,14 +31,16 @@ import {Link, Head} from '@inertiajs/vue3';
                                 </form>
                             </div>
 
-                            <div style="font-size: 20rem">{{ currentTime }}</div>
+                            <div class="dialog_flex2">
+                                <div class="dialog_time">{{ currentTime }}</div>
 
-                            <div class="del" @click="deleteImage">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="red" class="bi bi-trash3 svg"
-                                     viewBox="0 0 16 16">
-                                    <path
-                                        d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
-                                </svg>
+                                <button class="del btn btn-danger" @click="deleteImage">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-trash3 svg"
+                                         viewBox="0 0 16 16">
+                                        <path
+                                            d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -81,7 +84,7 @@ import {Link, Head} from '@inertiajs/vue3';
                         <form class="profile-desc" v-if="$page.props.auth.user.id === user.id">
                             <input @input="updateStatus" type="text" v-model="status"
                                    :class="{'input': true, 'input-status': true, 'input-status__success': status_success}"
-                                   placeholder="Ваш статус">
+                                   placeholder="Ваш статус" spellcheck="false">
                         </form>
                         <a class="profile-info">Email: {{ user.email }}</a>
                     </div>
@@ -184,7 +187,7 @@ import {Link, Head} from '@inertiajs/vue3';
                     <Link href="#" class="content-info__title">Знакомые</Link>
                     <div class="content-info__flex">
                         <Link :href="'/user/' + checkLogin(item.user_one_login, item.user_two_login, checkHome)"
-                           class="content-info__item" v-for="item in friendsData">
+                              class="content-info__item" v-for="item in friendsData">
                             <img class="content-info__item-img"
                                  :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img, checkHome)"
                                  alt="">
@@ -199,7 +202,7 @@ import {Link, Head} from '@inertiajs/vue3';
                     <Link :href="'/my_communities/' + user.id" class="content-info__title">Подписки</Link>
                     <div class="content-info__flex2">
                         <Link :href="'/community/' + item.communities[0].id"
-                           class="content-info__item3" v-for="item in communities">
+                              class="content-info__item3" v-for="item in communities">
                             <img class="content-info__item-img" :src="'../storage/images/' + item.communities[0].img_id"
                                  alt="">
                             <div class="content-info__item-title">
@@ -280,6 +283,16 @@ export default {
             this.currentImage = name_img
             this.currentTime = time_img.split(':')[0].split('T')[0]
             this.currentId = id_img
+
+            document.querySelector('body').style.overflowY = 'hidden';
+            this.$refs.dialog_wrapper.style.opacity = '1'
+            this.$refs.dialog_wrapper.style.zIndex = '9999998'
+        },
+
+        closeModal() {
+            document.querySelector('body').style.overflowY = 'auto'
+            this.$refs.dialog_wrapper.style.opacity = '0'
+            this.$refs.dialog_wrapper.style.zIndex = '0'
         },
 
         getDialogsId() {
@@ -372,6 +385,11 @@ export default {
                 .then(() => {
                     let del_element = this.userImages.findIndex(x => x.id === this.currentId)
                     this.userImages.splice(del_element, 1)
+
+                    document.querySelector('body').style.overflowY = 'auto'
+                    this.$refs.dialog_wrapper.style.opacity = '0'
+                    this.$refs.dialog_wrapper.style.zIndex = '0'
+
                     this.$refs.imgDialogRef.close()
                 })
         },
@@ -450,8 +468,8 @@ export default {
 
     mounted() {
         this.getUserTime();
-        this.getUserImages();
         this.updateUserTime();
+        this.getUserImages();
         this.getDialogsId();
 
         this.$refs.imgDialogRef.close();

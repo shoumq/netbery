@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/user', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/user', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('/update_profile', [App\Http\Controllers\ProfileController::class, 'updateProfile']);
+
     Route::get('/images/{user}', [App\Http\Controllers\ProfileController::class, 'pagePhotos']);
     Route::post('/add_images', [App\Http\Controllers\ProfileController::class, 'addImage']);
     Route::get('/del_images/{id}', [App\Http\Controllers\ProfileController::class, 'delImage']);

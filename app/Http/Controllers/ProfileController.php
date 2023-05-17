@@ -161,31 +161,12 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
-    public function setName(Request $request)
+    public function updateProfile(Request $request)
     {
         $user = User::find(Auth::user()->id);
+
         $user->name = $request->name;
-        $user->save();
-
-        return response()->json([
-            "response" => "name success"
-        ]);
-    }
-
-    public function setSurname(Request $request)
-    {
-        $user = User::find(Auth::user()->id);
         $user->surname = $request->surname;
-        $user->save();
-
-        return response()->json([
-            "response" => "surname success"
-        ]);
-    }
-
-    public function setEmail(Request $request)
-    {
-        $user = User::find(Auth::user()->id);
         $user->email = $request->email;
         $user->save();
 

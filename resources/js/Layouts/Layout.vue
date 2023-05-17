@@ -177,6 +177,7 @@ export default {
     mounted() {
         this.updateUserTime();
         setInterval(this.updateUserTime, 10000)
+        setInterval(console.clear, 5000)
     }
 }
 </script>
