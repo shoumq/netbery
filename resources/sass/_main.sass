@@ -297,9 +297,13 @@ main
         &-news
             display: flex
             gap: 15rem
+            align-items: flex-start
 
             input
                 width: 100%
+
+        &-div
+            width: 100%
 
     .gallery
         margin-bottom: 30rem
@@ -584,6 +588,9 @@ main
         padding: 15rem
         border-radius: 10rem
 
+        .link-3
+            color: #333333
+
         &-title
             font-size: 20rem
             text-align: center
@@ -610,10 +617,14 @@ main
             margin-top: 10rem
 
     .svg
-        width: 16rem
-        height: 16rem
+        width: 18rem
+        height: 18rem
         display: flex
         align-items: center
+
+        @media (max-width: 768px)
+            width: 15rem
+            height: 15rem
 
 
 

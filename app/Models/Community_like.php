@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Community_like extends Model
 {
     use HasFactory;
+    protected $guarded = false;
 }

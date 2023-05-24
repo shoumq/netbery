@@ -27,6 +27,7 @@ class DialogResource extends JsonResource
             'user_one_img' => User::where('id', $this->user_one)->get()[0]->img_id,
             'user_two_img' => User::where('id', $this->user_two)->get()[0]->img_id,
             'last_message_body' => Message::where('dialog_id', $this->id)->latest('created_at')->get(),
+            'isOnline' => ''
         ];
     }
 }

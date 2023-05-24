@@ -332,8 +332,12 @@ main .input {
 main .input-news {
   display: flex;
   gap: 15rem;
+  align-items: flex-start;
 }
 main .input-news input {
+  width: 100%;
+}
+main .input-div {
   width: 100%;
 }
 main .gallery {
@@ -623,6 +627,9 @@ main .form {
   padding: 15rem;
   border-radius: 10rem;
 }
+main .form .link-3 {
+  color: #333333;
+}
 main .form-title {
   font-size: 20rem;
   text-align: center;
@@ -649,10 +656,16 @@ main .form .btn {
   margin-top: 10rem;
 }
 main .svg {
-  width: 16rem;
-  height: 16rem;
+  width: 18rem;
+  height: 18rem;
   display: flex;
   align-items: center;
+}
+@media (max-width: 768px) {
+  main .svg {
+    width: 15rem;
+    height: 15rem;
+  }
 }
 
 .dropmenu {
@@ -819,7 +832,7 @@ main .svg {
 .btn-primary {
   color: white;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1), 0 2rem 14rem rgba(0, 0, 0, 0.1);
-  background: linear-gradient(#3b84ee, #1b59b2);
+  background: linear-gradient(#3b84ee, #1c67d5);
   transition: background 0.3s ease-out;
   background-size: 1rem 200rem;
 }

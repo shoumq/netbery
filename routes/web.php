@@ -58,8 +58,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/news', [App\Http\Controllers\ProfileController::class, 'news']);
 
-//    Route::get('/aichat', [App\Http\Controllers\CommunityController::class, 'chatGPT']);
-
     Route::get('/users', [App\Http\Controllers\FriendsController::class, 'allUsers'])->name('allUsers');
     Route::get('/user', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
     Route::post('/user/set_name', [App\Http\Controllers\ProfileController::class, 'setName']);
@@ -75,8 +73,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/add_images', [App\Http\Controllers\ProfileController::class, 'addImage']);
     Route::get('/del_images/{id}', [App\Http\Controllers\ProfileController::class, 'delImage']);
 
-    Route::get('/update_online/', [App\Http\Controllers\ProfileController::class, 'updateOnline']);
+    Route::get('/update_online', [App\Http\Controllers\ProfileController::class, 'updateOnline']);
     Route::get('/get_online/{user}', [App\Http\Controllers\ProfileController::class, 'getOnline']);
+
+    Route::post('/choose_icon', [App\Http\Controllers\ProfileController::class, 'chooseIcon']);
+    Route::post('/add_icon', [App\Http\Controllers\ProfileController::class, 'addIcon']);
+
+    Route::get('/market', [App\Http\Controllers\MarketController::class, 'renderPage']);
 
     Route::get('/test', [App\Http\Controllers\ProfileController::class, 'test']);
 });

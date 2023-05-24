@@ -11,7 +11,7 @@ import {Link, Head} from "@inertiajs/vue3";
         <div class="friends">
             <div class="friends-title__flex">
                 <Link href="/communities" class="friends-title">Все сообщества</Link>
-                <Link href="/my_communities" class="friends-title friends-title__active">Мои сообщества</Link>
+                <Link href="" class="friends-title friends-title__active">Мои сообщества</Link>
                 <Link :href="route('create_community')" class="friends-title">Создать сообщество</Link>
             </div>
 

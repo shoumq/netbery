@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OnlineEvent;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Resources\Community\CommunityResource;
 use App\Http\Resources\Dialog\DialogResource;
+use App\Http\Resources\Images\ImagesResource;
 use App\Http\Resources\Message\MessageResource;
 use App\Http\Resources\News\NewsResource;
 use App\Http\Resources\Post\PostResource;
@@ -15,6 +17,7 @@ use App\Models\Image_users;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\UserIcons;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -30,7 +33,7 @@ class ProfileController extends Controller
 {
     public function index($user_login)
     {
-        $user = User::where('login', $user_login)->get()[0];
+        $user = User::where('login', $user_login)->first();
 
         $posts = Post::where('user_id', $user->id)->latest()->get();
         $posts = PostResource::collection($posts)->resolve();
@@ -47,6 +50,7 @@ class ProfileController extends Controller
         $dialogs = DialogResource::collection($dialogs)->resolve();
 
         $images = Image_users::where('user_id', $user->id)->get();
+        $images = ImagesResource::collection($images)->resolve();
 
         return inertia('Profile', compact('user', 'posts', 'friends', 'communities', 'dialogs', 'images'));
     }
@@ -96,7 +100,7 @@ class ProfileController extends Controller
         $user->img_id = $name;
         $user->save();
 
-        return $user;
+        return $photo;
     }
 
     public function test()
@@ -107,6 +111,7 @@ class ProfileController extends Controller
     public function pagePhotos(User $user)
     {
         $images = Image_users::where('user_id', $user->id)->get();
+        $images = ImagesResource::collection($images)->resolve();
         return inertia('Images', compact('images', 'user'));
     }
 
@@ -123,9 +128,10 @@ class ProfileController extends Controller
         $photo->user_id = Auth::user()->id;
         $photo->save();
 
-        return response()->json([
-            "filename" => $name
-        ]);
+//        return response()->json([
+//            "filename" => $name
+//        ]);
+        return $photo;
     }
 
     public function delImage($id)
@@ -214,6 +220,28 @@ class ProfileController extends Controller
             "result" => gmdate('H:i:s', $totalDuration),
             "time" => $user->updated_at->diffForHumans()
         ]);
+    }
+
+    public function chooseIcon(Request $request) {
+        $user = User::find(Auth::user()->id);
+        $user->admin = $request->iconId;
+        $user->save();
+    }
+
+    public function addIcon(Request $request) {
+        $count = count(UserIcons::where('user_id', Auth::user()->id)
+            ->where('icon_id', $request->iconId)->get());
+
+        if ($count == 0) {
+            $user_icon = new UserIcons();
+            $user_icon->user_id = Auth::user()->id;
+            $user_icon->icon_id = $request->iconId;
+            $user_icon->save();
+
+            return $user_icon;
+        } else {
+            return "err";
+        }
     }
 
     /**

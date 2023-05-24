@@ -8,9 +8,8 @@ let testImg = 'https://sun1-14.userapi.com/impg/L16pctUv_LjgDquGYmrtnIsLOOeePXmi
     <Layout>
         <div class="content-flex">
             <div class="content-main">
-                <div class="posts">
-                    <input type="file" ref="image" id="image" accept="image/*" @change="storeImage">
-                    <button type="submit" class="btn btn-primary" name="image">Отправить</button>
+                <div contentEditable="true" class="test">Type here. You can insert images too
+                    <img src="http://t2.gstatic.com/images?q=tbn:ANd9GcQCze-mfukcuvzKk7Ilj2zQ0CS6PbOkq7ZhRInnNd1Yz3TQzU4e&t=1" />
                 </div>
             </div>
         </div>
@@ -43,3 +42,10 @@ export default {
     },
 }
 </script>
+
+<style scoped lang="sass">
+.test
+    font-size: 20rem
+    border: 1px solid #ccc
+    outline: none
+</style>

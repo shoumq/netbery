@@ -22,8 +22,7 @@ import {Link, Head} from "@inertiajs/vue3";
                                  alt="">
                         </Link>
                         <div class="flex-c">
-                            <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}
-                                {{ getUserTime(parseInt(checkId(item.user_one_id, item.user_two_id))) }}</a>
+                            <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}</a>
                             <a class="messages-item__mess"
                                v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:
                                 {{ item.last_message_body[0].body }}</a>
@@ -88,19 +87,7 @@ export default {
                 return name1
             }
         },
-
-        getUserTime(user_id) {
-            axios.get('/get_online/' + user_id)
-                .then((response) => {
-                    return parseInt(response.data.result.split(':')[0]) === 0 && parseInt(response.data.result.split(':')[1]) === 0 && parseInt(response.data.result.split(':')[2]) < 20;
-                })
-        },
     },
-
-    mounted() {
-        this.getUserTime();
-        setInterval(this.getUserTime, 10000);
-    }
 }
 </script>
 
@@ -114,10 +101,6 @@ export default {
     align-items: center !important;
     border-bottom: 1px solid #dce1e6;
     padding: 10rem 0;
-}
-
-.messages-item:first-child {
-    /*border-bottom: none;*/
 }
 
 .flex-c {

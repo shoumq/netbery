@@ -83,7 +83,8 @@ class CommunityController extends Controller
         $community_post->community_id = $community->id;
         $community_post->save();
 
-        return $community_post;
+//        return $community_post;
+        return PostResource::make($community_post)->resolve();
     }
 
     public function deletePost(Community_post $post)
@@ -96,7 +97,7 @@ class CommunityController extends Controller
     {
         if (count(Community_like::where('post_id', $post->id)
                 ->where('from_id', Auth::user()->id)->get()) == 0) {
-            $like = new Community_like;
+            $like = new Community_like();
             $like->from_id = Auth::user()->id;
             $like->post_id = $post->id;
             $like->like = '1';

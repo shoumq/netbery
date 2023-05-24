@@ -173,10 +173,13 @@ export default {
         },
 
         storeLike(post_id) {
-            axios.get('/community/post_like/' + post_id)
+            axios.get('/community/post_like/' + parseInt(post_id))
                 .then((response) => {
                     this.postsData.find(x => x.id === parseInt(post_id)).likes = response.data.likes
                     this.postsData.find(x => x.id === parseInt(post_id)).your_like = response.data.my_like
+                })
+                .catch(err => {
+                    console.log(err);
                 })
         },
 

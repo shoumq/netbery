@@ -62,7 +62,7 @@ const submit = () => {
                 </label>
 
                 <button type="submit" class="btn btn-primary" :disabled="form.processing">Зарегистрироваться</button>
-                <a href="/login" class="link">Уже есть аккаунт? </a>
+                <a href="/login" class="link link-3">Уже есть аккаунт? </a>
 
             </div>
         </form>

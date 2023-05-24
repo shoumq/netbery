@@ -34,7 +34,7 @@ import {Link, Head} from '@inertiajs/vue3';
                             <div class="dialog_flex2">
                                 <div class="dialog_time">{{ currentTime }}</div>
 
-                                <button class="del btn btn-danger" @click="deleteImage">
+                                <button class="del btn btn-danger" @click="deleteImage" v-if="isCurrentUser">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-trash3 svg"
                                          viewBox="0 0 16 16">
                                         <path
@@ -52,9 +52,9 @@ import {Link, Head} from '@inertiajs/vue3';
             <div class="profile-top-j">
                 <div class="profile-top">
                     <img class="profile-img" :src="'../storage/images/' + filenameData" alt=""
-                         v-if="$page.props.auth.user.id !== user.id">
+                         v-if="!isCurrentUser">
 
-                    <label class="input-file" v-else-if="$page.props.auth.user.id === user.id" style="cursor:pointer;">
+                    <label class="input-file" v-else-if="isCurrentUser" style="cursor:pointer;">
                         <input type="file" name="file" class="file-input" @change="storeImage">
                         <img class="profile-img" :src="'../storage/images/' + filenameData" alt="">
                     </label>
@@ -64,24 +64,18 @@ import {Link, Head} from '@inertiajs/vue3';
                             <div class="profile-name">{{ user.name }} {{ user.surname }}
                                 <div :class="{'round': true, 'round-green': isOnline}"></div>
                             </div>
-                            <div v-if="user.admin === '1'">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="#0d6efd" class="bi bi-patch-check"
-                                     viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd"
-                                          d="M10.354 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                                    <path
-                                        d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
-                                </svg>
-                            </div>
+                            <img :src="'/storage/user_icons/' + user.admin + '.svg'" alt="" class="svg" v-if="user.admin !== '0'">
                         </div>
 
-                        <div class="last_net" v-if="!isOnline">В сети: {{ lastOnline }}</div>
+                        <div v-if="compl">
+                            <div class="last_net" v-if="!isOnline">В сети: {{ lastOnline }}</div>
+                        </div>
 
-                        <div class="profile-desc" v-if="$page.props.auth.user.name !== user.name">{{
+                        <div class="profile-desc" v-if="!isCurrentUser">{{
                                 user.status
                             }}
                         </div>
-                        <form class="profile-desc" v-if="$page.props.auth.user.id === user.id">
+                        <form class="profile-desc" v-if="isCurrentUser">
                             <input @input="updateStatus" type="text" v-model="status"
                                    :class="{'input': true, 'input-status': true, 'input-status__success': status_success}"
                                    placeholder="Ваш статус" spellcheck="false">
@@ -90,12 +84,12 @@ import {Link, Head} from '@inertiajs/vue3';
                     </div>
                 </div>
 
-                <div class="profile-top__b" v-if="$page.props.auth.user.id === user.id">
+                <div class="profile-top__b" v-if="isCurrentUser">
                     <Link href="/user/" class="btn btn-primary">Редактировать</Link>
                     <button class="btn btn-primary" @click="logoutFun">Выйти</button>
                 </div>
 
-                <div class="profile-top__b" v-else-if="$page.props.auth.user.id !== user.id">
+                <div class="profile-top__b" v-else-if="!isCurrentUser">
                     <button class="btn btn-primary" @click="createDialog">Написать сообщение</button>
                 </div>
             </div>
@@ -109,19 +103,19 @@ import {Link, Head} from '@inertiajs/vue3';
 
                     <div class="gallery-img">
                         <div class="img">
-                            <a @click="showDialog(userImages.at(-1).name, userImages.at(-1).created_at, userImages.at(-1).id)">
+                            <a @click="showDialog(userImages.at(-1).name, userImages.at(-1).time, userImages.at(-1).id)">
                                 <img :src="'../storage/images/' + userImages.at(-1).name" v-if="userImages.at(-1)"
                                      alt="">
                             </a>
-                            <a @click="showDialog(userImages.at(-2).name, userImages.at(-2).created_at, userImages.at(-2).id)"
+                            <a @click="showDialog(userImages.at(-2).name, userImages.at(-2).time, userImages.at(-2).id)"
                                v-if="userImages.at(-2)">
                                 <img :src="'../storage/images/' + userImages.at(-2).name" alt="">
                             </a>
-                            <a @click="showDialog(userImages.at(-3).name, userImages.at(-3).created_at, userImages.at(-3).id)"
+                            <a @click="showDialog(userImages.at(-3).name, userImages.at(-3).time, userImages.at(-3).id)"
                                v-if="userImages.at(-3)">
                                 <img :src="'../storage/images/' + userImages.at(-3).name" alt="">
                             </a>
-                            <a @click="showDialog(userImages.at(-4).name, userImages.at(-4).created_at, userImages.at(-4).id)"
+                            <a @click="showDialog(userImages.at(-4).name, userImages.at(-4).time, userImages.at(-4).id)"
                                v-if="userImages.at(-4)">
                                 <img :src="'../storage/images/' + userImages.at(-4).name" alt="">
                             </a>
@@ -130,7 +124,7 @@ import {Link, Head} from '@inertiajs/vue3';
                 </div>
 
                 <form class="input-news dir" @submit.prevent="storePost"
-                      v-if="$page.props.auth.user.name === user.name">
+                      v-if="isCurrentUser">
                     <input type="text" class="input" placeholder="Что у вас нового?" v-model="body" name="body"
                            autocomplete="off">
                     <button type="submit" class="btn btn-primary">
@@ -262,6 +256,8 @@ export default {
             lastOnline: '',
             userImages: [],
             imgDialog: this.$refs.imgDialogRef,
+            isLoading: false,
+            compl: document.readyState === 'complete',
 
             //  Dialog
             currentImage: 'i.png',
@@ -270,7 +266,7 @@ export default {
         }
     },
 
-    props: ['user', 'posts', 'friends', 'communities', 'dialogs', 'images'],
+    props: ['user', 'posts', 'friends', 'communities', 'dialogs', 'images', 'user_id'],
 
     methods: {
         logoutFun() {
@@ -402,9 +398,9 @@ export default {
             formData.append('file', this.file);
 
             axios.post(`/user/update_image/`, formData)
-                .then(() => {
-                    this.filenameData = this.filename;
-                    this.userImages.push(this.filename)
+                .then((response) => {
+                    this.filenameData = response.data.name;
+                    this.userImages.push(response.data)
                 })
         },
 
@@ -458,12 +454,20 @@ export default {
         },
 
         uved() {
-            let audio = new Audio('../storage/uved.mp3');
-            audio.autoplay = true;
-            audio.muted = false
-            audio.volume = 0.5
-            audio.play();
+            if (this.$page.url.split('/')[1] !== 'chat') {
+                let audio = new Audio('../storage/uved.mp3');
+                audio.autoplay = true;
+                audio.muted = false
+                audio.volume = 0.5
+                audio.play();
+            }
         },
+    },
+
+    computed: {
+        isCurrentUser() {
+            return this.$page.props.auth.user.id === this.user.id;
+        }
     },
 
     mounted() {
@@ -477,11 +481,6 @@ export default {
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
                 this.postsData.unshift(response.post)
-            })
-
-        window.Echo.channel('delete_post')
-            .listen('.delete_post', response => {
-                console.log(response)
             })
 
 
