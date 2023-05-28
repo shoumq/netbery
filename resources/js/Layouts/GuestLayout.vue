@@ -8,7 +8,7 @@ import {Link} from '@inertiajs/vue3'
         <header>
             <div class="container">
                 <div class="header">
-                    <Link :href="route('friends')" class="header-title">НЕТБЕРИ</Link>
+                    <Link :href="route('friends')" class="header-title">SWANER</Link>
                     <Link href="/login" class="header-title">Войти</Link>
                 </div>
             </div>
