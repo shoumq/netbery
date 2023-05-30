@@ -93,36 +93,37 @@ class CommunityController extends Controller
         $del_p->delete();
     }
 
-    public function postLike(Post $post)
+    public function postLike($post)
     {
-        if (count(Community_like::where('post_id', $post->id)
+        $post_data = Community_post::find($post);
+        if (count(Community_like::where('post_id', $post_data->id)
                 ->where('from_id', Auth::user()->id)->get()) == 0) {
             $like = new Community_like();
             $like->from_id = Auth::user()->id;
-            $like->post_id = $post->id;
+            $like->post_id = $post_data->id;
             $like->like = '1';
             $like->save();
 
-            $count_global = Community_like::where('post_id', $post->id)->get();
+            $count_global = Community_like::where('post_id', $post_data->id)->get();
 
             return response()->json([
                 "likes" => count($count_global),
-                "my_like" => count(Community_like::where('post_id', $post->id)
+                "my_like" => count(Community_like::where('post_id', $post_data->id)
                     ->where('from_id', Auth::user()->id)->get()),
-                "like_id" => Community_like::where('post_id', $post->id)
+                "like_id" => Community_like::where('post_id', $post_data->id)
                     ->where('from_id', Auth::user()->id)->first()
             ]);
         } else {
-            $count_mine = Community_like::where('post_id', $post->id)
+            $count_mine = Community_like::where('post_id', $post_data->id)
                 ->where('from_id', Auth::user()->id)->first();
             $like = Community_like::find($count_mine->id);
             $like->delete();
 
-            $count_global = Community_like::where('post_id', $post->id)->get();
+            $count_global = Community_like::where('post_id', $post_data->id)->get();
 
             return response()->json([
                 "likes" => count($count_global),
-                "my_like" => count(Community_like::where('post_id', $post->id)
+                "my_like" => count(Community_like::where('post_id', $post_data->id)
                     ->where('from_id', Auth::user()->id)->get())
             ]);
         }

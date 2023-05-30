@@ -51,7 +51,8 @@ import {Link, Head} from '@inertiajs/vue3';
         <div class="profile">
             <div class="profile-top-j">
                 <div class="profile-top">
-                    <img class="profile-img" :src="'../storage/images/' + filenameData" alt=""
+                    <img @click="showDialog(filenameData, '', '')" style="cursor:pointer;" class="profile-img"
+                         :src="'../storage/images/' + filenameData" alt=""
                          v-if="!isCurrentUser">
 
                     <label class="input-file" v-else-if="isCurrentUser" style="cursor:pointer;">
@@ -64,7 +65,8 @@ import {Link, Head} from '@inertiajs/vue3';
                             <div class="profile-name">{{ user.name }} {{ user.surname }}
                                 <div :class="{'round': true, 'round-green': isOnline}"></div>
                             </div>
-                            <img :src="'/storage/user_icons/' + user.admin + '.svg'" alt="" class="svg" v-if="user.admin !== '0'">
+                            <img :src="'/storage/user_icons/' + user.admin + '.svg'" alt="" class="svg"
+                                 v-if="user.admin !== '0'">
                         </div>
 
                         <div v-if="compl">

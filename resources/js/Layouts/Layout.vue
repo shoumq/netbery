@@ -8,7 +8,7 @@ import {Link} from "@inertiajs/vue3";
             <div class="container">
                 <div class="header">
                     <Link href="/" class="header-title">SWANER</Link>
-                    <div class="header-title" v-if="this.isMobile()" @click="isDrop = !isDrop">
+                    <div class="header-title" v-if="isMobile()" @click="isDrop = !isDrop">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list"
                              viewBox="0 0 16 16">
                             <path fill-rule="evenodd"
@@ -68,7 +68,7 @@ import {Link} from "@inertiajs/vue3";
                     </svg>
                     <div class="text">Сообщества</div>
                 </Link>
-                <Link :href="'/images/' + this.$page.props.auth.user.id" class="nav-item" preserve-state>
+                <Link :href="'/images/' + $page.props.auth.user.id" class="nav-item" preserve-state>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="#0078b5" class="bi bi-images" viewBox="0 0 16 16">
                         <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                         <path
@@ -130,7 +130,7 @@ import {Link} from "@inertiajs/vue3";
                         <div class="text">Сообщества</div>
                     </Link>
 
-                    <Link :href="'/images/' + this.$page.props.auth.user.id" class="nav-item" preserve-state>
+                    <Link :href="'/images/' + $page.props.auth.user.id" class="nav-item" preserve-state>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="#0078b5" class="bi bi-images" viewBox="0 0 16 16">
                             <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             <path
