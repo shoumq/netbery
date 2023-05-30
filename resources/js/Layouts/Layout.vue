@@ -169,11 +169,11 @@ export default {
             return screen.width <= 760;
         },
 
-        uved2() {
-            let audio = new Audio('../storage/uved.mp3');
-            audio.volume = 0
-            audio.play();
-        },
+        // uved2() {
+        //     let audio = new Audio('../storage/uved.mp3');
+        //     audio.volume = 0
+        //     audio.play();
+        // },
 
         updateUserTime() {
             axios.get('/update_online/')
