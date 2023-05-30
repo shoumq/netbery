@@ -222,7 +222,7 @@ export default {
             formData.append('file', this.file);
             formData.append('community_id', this.community.id);
 
-            axios.post(`/community/update_image/`, formData)
+            axios.post(`/community/update_image`, formData)
                 .then(() => {
                     this.filenameData = this.filename;
                 })

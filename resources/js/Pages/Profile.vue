@@ -371,7 +371,7 @@ export default {
         },
 
         createDialog() {
-            axios.post('/create_dialog/', {
+            axios.post('/create_dialog', {
                 id: this.user.id
             }).then(response => {
                 window.location.href = `/chat/${response.data}`
@@ -399,7 +399,7 @@ export default {
             let formData = new FormData();
             formData.append('file', this.file);
 
-            axios.post(`/user/update_image/`, formData)
+            axios.post(`/user/update_image`, formData)
                 .then((response) => {
                     this.filenameData = response.data.name;
                     this.userImages.push(response.data)

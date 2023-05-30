@@ -120,7 +120,7 @@ export default {
             let formData = new FormData();
             formData.append('file', this.file);
 
-            axios.post(`/add_images/`, formData)
+            axios.post(`/add_images`, formData)
                 .then((response) => {
                     this.filenameData = response.data.filename;
                     console.log(response.data)

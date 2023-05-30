@@ -43,7 +43,7 @@ export default {
 
     methods: {
         updateProfile() {
-            axios.post('/update_profile/', {
+            axios.post('/update_profile', {
                 name: this.name,
                 surname: this.surname,
                 email: this.email
@@ -52,7 +52,7 @@ export default {
 
         setPassword() {
             if (this.pass1 === this.pass2) {
-                axios.post('/user/set_password/', {
+                axios.post('/user/set_password', {
                     password: this.pass1
                 })
                     .then((response) => {

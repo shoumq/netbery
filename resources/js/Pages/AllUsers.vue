@@ -53,7 +53,7 @@ export default {
 
     methods: {
         createDialog() {
-            axios.post('/create_dialog/', {
+            axios.post('/create_dialog', {
                 id: this.user.id
             }).then(response => {
                 window.location.href = `/chat/${response.data}`
@@ -61,7 +61,7 @@ export default {
         },
 
         searchUsers() {
-            axios.post('/search_friends/', {
+            axios.post('/search_friends', {
                 searchInput: this.searchInput
             }).then(response => {
                 console.log(response)
