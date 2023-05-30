@@ -813,6 +813,10 @@ main .svg {
   }
 }
 
+.none {
+  display: none !important;
+}
+
 .btn {
   outline: none;
   border: none;
