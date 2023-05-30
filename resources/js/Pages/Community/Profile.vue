@@ -82,7 +82,7 @@ import {Link, Head} from "@inertiajs/vue3";
                                 <div>
                                     <div class="posts-item__title">{{ community.title }}
                                     </div>
-                                    <div class="posts-item__time">{{ getTime(community.created_at) }}</div>
+                                    <div class="posts-item__time">{{ item.time.split(':')[0] + ':' + item.time.split(':')[1] }}</div>
                                 </div>
                             </div>
 
