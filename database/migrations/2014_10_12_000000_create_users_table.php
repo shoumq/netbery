@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('img_id')->default('i.png');
             $table->string('email')->unique();
             $table->string('admin')->default('0');
+            $table->boolean('show_email')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

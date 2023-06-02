@@ -191,6 +191,13 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function setPrivate(Request $request) {
+        $req_show_email = $request->show_email;
+        $user = User::find(Auth::user()->id);
+        $user->show_email = $req_show_email;
+        $user->save();
+    }
+
     public function updateOnline()
     {
         $user = User::find(Auth::user()->id);

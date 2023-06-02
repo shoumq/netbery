@@ -23,6 +23,19 @@ import {Head} from "@inertiajs/vue3";
                 <input type="text" placeholder="Повторите пароль" class="input input-status" v-model="pass2">
                 <button class="btn btn-primary" @click="setPassword">Подтвердить</button>
             </div>
+
+            <div class="dir">
+                <div class="dir_title">Приватность</div>
+                <div class="checkbox_div">
+                    <input
+                        type="checkbox"
+                        id="subscribeNews"
+                        name="subscribe"
+                        v-model="showEmail"/>
+                    <label for="subscribeNews">Показывать e-mail</label>
+                </div>
+                <button class="btn btn-primary" @click="setPrivate">Подтвердить</button>
+            </div>
         </div>
     </Layout>
 </template>
@@ -35,7 +48,8 @@ export default {
             surname: this.user.surname,
             email: this.user.email,
             pass1: '',
-            pass2: ''
+            pass2: '',
+            showEmail: this.user.show_email !== 0
         }
     },
 
@@ -59,6 +73,15 @@ export default {
                         console.log(response)
                     })
             }
+        },
+
+        setPrivate() {
+            axios.post('/user/private', {
+                show_email: this.showEmail
+            })
+                .then((response) => {
+                    console.log(response.data)
+                })
         }
     },
 }

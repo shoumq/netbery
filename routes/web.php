@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,7 +27,7 @@ use Inertia\Inertia;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user/{user_login}', [App\Http\Controllers\ProfileController::class, 'index'])->name('user');
     Route::post('/user/update_status/', [App\Http\Controllers\ProfileController::class, 'updateStatus']);
     Route::post('/user/update_image/', [App\Http\Controllers\ProfileController::class, 'updateImage']);
@@ -66,6 +67,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/user/set_password/', [App\Http\Controllers\ProfileController::class, 'setPassword']);
     Route::patch('/user', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/user', [App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/user/private', [App\Http\Controllers\ProfileController::class, 'setPrivate'])->name('setPrivate');
 
     Route::post('/update_profile/', [App\Http\Controllers\ProfileController::class, 'updateProfile']);
 
@@ -85,3 +87,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+//Auth::routes();
