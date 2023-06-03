@@ -787,6 +787,11 @@ main .svg {
   justify-content: space-between;
   gap: 20rem;
 }
+@media (max-width: 768px) {
+  .dialog .img {
+    flex-direction: column;
+  }
+}
 .dialog .img-info {
   width: 100%;
 }
@@ -802,6 +807,7 @@ main .svg {
     width: 100%;
     height: 100%;
     margin-top: 10rem;
+    order: 2;
   }
 }
 
