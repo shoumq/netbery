@@ -31,9 +31,9 @@ const submit = () => {
             <div class="form-title">Войти</div>
 
             <div class="form-input">
-                <label for="name" class="form-input__item">
+                <label for="email" class="form-input__item">
                     Email
-                    <input type="text" id="name" class="input" placeholder="Введите email" v-model="form.email">
+                    <input type="email" id="email" class="input" placeholder="Введите email" v-model="form.email">
                     <div class="error">{{ form.errors.email }}</div>
                 </label>
 

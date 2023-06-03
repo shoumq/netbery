@@ -213,7 +213,7 @@ import {Link, Head} from '@inertiajs/vue3';
 
     <div class="main_dialog">
         <dialog open class="dialog1" v-for="(item, index) in alerts" :key="index">
-            <div class="dialog" v-if="this.$page.props.auth.user.id !== parseInt(item.message.user_id)">
+            <div class="dialog" v-if="$page.props.auth.user.id !== parseInt(item.message.user_id)">
                 <div class="form">
                     <div class="dialog-title">{{
                             dialogsId.find(x => x.id === parseInt(item.message.dialog_id)).user
@@ -463,18 +463,17 @@ export default {
     },
 
     mounted() {
+        this.$refs.imgDialogRef.close();
+
         this.getUserTime();
         this.updateUserTime();
         this.getUserImages();
         this.getDialogsId();
 
-        this.$refs.imgDialogRef.close();
-
         window.Echo.channel('store_post')
             .listen('.store_post', response => {
                 this.postsData.unshift(response.post)
             })
-
 
         for (let i = 0; i < this.dialogsId.length; i++) {
             window.Echo.channel('store_message_' + this.dialogsId[i].id)
@@ -484,10 +483,6 @@ export default {
                     setTimeout(() => {
                         this.alerts.length = 0;
                     }, 30000)
-
-                    // if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
-                    //     this.uved();
-                    // }
                 })
         }
 
