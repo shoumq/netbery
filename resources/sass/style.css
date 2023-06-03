@@ -751,6 +751,7 @@ main .svg {
   background: rgba(0, 0, 0, 0.5);
   z-index: 0;
   opacity: 0;
+  overflow: hidden !important;
 }
 .dialog2 {
   position: relative;
