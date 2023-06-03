@@ -138,14 +138,6 @@ export default {
                 }
             }
         },
-
-        uved() {
-            let audio = new Audio('../storage/uved.mp3');
-            audio.autoplay = true;
-            audio.muted = false
-            audio.volume = 0.5
-            audio.play();
-        },
     },
 
     mounted() {
@@ -161,9 +153,9 @@ export default {
                         this.alerts.length = 0;
                     }, 30000)
 
-                    if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
-                        this.uved();
-                    }
+                    // if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
+                    //     this.uved();
+                    // }
                 })
         }
     }
