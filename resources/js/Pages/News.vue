@@ -147,15 +147,10 @@ export default {
             window.Echo.channel('store_message_' + this.dialogsId[i].id)
                 .listen('.store_message', response => {
                     this.alerts.unshift(response)
-                    this.uved();
 
                     setTimeout(() => {
                         this.alerts.length = 0;
                     }, 30000)
-
-                    // if (parseInt(response.message.user_id) !== parseInt(this.$page.props.auth.user.id)) {
-                    //     this.uved();
-                    // }
                 })
         }
     }

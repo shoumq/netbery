@@ -17,7 +17,7 @@ import {Link, Head} from "@inertiajs/vue3";
                 <div v-for="item in dialogsData">
                     <Link class="messages-item" :href="'/chat/' + item.id"
                        v-if="item.last_message_body.length !== 0">
-                        <Link :href="'/user/' + item.login" class="messages-item__img">
+                        <Link :href="'/user/' + checkName(item.user_one_login, item.user_two_login)" class="messages-item__img">
                             <img :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img)"
                                  alt="">
                         </Link>
