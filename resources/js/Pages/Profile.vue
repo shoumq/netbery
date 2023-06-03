@@ -82,7 +82,7 @@ import {Link, Head} from '@inertiajs/vue3';
                                    :class="{'input': true, 'input-status': true, 'input-status__success': status_success}"
                                    placeholder="Ваш статус" spellcheck="false">
                         </form>
-                        <a class="profile-info">Email: {{ user.email }}</a>
+                        <a class="profile-info" v-if="user.show_email">Email: {{ user.email }}</a>
                     </div>
                 </div>
 

@@ -27,7 +27,7 @@ import {Link, Head} from "@inertiajs/vue3";
                             <div class="flex-info">
                                 <div class="profile-name">{{ item.name }} {{ item.surname }}</div>
                                 <div class="profile-desc">{{ item.status }}</div>
-                                <Link class="profile-info">Email: {{ item.email }}</Link>
+                                <Link class="profile-info" v-if="item.show_email">Email: {{ item.email }}</Link>
                             </div>
                         </Link>
 
