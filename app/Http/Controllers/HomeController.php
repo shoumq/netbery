@@ -61,7 +61,7 @@ class HomeController extends Controller
             "model" => "gpt-3.5-turbo",
             "prompt" =>  $request->question, //Your question or request
             "temperature" => 0.7,
-            "max_tokens" => 256,
+            "max_tokens" => 1256,
             "stop" => [
                 "Human:",
                 "AI:"
@@ -81,7 +81,7 @@ class HomeController extends Controller
 
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            echo 'Error:' . curl_error($ch);
+            return curl_error($ch);
         }
         curl_close($ch);
         $result = json_decode($response, true)['choices'][0]['text'];
