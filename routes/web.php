@@ -37,9 +37,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/post_like/{post}', [App\Http\Controllers\PostController::class, 'postLike']);
 
     Route::get('/chat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'chat']);
+    Route::get('/mchat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'mchat']);
     Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index']);
     Route::post('/messages/{dialog_id}/', [App\Http\Controllers\MessageController::class, 'store']);
     Route::post('/create_dialog/', [App\Http\Controllers\MessageController::class, 'createDialog']);
+    Route::get('/create_multi_dialog', [App\Http\Controllers\MessageController::class, 'renderCreateMultiDialog']);
+    Route::post('/create_multi_dialog_post/', [App\Http\Controllers\MessageController::class, 'createMultiDialog']);
 
     Route::get('/friends', [App\Http\Controllers\FriendsController::class, 'index'])->name('friends');
     Route::post('/search_friends', [App\Http\Controllers\FriendsController::class, 'search'])->name('search_friends');
@@ -83,7 +86,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/market', [App\Http\Controllers\MarketController::class, 'renderPage']);
 
-    Route::get('/test', [App\Http\Controllers\ProfileController::class, 'test']);
+    Route::get('/gpt', [App\Http\Controllers\HomeController::class, 'renderGPT']);
+    Route::post('/get_gpt_answer', [App\Http\Controllers\HomeController::class, 'gpt']);
 });
 
 require __DIR__.'/auth.php';

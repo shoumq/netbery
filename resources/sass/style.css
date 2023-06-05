@@ -870,7 +870,8 @@ input[type=checkbox] {
   background-position: 100rem;
 }
 .btn-primary:disabled {
-  background-color: #82a9d2;
+  background: linear-gradient(#93baf3, #6c9de1);
+  cursor: default;
 }
 .btn-danger {
   background-color: #fd6363;
