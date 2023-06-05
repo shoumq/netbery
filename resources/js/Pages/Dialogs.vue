@@ -9,15 +9,17 @@ import {Link, Head} from "@inertiajs/vue3";
     </Head>
     <Layout>
         <div class="chat">
-            <div class="chat-title">
+            <div class="chat-title chat-title__dialog">
                 <Link href="/">Мессенджер</Link>
+                <Link href="/create_multi_dialog/" class="btn btn-primary" style="color: white">Создать беседу</Link>
             </div>
 
             <div class="chat-content" ref="container">
                 <div v-for="item in dialogsData">
                     <Link class="messages-item" :href="'/chat/' + item.id"
-                       v-if="item.last_message_body.length !== 0">
-                        <Link :href="'/user/' + checkName(item.user_one_login, item.user_two_login)" class="messages-item__img">
+                          v-if="item.last_message_body.length !== 0">
+                        <Link :href="'/user/' + checkName(item.user_one_login, item.user_two_login)"
+                              class="messages-item__img">
                             <img :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img)"
                                  alt="">
                         </Link>
@@ -27,6 +29,22 @@ import {Link, Head} from "@inertiajs/vue3";
                                v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:
                                 {{ item.last_message_body[0].body }}</a>
                             <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>
+                        </div>
+                    </Link>
+                </div>
+
+                <div v-for="item in multi_chats">
+                    <Link :href="'/mchat/' + item.id" class="messages-item">
+                        <Link :href="'/mchat/' + item.id" class="messages-item__img">
+                            <img :src="'../storage/images/' + item.multi_chat_img"
+                                 alt="">
+                        </Link>
+                        <div class="flex-c">
+                            <a class="messages-item__name">{{ item.multi_chat_title }}</a>
+                            <!--                            <a class="messages-item__mess"-->
+                            <!--                               v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:-->
+                            <!--                                {{ item.last_message_body[0].body }}</a>-->
+                            <!--                            <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>-->
                         </div>
                     </Link>
                 </div>
@@ -47,7 +65,7 @@ export default {
         }
     },
 
-    props: ['dialogs', 'dialogs_id'],
+    props: ['dialogs', 'dialogs_id', 'multi_chats'],
 
     methods: {
         logoutFun() {
@@ -106,5 +124,11 @@ export default {
 .flex-c {
     display: flex;
     flex-direction: column;
+}
+
+.chat-title__dialog {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
 }
 </style>

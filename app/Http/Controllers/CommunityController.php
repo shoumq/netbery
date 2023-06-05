@@ -65,7 +65,7 @@ class CommunityController extends Controller
         $posts = Community_post::where('community_id', $community->id)->latest()->get();
         $posts = PostCommunityResource::collection($posts)->resolve();
 
-        $communities_sub = Community_subscriber::where('community_id', $community->id)->get();
+        $communities_sub = Community_subscriber::where('community_id', $community->id)->inRandomOrder()->limit(3)->get();
         $communities_sub = UsersCommunityResource::collection($communities_sub)->resolve();
 
         $isSub = count(Community_subscriber::where('user_id', Auth::user()->id)

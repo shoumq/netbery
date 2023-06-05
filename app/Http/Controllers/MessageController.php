@@ -7,8 +7,12 @@ use App\Events\StoreMessageEvent;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Resources\Dialog\DialogResource;
 use App\Http\Resources\Message\MessageResource;
+use App\Http\Resources\Message\MultiChatResource;
 use App\Models\Dialog;
+use App\Models\Image_users;
 use App\Models\Message;
+use App\Models\MultiChat;
+use App\Models\MultiChatUsers;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,11 +25,15 @@ class MessageController extends Controller
         $dialogs = Dialog::where('user_one', Auth::user()->id)
             ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $dialogs = DialogResource::collection($dialogs)->resolve();
+
+        $multi_chats = MultiChatUsers::where('user_id', Auth::user()->id)->get();
+        $multi_chats = MultiChatResource::collection($multi_chats)->resolve();
+
         $dialogs_id = $dialogs;
 
 //        event(new DialogEvent($dialogs->id));
 
-        return inertia('Dialogs', compact('dialogs', 'dialogs_id'));
+        return inertia('Dialogs', compact('dialogs', 'dialogs_id', 'multi_chats'));
     }
 
     public function chat(Dialog $dialog_id)
@@ -37,6 +45,35 @@ class MessageController extends Controller
         } else {
             return redirect('/messages');
         }
+    }
+
+    public function mchat(MultiChat $dialog_id) {
+        return inertia('MChat', compact('dialog_id'));
+    }
+
+    public function renderCreateMultiDialog() {
+        return inertia('CreateDialog');
+    }
+
+    public function createMultiDialog(Request $request) {
+        $name = $request->file('file')->getClientOriginalName();
+        $size = $request->file('file')->getSize();
+
+        $request->file('file')->storeAs('public/images/', $name);
+
+        $multi_chat = new MultiChat();
+        $multi_chat->dialog_title = $request->dialog_title;
+        $multi_chat->img_name = $name;
+        $multi_chat->img_size = $size;
+        $multi_chat->admin_id = Auth::user()->id;
+        $multi_chat->save();
+
+        $multi_chat_users = new MultiChatUsers();
+        $multi_chat_users->multi_chat_id = $multi_chat->id;
+        $multi_chat_users->user_id = Auth::user()->id;
+        $multi_chat_users->save();
+
+        return $multi_chat;
     }
 
     public function store(Dialog $dialog_id, StoreRequest $request)
