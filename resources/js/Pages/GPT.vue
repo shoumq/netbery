@@ -47,6 +47,9 @@ export default {
                     this.resultData = response.data
                     this.btnDisabled = false
                 })
+                .catch(() => {
+                    this.btnDisabled = false
+                })
         }
     }
 }
