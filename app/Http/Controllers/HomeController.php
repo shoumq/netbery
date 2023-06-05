@@ -61,7 +61,7 @@ class HomeController extends Controller
             "model" => "gpt-3.5-turbo",
             "prompt" =>  $request->question, //Your question or request
             "temperature" => 0.7,
-            "max_tokens" => 1256,
+            "max_tokens" => 256,
             "stop" => [
                 "Human:",
                 "AI:"
