@@ -10,7 +10,7 @@ import {Link, Head} from "@inertiajs/vue3";
     <Layout>
         <div class="chat">
             <form class="messages-input gpt-input" @submit.prevent="sendGPT">
-                <input type="text" class="input" placeholder="Введите запрос" v-model="question">
+                <input type="text" class="input" placeholder="Введите запрос" v-model="question" :disabled="btnDisabled">
                 <button type="submit" class="btn btn-primary" :disabled="btnDisabled">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg"
                          viewBox="0 0 16 16">
@@ -48,6 +48,7 @@ export default {
                     this.btnDisabled = false
                 })
                 .catch(() => {
+                    this.resultData = 'Попробуйте еще раз :('
                     this.btnDisabled = false
                 })
         }
