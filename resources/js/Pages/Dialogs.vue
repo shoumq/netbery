@@ -11,7 +11,7 @@ import {Link, Head} from "@inertiajs/vue3";
         <div class="chat">
             <div class="chat-title chat-title__dialog">
                 <Link href="/">Мессенджер</Link>
-                <Link href="/create_multi_dialog/" class="btn btn-primary" style="color: white">Создать беседу</Link>
+                <Link href="/create_multi_dialog/" class="btn btn-primary none" style="color: white">Создать беседу</Link>
             </div>
 
             <div class="chat-content" ref="container">

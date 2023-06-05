@@ -87,7 +87,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/market', [App\Http\Controllers\MarketController::class, 'renderPage']);
 
     Route::get('/gpt', [App\Http\Controllers\HomeController::class, 'renderGPT']);
-    Route::post('/get_gpt_answer', [App\Http\Controllers\HomeController::class, 'gpt']);
+    Route::post('/get_gpt_answer/', [App\Http\Controllers\HomeController::class, 'gpt']);
 });
 
 require __DIR__.'/auth.php';
