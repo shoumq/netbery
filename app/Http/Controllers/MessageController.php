@@ -4,14 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Events\DialogEvent;
 use App\Events\StoreMessageEvent;
+use App\Events\StoreMultiChatMessEvent;
 use App\Http\Requests\Message\StoreRequest;
 use App\Http\Resources\Dialog\DialogResource;
 use App\Http\Resources\Message\MessageResource;
+use App\Http\Resources\Message\MultiChatMessResource;
 use App\Http\Resources\Message\MultiChatResource;
 use App\Models\Dialog;
 use App\Models\Image_users;
 use App\Models\Message;
 use App\Models\MultiChat;
+use App\Models\MultiChatMess;
 use App\Models\MultiChatUsers;
 use App\Models\User;
 use Carbon\Carbon;
@@ -48,7 +51,9 @@ class MessageController extends Controller
     }
 
     public function mchat(MultiChat $dialog_id) {
-        return inertia('MChat', compact('dialog_id'));
+        $messages = MultiChatMess::where('multi_chat_id', $dialog_id->id)->get();
+        $messages = MultiChatMessResource::collection($messages)->resolve();
+        return inertia('MChat', compact('dialog_id', 'messages'));
     }
 
     public function renderCreateMultiDialog() {
@@ -78,7 +83,7 @@ class MessageController extends Controller
 
     public function store(Dialog $dialog_id, StoreRequest $request)
     {
-        $message = new Message;
+        $message = new Message();
         $message->from_name = Auth::user()->name;
         $message->from_id = Auth::user()->id;
         $message->dialog_id = $dialog_id->id;
@@ -92,6 +97,25 @@ class MessageController extends Controller
         event(new StoreMessageEvent($message, $dialog_id->id));
 
         return MessageResource::make($message)->resolve();
+    }
+
+    public function storeMchat(Request $request)
+    {
+        $message = new MultiChatMess();
+        $message->multi_chat_id = $request->multi_chat_id;
+        $message->user_id = Auth::user()->id;
+        $message->body = $request->body;
+        $message->save();
+
+        $dialogs_id = MultiChat::find($request->multi_chat_id);
+        $dialogs_id->updated_at = Carbon::now();
+        $dialogs_id->save();
+
+        event(new StoreMultiChatMessEvent($message, $request->multi_chat_id));
+
+        return MultiChatMessResource::make($message)->resolve();
+
+//        return $message;
     }
 
     public function createDialog(Request $request)

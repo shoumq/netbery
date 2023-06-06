@@ -61,8 +61,7 @@ class HomeController extends Controller
             return curl_error($ch);
         }
         curl_close($ch);
-        $result = json_decode($response, true)['choices'][0]['text'];
-        return $result;
+        return json_decode($response, true)['choices'][0]['text'];
     }
 
     public function renderGPT()

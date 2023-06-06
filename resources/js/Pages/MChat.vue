@@ -11,18 +11,20 @@ import {Link, Head} from "@inertiajs/vue3";
         <div class="chat">
             <div class="chat-title">
                 <Link>{{ dialog_id.dialog_title }}</Link>
+                <Link>{{ dialog_id.dialog_title }}</Link>
             </div>
 
             <div class="chat-content" ref="container">
-                <div class="messages-item" v-for="item in messagesData">
+                <div class="messages-item" v-for="item in messages">
                     <Link :href="'/user/' + item.login" class="messages-item__img">
-                        <img :src="'../storage/images/' + item.img_id"
+                        <img :src="'../storage/images/' + item.user_image"
                              alt="">
                     </Link>
                     <div>
                         <div>
-                            <Link :href="'/user/' + item.login" class="messages-item__name">{{ item.name }}
-                                {{ item.surname }}</Link>
+                            <Link :href="'/user/' + item.user_image" class="messages-item__name">{{ item.user_name }}
+                                {{ item.surname }}
+                            </Link>
                             <a :href="'/user/' + item.login" class="messages-item__time">{{ item.time }}</a>
                         </div>
                         <div class="messages-item__body">{{ item.body }}</div>
@@ -31,7 +33,7 @@ import {Link, Head} from "@inertiajs/vue3";
             </div>
 
             <form class="messages-input" @submit.prevent="storeMessage">
-                <input type="text" class="input input-mes" placeholder="Введите сообщение" v-model="body" autofocus>
+                <input type="text" class="input input-mes" placeholder="Введите сообщение" v-model="body" autofocus :disabled="sendButton">
                 <button class="btn btn-primary" type="submit" :disabled="sendButton">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send svg"
                          viewBox="0 0 16 16">
@@ -47,7 +49,35 @@ import {Link, Head} from "@inertiajs/vue3";
 
 <script>
 export default {
-    props: ['dialog_id']
+    props: ['dialog_id', 'messages'],
+
+    data() {
+        return {
+            body: '',
+            sendButton: false
+        }
+    },
+
+    methods: {
+        storeMessage() {
+            this.sendButton = true
+            axios.post(`/store_mess_multi_chat`, {
+                body: this.body,
+                multi_chat_id: this.dialog_id.id
+            })
+                .then((response) => {
+                    this.body = ''
+                    this.sendButton = false
+                })
+        }
+    },
+
+    mounted() {
+        window.Echo.channel('store_multi_message_' + this.dialog_id.id)
+            .listen('.store_multi_message', response => {
+                console.log(response)
+            })
+    }
 }
 </script>
 
@@ -62,4 +92,9 @@ export default {
 
 input
     border-radius: 100rem !important
+
+.chat-title
+    display: flex
+    justify-content: space-between
+    flex-direction: row
 </style>

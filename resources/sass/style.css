@@ -873,6 +873,21 @@ input[type=checkbox] {
   background: linear-gradient(#93baf3, #6c9de1);
   cursor: default;
 }
+.btn-purple {
+  color: white;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1), 0 2rem 14rem rgba(0, 0, 0, 0.1);
+  background: linear-gradient(#8b00ff, #e025b4);
+  transition: background 0.3s ease-out;
+  background-size: 1rem 200rem;
+}
+.btn-purple:hover {
+  background-color: #8b00ff;
+  background-position: 100rem;
+}
+.btn-purple:disabled {
+  background: linear-gradient(#be6dff, #ba72ff);
+  cursor: default;
+}
 .btn-danger {
   background-color: #fd6363;
   color: white;

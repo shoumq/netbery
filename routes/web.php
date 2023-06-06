@@ -38,6 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/chat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'chat']);
     Route::get('/mchat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'mchat']);
+    Route::post('/store_mess_multi_chat/', [App\Http\Controllers\MessageController::class, 'storeMchat']);
     Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index']);
     Route::post('/messages/{dialog_id}/', [App\Http\Controllers\MessageController::class, 'store']);
     Route::post('/create_dialog/', [App\Http\Controllers\MessageController::class, 'createDialog']);

@@ -11,7 +11,7 @@ import {Link, Head} from "@inertiajs/vue3";
         <div class="chat">
             <div class="chat-title chat-title__dialog">
                 <Link href="/">Мессенджер</Link>
-                <Link href="/create_multi_dialog/" class="btn btn-primary none" style="color: white">Создать беседу</Link>
+                <Link href="/create_multi_dialog/" class="btn btn-primary" style="color: white">Создать беседу</Link>
             </div>
 
             <div class="chat-content" ref="container">
@@ -33,7 +33,7 @@ import {Link, Head} from "@inertiajs/vue3";
                     </Link>
                 </div>
 
-                <div v-for="item in multi_chats">
+                <div v-for="item in multi_chats" v-if="multi_chats">
                     <Link :href="'/mchat/' + item.id" class="messages-item">
                         <Link :href="'/mchat/' + item.id" class="messages-item__img">
                             <img :src="'../storage/images/' + item.multi_chat_img"
