@@ -36,10 +36,10 @@ class HomeController extends Controller
             "prompt" =>  $request->question, //Your question or request
             "temperature" => 0.7,
             "max_tokens" => 2048,
-            "stop" => [
-                "Human:",
-                "AI:"
-            ]
+//            "stop" => [
+//                "Human:",
+//                "AI:"
+//            ]
         );
 
         $ch = curl_init();
