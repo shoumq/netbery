@@ -5,7 +5,7 @@ import {Link, Head} from "@inertiajs/vue3";
 
 <template>
     <Head>
-        <title>Сообщения</title>
+        <title>GPT (beta)</title>
     </Head>
     <Layout>
         <div class="chat">
