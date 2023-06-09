@@ -531,6 +531,11 @@ main .chat {
   padding: 15rem;
   border-radius: 10rem;
 }
+@media (max-width: 768px) {
+  main .chat {
+    padding: 10rem;
+  }
+}
 main .chat-title {
   font-size: 15rem;
   color: #333333;
@@ -539,14 +544,29 @@ main .chat-title {
   display: flex;
   flex-direction: column;
 }
+@media (max-width: 768px) {
+  main .chat-title {
+    padding-bottom: 10rem;
+  }
+}
 main .chat-title a {
   color: #333333;
   display: flex;
   align-items: center;
   gap: 7rem;
 }
+@media (max-width: 768px) {
+  main .chat-title a {
+    font-size: 11rem;
+  }
+}
 main .chat-title__time {
   font-size: 11rem;
+}
+@media (max-width: 768px) {
+  main .chat-title__time {
+    font-size: 9rem;
+  }
 }
 main .chat-content {
   height: 75vh;
@@ -558,7 +578,7 @@ main .chat-content {
 }
 @media (max-width: 768px) {
   main .chat-content {
-    height: 62vh;
+    height: 60vh;
   }
 }
 main .chat-content::-webkit-scrollbar {
@@ -581,6 +601,11 @@ main .chat .messages-item {
   border-radius: 5rem;
   padding-inline: 3rem;
 }
+@media (max-width: 768px) {
+  main .chat .messages-item {
+    gap: 8rem;
+  }
+}
 main .chat .messages-item:hover {
   background-color: rgba(51, 51, 51, 0.05);
 }
@@ -590,15 +615,32 @@ main .chat .messages-item__img {
   border-radius: 50%;
   border: 1px solid #dce1e6;
 }
+@media (max-width: 768px) {
+  main .chat .messages-item__img {
+    width: 30rem;
+    height: 30rem;
+  }
+}
 main .chat .messages-item__img img {
   width: 40rem;
   height: 40rem;
   border-radius: 50%;
   object-fit: cover;
 }
+@media (max-width: 768px) {
+  main .chat .messages-item__img img {
+    width: 30rem;
+    height: 30rem;
+  }
+}
 main .chat .messages-item__name {
   font-size: 15rem;
   color: #333333;
+}
+@media (max-width: 768px) {
+  main .chat .messages-item__name {
+    font-size: 11rem;
+  }
 }
 main .chat .messages-item__mess {
   font-size: 13rem;
@@ -609,10 +651,20 @@ main .chat .messages-item__time {
   color: gray;
   margin-left: 10rem;
 }
+@media (max-width: 768px) {
+  main .chat .messages-item__time {
+    font-size: 10rem;
+  }
+}
 main .chat .messages-item__body {
   margin-top: 3rem;
   font-size: 13rem;
   color: #333333;
+}
+@media (max-width: 768px) {
+  main .chat .messages-item__body {
+    font-size: 11rem;
+  }
 }
 main .del-flex {
   display: flex;

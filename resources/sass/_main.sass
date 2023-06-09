@@ -494,6 +494,9 @@ main
         padding: 15rem
         border-radius: 10rem
 
+        @media (max-width: 768px)
+            padding: 10rem
+
         &-title
             font-size: 15rem
             color: #333333
@@ -502,14 +505,23 @@ main
             display: flex
             flex-direction: column
 
+            @media (max-width: 768px)
+                padding-bottom: 10rem
+
             a
                 color: #333333
                 display: flex
                 align-items: center
                 gap: 7rem
 
+                @media (max-width: 768px)
+                    font-size: 11rem
+
             &__time
                 font-size: 11rem
+
+                @media (max-width: 768px)
+                    font-size: 9rem
 
         &-content
             height: 75vh
@@ -520,7 +532,7 @@ main
             overflow-y: scroll
 
             @media (max-width: 768px)
-                height: 62vh
+                height: 60vh
 
             &::-webkit-scrollbar
                 width: 0
@@ -543,6 +555,9 @@ main
                 border-radius: 5rem
                 padding-inline: 3rem
 
+                @media (max-width: 768px)
+                    gap: 8rem
+
                 &:hover
                     background-color: rgba(51, 51, 51, 0.05)
 
@@ -552,15 +567,26 @@ main
                     border-radius: 50%
                     border: 1px solid #dce1e6
 
+                    @media (max-width: 768px)
+                        width: 30rem
+                        height: 30rem
+
                     img
                         width: 40rem
                         height: 40rem
                         border-radius: 50%
                         object-fit: cover
 
+                        @media (max-width: 768px)
+                            width: 30rem
+                            height: 30rem
+
                 &__name
                     font-size: 15rem
                     color: #333333
+
+                    @media (max-width: 768px)
+                        font-size: 11rem
 
                 &__mess
                     font-size: 13rem
@@ -571,10 +597,16 @@ main
                     color: gray
                     margin-left: 10rem
 
+                    @media (max-width: 768px)
+                        font-size: 10rem
+
                 &__body
                     margin-top: 3rem
                     font-size: 13rem
                     color: #333333
+
+                    @media (max-width: 768px)
+                        font-size: 11rem
 
     .del-flex
         display: flex

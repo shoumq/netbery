@@ -107,7 +107,7 @@ import {Link, Head} from "@inertiajs/vue3";
                 <div class="flex--title" @click="showDialog">
                     <img :src="'../storage/images/' + dialog_id.img_name" alt="">
                     <div>
-                        <div>{{ dialog_id.dialog_title }}</div>
+                        <div class="dialog_title">{{ dialog_id.dialog_title }}</div>
                         <div class="user_count">{{ users_count }} участника(ов)</div>
                     </div>
                 </div>
@@ -400,4 +400,12 @@ input
 .user_count
     font-size: 12rem
     color: gray
+
+    @media (max-width: 768px)
+        font-size: 10rem
+
+.dialog_title
+    font-size: 14rem
+    @media (max-width: 768px)
+        font-size: 11rem
 </style>
