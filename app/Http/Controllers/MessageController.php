@@ -17,6 +17,7 @@ use App\Models\MultiChatMess;
 use App\Models\MultiChatUsers;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,8 +27,12 @@ class MessageController extends Controller
 {
     public function index()
     {
+        $col = new Collection();
+
+//        $dialogs = Dialog::where('user_one', Auth::user()->id)
+//            ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $dialogs = Dialog::where('user_one', Auth::user()->id)
-            ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+            ->orWhere('user_two', Auth::user()->id)->get();
         $dialogs = DialogResource::collection($dialogs)->resolve();
 
         $multi_chats = MultiChatUsers::where('user_id', Auth::user()->id)->get();
@@ -35,9 +40,22 @@ class MessageController extends Controller
 
         $dialogs_id = $dialogs;
 
+        if ($dialogs != null) {
+            foreach ($dialogs as $sc) {
+                $col->add($sc);
+            }
+        }
+        if ($multi_chats != null) {
+            foreach ($multi_chats as $mc) {
+                $col->add($mc);
+            }
+        }
+
+        $col = $col->sortBy('created_at');
+
 //        event(new DialogEvent($dialogs->id));
 
-        return inertia('Dialogs', compact('dialogs', 'dialogs_id', 'multi_chats'));
+        return inertia('Dialogs', compact('dialogs', 'dialogs_id', 'multi_chats', 'col'));
     }
 
     public function chat(Dialog $dialog_id)
@@ -167,8 +185,7 @@ class MessageController extends Controller
             $user = MultiChatUsersResource::make($chat)->resolve();
 
             return $user;
-        }
-        else {
+        } else {
             return "already_exits";
         }
     }

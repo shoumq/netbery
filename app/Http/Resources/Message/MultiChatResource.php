@@ -17,6 +17,7 @@ class MultiChatResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'type' => 'public',
             'id' => $this->id,
             'multi_chat_id' => $this->multi_chat_id,
             'multi_chat_title' => MultiChat::where('id', $this->multi_chat_id)->first()->dialog_title,

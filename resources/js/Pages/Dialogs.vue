@@ -15,38 +15,36 @@ import {Link, Head} from "@inertiajs/vue3";
             </div>
 
             <div class="chat-content" ref="container">
-                <div v-for="item in dialogsData">
-                    <Link class="messages-item" :href="'/chat/' + item.id"
-                          v-if="item.last_message_body.length !== 0">
-                        <Link :href="'/user/' + checkName(item.user_one_login, item.user_two_login)"
-                              class="messages-item__img">
-                            <img :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img)"
-                                 alt="">
+                <div v-for="item in col">
+                    <div v-if="item.type === 'public'">
+                        <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item">
+                            <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item__img">
+                                <img :src="'../storage/images/' + item.multi_chat_img"
+                                     alt="">
+                            </Link>
+                            <div class="flex-c">
+                                <a class="messages-item__name">{{ item.multi_chat_title }}</a>
+                            </div>
                         </Link>
-                        <div class="flex-c">
-                            <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}</a>
-                            <a class="messages-item__mess"
-                               v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:
-                                {{ item.last_message_body[0].body }}</a>
-                            <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>
-                        </div>
-                    </Link>
-                </div>
+                    </div>
 
-                <div v-for="item in multi_chats" v-if="multi_chats">
-                    <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item">
-                        <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item__img">
-                            <img :src="'../storage/images/' + item.multi_chat_img"
-                                 alt="">
+                    <div v-if="item.type === 'private'">
+                        <Link class="messages-item" :href="'/chat/' + item.id"
+                              v-if="item.last_message_body.length !== 0">
+                            <Link :href="'/user/' + checkName(item.user_one_login, item.user_two_login)"
+                                  class="messages-item__img">
+                                <img :src="'../storage/images/' + checkImage(item.user_one_img, item.user_two_img)"
+                                     alt="">
+                            </Link>
+                            <div class="flex-c">
+                                <a class="messages-item__name">{{ checkName(item.user_one, item.user_two) }}</a>
+                                <a class="messages-item__mess"
+                                   v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:
+                                    {{ item.last_message_body[0].body }}</a>
+                                <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>
+                            </div>
                         </Link>
-                        <div class="flex-c">
-                            <a class="messages-item__name">{{ item.multi_chat_title }}</a>
-                            <!--                            <a class="messages-item__mess"-->
-                            <!--                               v-if="parseInt(item.last_message_body[0].from_id) === parseInt($page.props.auth.user.id)">Вы:-->
-                            <!--                                {{ item.last_message_body[0].body }}</a>-->
-                            <!--                            <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>-->
-                        </div>
-                    </Link>
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,7 +63,7 @@ export default {
         }
     },
 
-    props: ['dialogs', 'dialogs_id', 'multi_chats'],
+    props: ['dialogs', 'dialogs_id', 'multi_chats', 'col'],
 
     methods: {
         logoutFun() {

@@ -57,7 +57,7 @@ export default {
 
             axios.post(`/create_multi_dialog_post`, this.formData)
                 .then(() => {
-                    // this.$inertia.visit(`/messages/`, { method: 'get' });
+                    this.$inertia.visit(route('messages'), {method: 'get'});
                 })
         }
     }

@@ -60,7 +60,8 @@ import {Link, Head} from "@inertiajs/vue3";
                                                 <div class="dialog_user--drop">
 
                                                     <div v-for="(item, index) in searchUserArray[0]" :key="index"
-                                                         class="dialog_user--flex" style="cursor: pointer" @click="addUser(item.id)">
+                                                         class="dialog_user--flex" style="cursor: pointer"
+                                                         @click="addUser(item.id)">
                                                         <img class="dialog_user--img"
                                                              :src="'../storage/images/' + item.img_id"
                                                              alt="">
@@ -103,7 +104,10 @@ import {Link, Head} from "@inertiajs/vue3";
 
         <div class="chat">
             <div class="chat-title">
-                <Link>{{ dialog_id.dialog_title }}</Link>
+                <div class="flex--title" @click="showDialog">
+                    <img :src="'../storage/images/' + dialog_id.img_name" alt="">
+                    <div>{{ dialog_id.dialog_title }}</div>
+                </div>
                 <button class="btn btn-primary" @click="showDialog"
                         v-if="parseInt(dialog_id.admin_id) === parseInt($page.props.auth.user.id)">
                     Редактировать
@@ -268,6 +272,8 @@ export default {
         window.Echo.channel('store_multi_message_' + this.dialog_id.id)
             .listen('.store_multi_message', response => {
                 this.messages.push(response.message)
+                const container = this.$refs.container;
+                container.scrollTop = container.scrollHeight;
             })
     }
 }
@@ -374,4 +380,16 @@ input
 
 .dialog
     border-radius: 10rem
+
+.flex--title
+    display: flex
+    align-items: center
+    gap: 10rem
+    cursor: pointer
+
+    img
+        width: 30rem
+        height: 30rem
+        object-fit: cover
+        border-radius: 100rem
 </style>
