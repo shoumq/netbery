@@ -106,7 +106,10 @@ import {Link, Head} from "@inertiajs/vue3";
             <div class="chat-title">
                 <div class="flex--title" @click="showDialog">
                     <img :src="'../storage/images/' + dialog_id.img_name" alt="">
-                    <div>{{ dialog_id.dialog_title }}</div>
+                    <div>
+                        <div>{{ dialog_id.dialog_title }}</div>
+                        <div class="user_count">{{ users_count }} участника(ов)</div>
+                    </div>
                 </div>
                 <button class="btn btn-primary" @click="showDialog"
                         v-if="parseInt(dialog_id.admin_id) === parseInt($page.props.auth.user.id)">
@@ -152,7 +155,7 @@ import {Link, Head} from "@inertiajs/vue3";
 
 <script>
 export default {
-    props: ['dialog_id', 'messages', 'users'],
+    props: ['dialog_id', 'messages', 'users', 'users_count'],
 
     data() {
         return {
@@ -393,4 +396,8 @@ input
         height: 30rem
         object-fit: cover
         border-radius: 100rem
+
+.user_count
+    font-size: 12rem
+    color: gray
 </style>

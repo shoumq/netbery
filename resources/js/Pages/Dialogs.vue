@@ -42,6 +42,10 @@ import {Link, Head} from "@inertiajs/vue3";
                             </Link>
                             <div class="flex-c">
                                 <a class="messages-item__name">{{ item.multi_chat_title }}</a>
+                                <a class="messages-item__mess"
+                                   v-if="parseInt(item.last_message_body[0].user_id) === parseInt($page.props.auth.user.id)">Вы:
+                                    {{ item.last_message_body[0].body }}</a>
+                                <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>
                             </div>
                         </Link>
                     </div>

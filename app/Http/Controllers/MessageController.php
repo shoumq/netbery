@@ -75,7 +75,9 @@ class MessageController extends Controller
         $users = MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get();
         $users = MultiChatUsersResource::collection($users)->resolve();
 
-        return inertia('MChat', compact('dialog_id', 'messages', 'users'));
+        $users_count = count(MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get());
+
+        return inertia('MChat', compact('dialog_id', 'messages', 'users', 'users_count'));
     }
 
     public function renderCreateMultiDialog()

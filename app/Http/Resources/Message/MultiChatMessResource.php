@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Message;
 
 use App\Models\MultiChat;
+use App\Models\MultiChatUsers;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
