@@ -46,7 +46,6 @@ import {Link, Head} from "@inertiajs/vue3";
                         </Link>
                     </div>
                 </div>
-                <a class="messages-item__mess">{{ col }}</a>
             </div>
         </div>
     </Layout>
