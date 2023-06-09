@@ -18,6 +18,8 @@ class MultiChatResource extends JsonResource
     {
         return [
             'type' => 'public',
+//            'updated_at' => (int)explode(':', explode(' ', date($this->updated_at))[1])[2],
+            'updated_at' => strtotime(date(MultiChat::where('id', $this->multi_chat_id)->first()->updated_at)),
             'id' => $this->id,
             'multi_chat_id' => $this->multi_chat_id,
             'multi_chat_title' => MultiChat::where('id', $this->multi_chat_id)->first()->dialog_title,

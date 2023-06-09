@@ -11,13 +11,15 @@ class DialogResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
     {
         return [
             'type' => 'private',
+//            'updated_at' => (int)explode(':', explode(' ', date($this->updated_at))[1])[2],
+            'updated_at' => strtotime(date($this->updated_at)),
             'id' => $this->id,
             'user_one' => User::where('id', $this->user_one)->get()[0]->name . ' ' . User::where('id', $this->user_one)->get()[0]->surname,
             'user_two' => User::where('id', $this->user_two)->get()[0]->name . ' ' . User::where('id', $this->user_two)->get()[0]->surname,

@@ -27,10 +27,8 @@ class MessageController extends Controller
 {
     public function index()
     {
-        $col = new Collection();
+        $cols = collect();
 
-//        $dialogs = Dialog::where('user_one', Auth::user()->id)
-//            ->orWhere('user_two', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
         $dialogs = Dialog::where('user_one', Auth::user()->id)
             ->orWhere('user_two', Auth::user()->id)->get();
         $dialogs = DialogResource::collection($dialogs)->resolve();
@@ -42,16 +40,16 @@ class MessageController extends Controller
 
         if ($dialogs != null) {
             foreach ($dialogs as $sc) {
-                $col->add($sc);
+                $cols->add($sc);
             }
         }
         if ($multi_chats != null) {
             foreach ($multi_chats as $mc) {
-                $col->add($mc);
+                $cols->add($mc);
             }
         }
 
-        $col = $col->sortBy('created_at');
+        $col = $cols->sortByDesc('updated_at', SORT_NATURAL)->values()->all();
 
 //        event(new DialogEvent($dialogs->id));
 
