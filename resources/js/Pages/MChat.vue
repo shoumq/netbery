@@ -308,6 +308,10 @@ input
     font-size: 13rem
     padding: 7rem 14rem
 
+    @media (max-width: 768px)
+        font-size: 10rem
+        padding: 1rem 10rem
+
 .input-modal
     font-size: 13rem
     padding: 6rem 7rem

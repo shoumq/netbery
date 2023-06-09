@@ -143,4 +143,11 @@ export default {
     font-size: 13rem;
     padding: 7rem 14rem;
 }
+
+@media (max-width: 768px) {
+    .btn {
+        font-size: 10rem;
+        padding: 5rem 10rem;
+    }
+}
 </style>
