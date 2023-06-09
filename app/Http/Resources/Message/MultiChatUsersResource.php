@@ -6,7 +6,7 @@ use App\Models\MultiChat;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MultiChatMessResource extends JsonResource
+class MultiChatUsersResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,11 +18,10 @@ class MultiChatMessResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'user_id' => User::where('id', $this->user_id)->first()->id,
             'user_name' => User::where('id', $this->user_id)->first()->name,
             'user_surname' => User::where('id', $this->user_id)->first()->surname,
-            'user_image' => User::where('id', $this->user_id)->first()->img_id,
-            'body' => $this->body,
-            'time' => date($this->created_at),
+            'user_img' => User::where('id', $this->user_id)->first()->img_id,
         ];
     }
 }

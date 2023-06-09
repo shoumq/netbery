@@ -18,6 +18,7 @@ class MultiChatResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'multi_chat_id' => $this->multi_chat_id,
             'multi_chat_title' => MultiChat::where('id', $this->multi_chat_id)->first()->dialog_title,
             'multi_chat_img' => MultiChat::where('id', $this->multi_chat_id)->first()->img_name
         ];

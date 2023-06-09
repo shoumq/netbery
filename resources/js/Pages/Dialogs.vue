@@ -34,8 +34,8 @@ import {Link, Head} from "@inertiajs/vue3";
                 </div>
 
                 <div v-for="item in multi_chats" v-if="multi_chats">
-                    <Link :href="'/mchat/' + item.id" class="messages-item">
-                        <Link :href="'/mchat/' + item.id" class="messages-item__img">
+                    <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item">
+                        <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item__img">
                             <img :src="'../storage/images/' + item.multi_chat_img"
                                  alt="">
                         </Link>
@@ -130,5 +130,15 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    padding-bottom: 10rem;
+}
+
+.chat {
+    padding: 10rem
+}
+
+.btn {
+    font-size: 13rem;
+    padding: 7rem 14rem;
 }
 </style>

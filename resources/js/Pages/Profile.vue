@@ -7,7 +7,7 @@ import {Link, Head} from '@inertiajs/vue3';
     <Head>
         <title>{{ user.name }} {{ user.surname }}</title>
     </Head>
-    <div class="dialog_wrapper" ref="dialog_wrapper"></div>
+    <div class="dialog_wrapper" ref="dialog_wrapper" @click="closeModal"></div>
     <Layout>
         <div class="dialog_img">
             <dialog open class="dialog2" ref="imgDialogRef" role="dialog" aria-modal="true">
@@ -288,6 +288,7 @@ export default {
         },
 
         closeModal() {
+            this.$refs.imgDialogRef.close()
             document.querySelector('body').style.overflowY = 'auto'
             this.$refs.dialog_wrapper.style.opacity = '0'
             this.$refs.dialog_wrapper.style.zIndex = '0'

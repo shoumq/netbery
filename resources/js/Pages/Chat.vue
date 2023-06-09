@@ -27,7 +27,8 @@ import {Link, Head} from "@inertiajs/vue3";
                     <div>
                         <div>
                             <Link :href="'/user/' + item.login" class="messages-item__name">{{ item.name }}
-                                {{ item.surname }}</Link>
+                                {{ item.surname }}
+                            </Link>
                             <a :href="'/user/' + item.login" class="messages-item__time">{{ item.time }}</a>
                         </div>
                         <div class="messages-item__body">{{ item.body }}</div>
@@ -74,12 +75,16 @@ export default {
             this.sendButton = true
             axios.post(`/messages/${this.dialogData.id}`, {
                 body: this.body
-            }).then(() => {
-                this.sendButton = false
-                this.body = '';
-                const container = this.$refs.container;
-                container.scrollTop = container.scrollHeight;
             })
+                .then(() => {
+                    this.sendButton = false
+                    this.body = '';
+                    const container = this.$refs.container;
+                    container.scrollTop = container.scrollHeight;
+                })
+                .catch(() => {
+                    this.sendButton = false
+                })
         },
 
         checkName(name1, name2) {

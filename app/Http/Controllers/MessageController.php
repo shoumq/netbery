@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\DialogEvent;
 use App\Events\StoreMessageEvent;
 use App\Events\StoreMultiChatMessEvent;
 use App\Http\Requests\Message\StoreRequest;
@@ -10,8 +9,8 @@ use App\Http\Resources\Dialog\DialogResource;
 use App\Http\Resources\Message\MessageResource;
 use App\Http\Resources\Message\MultiChatMessResource;
 use App\Http\Resources\Message\MultiChatResource;
+use App\Http\Resources\Message\MultiChatUsersResource;
 use App\Models\Dialog;
-use App\Models\Image_users;
 use App\Models\Message;
 use App\Models\MultiChat;
 use App\Models\MultiChatMess;
@@ -20,6 +19,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class MessageController extends Controller
 {
@@ -50,17 +51,24 @@ class MessageController extends Controller
         }
     }
 
-    public function mchat(MultiChat $dialog_id) {
+    public function mchat(MultiChat $dialog_id)
+    {
         $messages = MultiChatMess::where('multi_chat_id', $dialog_id->id)->get();
         $messages = MultiChatMessResource::collection($messages)->resolve();
-        return inertia('MChat', compact('dialog_id', 'messages'));
+
+        $users = MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get();
+        $users = MultiChatUsersResource::collection($users)->resolve();
+
+        return inertia('MChat', compact('dialog_id', 'messages', 'users'));
     }
 
-    public function renderCreateMultiDialog() {
+    public function renderCreateMultiDialog()
+    {
         return inertia('CreateDialog');
     }
 
-    public function createMultiDialog(Request $request) {
+    public function createMultiDialog(Request $request)
+    {
         $name = $request->file('file')->getClientOriginalName();
         $size = $request->file('file')->getSize();
 
@@ -114,8 +122,55 @@ class MessageController extends Controller
         event(new StoreMultiChatMessEvent($message, $request->multi_chat_id));
 
         return MultiChatMessResource::make($message)->resolve();
+    }
 
-//        return $message;
+    public function mchatChangeTitle(Request $request)
+    {
+        $chat = MultiChat::find($request->chat_id);
+        $chat->dialog_title = $request->chat_title;
+        $chat->save();
+
+        return $chat;
+    }
+
+    public function searchUser(Request $request)
+    {
+        $user_nick = explode(' ', $request->name);
+
+        if (count($user_nick) == 1) {
+            $users = User::where('name', 'LIKE', '%' . $user_nick[0] . '%')->get();
+        } elseif (count($user_nick) == 2) {
+            $users = User::where('name', 'LIKE', '%' . $user_nick[0] . '%')
+                ->where('surname', 'LIKE', '%' . $user_nick[1] . '%')->get();
+        }
+
+        return $users;
+    }
+
+    public function multiDialogKick(int $dialog_id, Request $request)
+    {
+        $chat = MultiChatUsers::where('multi_chat_id', $dialog_id)
+            ->where('user_id', $request->user_id)->first();
+        $chat->delete();
+
+        return "success";
+    }
+
+    public function multiDialogAdd(int $dialog_id, Request $request)
+    {
+        if (count(MultiChatUsers::where('multi_chat_id', $dialog_id)->where('user_id', $request->user_id)->get()) == 0) {
+            $chat = new MultiChatUsers();
+            $chat->multi_chat_id = $dialog_id;
+            $chat->user_id = $request->user_id;
+            $chat->save();
+
+            $user = MultiChatUsersResource::make($chat)->resolve();
+
+            return $user;
+        }
+        else {
+            return "already_exits";
+        }
     }
 
     public function createDialog(Request $request)

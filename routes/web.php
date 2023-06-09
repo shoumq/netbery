@@ -38,12 +38,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/chat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'chat']);
     Route::get('/mchat/{dialog_id}', [App\Http\Controllers\MessageController::class, 'mchat']);
+    Route::post('/mchat_change_title/', [App\Http\Controllers\MessageController::class, 'mchatChangeTitle']);
     Route::post('/store_mess_multi_chat/', [App\Http\Controllers\MessageController::class, 'storeMchat']);
-    Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index']);
+    Route::get('/messages', [App\Http\Controllers\MessageController::class, 'index'])->name('messages');
     Route::post('/messages/{dialog_id}/', [App\Http\Controllers\MessageController::class, 'store']);
     Route::post('/create_dialog/', [App\Http\Controllers\MessageController::class, 'createDialog']);
     Route::get('/create_multi_dialog', [App\Http\Controllers\MessageController::class, 'renderCreateMultiDialog']);
     Route::post('/create_multi_dialog_post/', [App\Http\Controllers\MessageController::class, 'createMultiDialog']);
+    Route::post('/multi_dialog_kick/{dialog_id}/', [App\Http\Controllers\MessageController::class, 'multiDialogKick']);
+    Route::post('/multi_dialog_add/{dialog_id}/', [App\Http\Controllers\MessageController::class, 'multiDialogAdd']);
+
+    Route::post('/search_user/', [App\Http\Controllers\MessageController::class, 'searchUser']);
 
     Route::get('/friends', [App\Http\Controllers\FriendsController::class, 'index'])->name('friends');
     Route::post('/search_friends', [App\Http\Controllers\FriendsController::class, 'search'])->name('search_friends');
