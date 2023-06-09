@@ -151,7 +151,9 @@ export default {
     }
 }
 
-.chat-content {
-    height: 61vh;
+@media (max-width: 768px) {
+    .chat-content {
+        height: 61vh;
+    }
 }
 </style>
