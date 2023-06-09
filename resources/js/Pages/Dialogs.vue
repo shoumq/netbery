@@ -150,4 +150,8 @@ export default {
         padding: 5rem 10rem;
     }
 }
+
+.chat-content {
+    height: 65vh;
+}
 </style>
