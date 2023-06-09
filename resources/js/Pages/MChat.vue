@@ -272,6 +272,7 @@ export default {
         window.Echo.channel('store_multi_message_' + this.dialog_id.id)
             .listen('.store_multi_message', response => {
                 this.messages.push(response.message)
+
                 const container = this.$refs.container;
                 container.scrollTop = container.scrollHeight;
             })

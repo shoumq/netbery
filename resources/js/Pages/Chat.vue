@@ -151,6 +151,9 @@ export default {
         window.Echo.channel('store_message_' + this.dialogData.id)
             .listen('.store_message', response => {
                 this.messagesData.push(response.message)
+
+                const container = this.$refs.container;
+                container.scrollTop = container.scrollHeight;
             })
     }
 }
