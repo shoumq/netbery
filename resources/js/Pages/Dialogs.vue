@@ -152,6 +152,6 @@ export default {
 }
 
 .chat-content {
-    height: 65vh;
+    height: 61vh;
 }
 </style>
