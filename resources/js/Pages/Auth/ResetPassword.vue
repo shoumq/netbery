@@ -41,7 +41,7 @@ const submit = () => {
                 </div>
 
                 <div class="mb4">
-                    <div class="fs1">Password</div>
+                    <div class="fs1">Пароль</div>
                     <input
                         type="password"
                         class="input"
@@ -54,7 +54,7 @@ const submit = () => {
                 </div>
 
                 <div class="mb4">
-                    <div class="fs1">Confirm Password</div>
+                    <div class="fs1">Повторите пароль</div>
                     <input
                         type="password"
                         class="input"
