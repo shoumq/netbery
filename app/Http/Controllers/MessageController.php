@@ -83,7 +83,7 @@ class MessageController extends Controller
 
             return inertia('MChat', compact('dialog_id', 'messages', 'users', 'users_count'));
         } else {
-            return redirect('/messages');
+            return to_route('messages');
         }
     }
 
