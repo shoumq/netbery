@@ -108,7 +108,7 @@ import {Link, Head} from "@inertiajs/vue3";
                     <img :src="'../storage/images/' + dialog_id.img_name" alt="">
                     <div>
                         <div class="dialog_title">{{ dialog_id.dialog_title }}</div>
-                        <div class="user_count">{{ users_count }} участника(ов)</div>
+                        <div class="user_count">{{ users_count }} участников</div>
                     </div>
                 </div>
                 <button class="btn btn-primary" @click="showDialog"
