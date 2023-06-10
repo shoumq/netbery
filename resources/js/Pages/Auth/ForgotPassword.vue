@@ -1,10 +1,6 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-// import InputError from '@/Components/InputError.vue';
-// import InputLabel from '@/Components/InputLabel.vue';
-// import PrimaryButton from '@/Components/PrimaryButton.vue';
-// import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
 
 defineProps({
     status: String,
@@ -21,39 +17,64 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Forgot Password" />
+        <Head title="Forgot Password"/>
 
-        <div class="mb-4 text-sm text-gray-600">
-            Forgot your password? No problem. Just let us know your email address and we will email you a password reset
-            link that will allow you to choose a new one.
-        </div>
-
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+        <div class="mini_cont">
+            <div class="fs3 mb4">
+                Забыли пароль? Без проблем. Просто сообщите нам свой адрес электронной почты, и мы отправим вам ссылку
+                для
+                сброса пароля, которая позволит вам выбрать новый.
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Email Password Reset Link
-                </PrimaryButton>
+            <div v-if="status" class="fs3 green mb4">
+                {{ status }}
             </div>
-        </form>
+            <div class="fs3 mb4">{{ form.errors.email }}</div>
+
+            <form @submit.prevent="submit">
+                <div>
+                    <div class="fs1">Email</div>
+                    <input
+                        type="email"
+                        class="input mb4"
+                        id="email"
+                        v-model="form.email"
+                        autofocus
+                        placeholder="Ваш email"
+                        :disabled="form.processing"
+                    />
+                </div>
+
+                <div>
+                    <button class="btn btn-primary" :disabled="form.processing">Сбросить пароль</button>
+                </div>
+            </form>
+        </div>
     </GuestLayout>
 </template>
+
+
+<style lang="sass" scoped>
+.fs3
+    font-size: 16rem
+
+    @media (max-width: 768px)
+        font-size: 14rem
+
+.fs1
+    font-size: 14rem
+    margin-bottom: 3rem
+
+.mb4
+    margin-bottom: 18rem
+
+.mb2
+    margin-bottom: 7rem
+
+.mini_cont
+    width: min(500rem, 100%)
+    margin: auto
+
+.input
+    width: calc(100% - 15rem)
+</style>

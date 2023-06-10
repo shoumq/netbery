@@ -44,10 +44,26 @@ const submit = () => {
                 </label>
 
                 <button type="submit" class="btn btn-primary" :disabled="form.processing">Войти</button>
-                <a href="/register" class="link link-3">Еще нет аккаунта? </a>
+                <div class="flex-login">
+                    <a href="/register" class="link link-3">Еще нет аккаунта?</a>
+                    <a href="/forgot-password" class="link link-3">Забыли пароль?</a>
+                </div>
 
             </div>
         </form>
     </GuestLayout>
 </template>
+
+<style lang="sass" scoped>
+.flex-login
+    display: flex
+    justify-content: space-between
+
+    @media (max-width: 768px)
+        flex-direction: column
+        gap: 5rem
+
+        .link-3
+            font-size: 13rem
+</style>
 
