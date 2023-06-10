@@ -578,7 +578,7 @@ main .chat-content {
 }
 @media (max-width: 768px) {
   main .chat-content {
-    height: 410rem;
+    height: 380rem;
   }
 }
 main .chat-content::-webkit-scrollbar {
