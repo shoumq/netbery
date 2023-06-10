@@ -69,15 +69,22 @@ class MessageController extends Controller
 
     public function mchat(MultiChat $dialog_id)
     {
-        $messages = MultiChatMess::where('multi_chat_id', $dialog_id->id)->get();
-        $messages = MultiChatMessResource::collection($messages)->resolve();
+        $isYour = MultiChatUsers::where('multi_chat_id', $dialog_id->id)
+            ->where('user_id', Auth::user()->id)->get();
 
-        $users = MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get();
-        $users = MultiChatUsersResource::collection($users)->resolve();
+        if (count($isYour) === 1) {
+            $messages = MultiChatMess::where('multi_chat_id', $dialog_id->id)->get();
+            $messages = MultiChatMessResource::collection($messages)->resolve();
 
-        $users_count = count(MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get());
+            $users = MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get();
+            $users = MultiChatUsersResource::collection($users)->resolve();
 
-        return inertia('MChat', compact('dialog_id', 'messages', 'users', 'users_count'));
+            $users_count = count(MultiChatUsers::where('multi_chat_id', $dialog_id->id)->get());
+
+            return inertia('MChat', compact('dialog_id', 'messages', 'users', 'users_count'));
+        } else {
+            return redirect('/messages');
+        }
     }
 
     public function renderCreateMultiDialog()
