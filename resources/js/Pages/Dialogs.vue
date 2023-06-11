@@ -14,7 +14,7 @@ import {Link, Head} from "@inertiajs/vue3";
                 <Link href="/create_multi_dialog/" class="btn btn-primary" style="color: white">Создать беседу</Link>
             </div>
 
-            <div class="chat-content" ref="container">
+            <div class="chat-content">
                 <div v-for="item in col">
 
                     <div v-if="item.type === 'public'">
@@ -74,16 +74,6 @@ export default {
     methods: {
         logoutFun() {
             axios.post('/logout');
-        },
-
-        storeMessage() {
-            axios.post(`/messages`, {
-                body: this.body
-            }).then(() => {
-                this.body = '';
-                const container = this.$refs.container;
-                container.scrollTop = container.scrollHeight;
-            })
         },
 
         checkName(name1, name2) {
