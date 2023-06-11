@@ -153,7 +153,12 @@ export default {
                 this.messagesData.push(response.message)
 
                 // const container = this.$refs.container;
-                this.$refs.container.scrollTop = this.$refs.container.scrollHeight;
+                try {
+                    this.$refs.container.scrollTop = this.$refs.container.scrollHeight;
+                } catch (e) {
+                    console.log(e)
+                    window.location.reload()
+                }
             })
     }
 }
