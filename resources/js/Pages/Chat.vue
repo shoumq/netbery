@@ -152,8 +152,8 @@ export default {
             .listen('.store_message', response => {
                 this.messagesData.push(response.message)
 
-                const container = this.$refs.container;
-                container.scrollTop = container.scrollHeight;
+                // const container = this.$refs.container;
+                this.$refs.container.scrollTop = this.$refs.container.scrollHeight;
             })
     }
 }
