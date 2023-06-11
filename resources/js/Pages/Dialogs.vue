@@ -29,7 +29,7 @@ import {Link, Head} from "@inertiajs/vue3";
                                 <!--                                   v-if="parseInt(item.last_message_body[0].user_id) === parseInt($page.props.auth.user.id)">Вы:-->
                                 <!--                                    {{ item.last_message_body[0].body }}</a>-->
                                 <!--                                <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>-->
-                                <a class="messages-item__mess">{{ item.last_message_body[0].body }}</a>
+                                <a class="messages-item__mess">{{ item.last_message_body[0] }}</a>
                             </div>
                         </Link>
                     </div>
