@@ -16,6 +16,25 @@ import {Link, Head} from "@inertiajs/vue3";
 
             <div class="chat-content" ref="container">
                 <div v-for="item in col">
+
+                    <div v-if="item.type === 'public'">
+                        <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item">
+                            <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item__img">
+                                <img :src="'../storage/images/' + item.multi_chat_img"
+                                     alt="">
+                            </Link>
+                            <div class="flex-c">
+                                <a class="messages-item__name">{{ item.multi_chat_title }}</a>
+                                <!--                                <a class="messages-item__mess"-->
+                                <!--                                   v-if="parseInt(item.last_message_body[0].user_id) === parseInt($page.props.auth.user.id)">Вы:-->
+                                <!--                                    {{ item.last_message_body[0].body }}</a>-->
+                                <!--                                <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>-->
+                                <a class="messages-item__mess">{{ item.last_message_body[0].body }}</a>
+                            </div>
+                        </Link>
+                    </div>
+
+
                     <div v-if="item.type === 'private'">
                         <Link class="messages-item" :href="'/chat/' + item.id"
                               v-if="item.last_message_body.length !== 0">
@@ -34,22 +53,6 @@ import {Link, Head} from "@inertiajs/vue3";
                         </Link>
                     </div>
 
-                    <div v-if="item.type === 'public'">
-                        <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item">
-                            <Link :href="'/mchat/' + item.multi_chat_id" class="messages-item__img">
-                                <img :src="'../storage/images/' + item.multi_chat_img"
-                                     alt="">
-                            </Link>
-                            <div class="flex-c">
-                                <a class="messages-item__name">{{ item.multi_chat_title }}</a>
-<!--                                <a class="messages-item__mess"-->
-<!--                                   v-if="parseInt(item.last_message_body[0].user_id) === parseInt($page.props.auth.user.id)">Вы:-->
-<!--                                    {{ item.last_message_body[0].body }}</a>-->
-<!--                                <a class="messages-item__mess" v-else>{{ item.last_message_body[0].body }}</a>-->
-                                <a class="messages-item__mess">{{ item.last_message_body[0].body }}</a>
-                            </div>
-                        </Link>
-                    </div>
                 </div>
             </div>
         </div>
