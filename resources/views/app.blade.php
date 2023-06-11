@@ -6,7 +6,7 @@
 
     <title inertia></title>
     <meta name="google" content="notranslate">
-    <link rel="icon" type="image/png" href="../storage/logo.png">
+    <link rel="icon" type="image/png" href="../storage/images/logo.png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
