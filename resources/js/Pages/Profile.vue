@@ -375,7 +375,10 @@ export default {
             axios.post('/create_dialog', {
                 id: this.user.id
             }).then(response => {
-                window.location.href = `/chat/${response.data}`
+                // window.location.href = `/chat/${response.data}`
+                this.$inertia.visit(`/chat/${response.data}`, {
+                    method: 'get'
+                })
             })
         },
 

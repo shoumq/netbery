@@ -14,6 +14,7 @@ a {
 
 body {
   background-color: #f4f5f6;
+  padding-bottom: 10rem;
 }
 
 .container {
@@ -360,6 +361,11 @@ main .gallery-img .img {
   border-radius: 0;
   overflow: hidden;
 }
+@media (max-width: 768px) {
+  main .gallery-img .img {
+    justify-content: space-between;
+  }
+}
 main .gallery-img .img img {
   width: 100%;
   margin-right: 4rem;
@@ -371,9 +377,19 @@ main .gallery-img .img img {
   border-radius: 5rem;
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.08), 0 2rem 14rem rgba(0, 0, 0, 0.08);
 }
+@media (max-width: 768px) {
+  main .gallery-img .img img {
+    height: 124rem;
+  }
+}
 main .gallery-img .img a {
   flex: 0 0 159rem;
   width: 100rem;
+}
+@media (max-width: 768px) {
+  main .gallery-img .img a {
+    flex: 0 0 124rem;
+  }
 }
 main .posts {
   margin-top: 30rem;
