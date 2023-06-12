@@ -121,16 +121,16 @@ import {Link, Head} from "@inertiajs/vue3";
 
             <div class="chat-content" ref="container">
                 <div class="messages-item" v-for="item in messages">
-                    <Link :href="'/user/' + item.login" class="messages-item__img">
+                    <Link :href="'/user/' + item.user_login" class="messages-item__img">
                         <img :src="'../storage/images/' + item.user_image"
                              alt="">
                     </Link>
                     <div>
                         <div>
-                            <Link :href="'/user/' + item.login" class="messages-item__name">{{ item.user_name }}
-                                {{ item.surname }}
+                            <Link :href="'/user/' + item.user_login" class="messages-item__name">{{ item.user_name }}
+                                {{ item.user_surname }}
                             </Link>
-                            <a :href="'/user/' + item.login" class="messages-item__time">{{ item.time }}</a>
+                            <a :href="'/user/' + item.user_login" class="messages-item__time">{{ item.time }}</a>
                         </div>
                         <div class="messages-item__body">{{ item.body }}</div>
                     </div>

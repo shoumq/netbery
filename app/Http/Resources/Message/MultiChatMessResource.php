@@ -21,6 +21,7 @@ class MultiChatMessResource extends JsonResource
             'id' => $this->id,
             'user_name' => User::where('id', $this->user_id)->first()->name,
             'user_surname' => User::where('id', $this->user_id)->first()->surname,
+            'user_login' => User::where('id', $this->user_id)->first()->login,
             'user_image' => User::where('id', $this->user_id)->first()->img_id,
             'body' => $this->body,
             'time' => date($this->created_at),
