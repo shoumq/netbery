@@ -44,6 +44,7 @@ export default {
 
     methods: {
         storeImage(event) {
+            this.filename = event.target.files[0].name;
             this.file = event.target.files[0];
             this.filenameData = URL.createObjectURL(this.file);
         },

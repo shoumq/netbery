@@ -111,7 +111,7 @@ class MessageController extends Controller
         $multi_chat_users->user_id = Auth::user()->id;
         $multi_chat_users->save();
 
-        return $multi_chat;
+        return $request;
     }
 
     public function store(Dialog $dialog_id, StoreRequest $request)
