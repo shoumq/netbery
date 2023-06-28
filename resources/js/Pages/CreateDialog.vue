@@ -15,7 +15,7 @@ import {Head} from "@inertiajs/vue3";
 
                 <label class="input-file" style="cursor:pointer;">
                     <input type="file" name="file" class="file-input" @change="storeImage" :disabled="disButton">
-                    <img class="profile-img" :src="'../storage/images/' + filenameData" alt="">
+                    <img class="profile-img" :src="filenameData" alt="">
                 </label>
 
                 <label for="name" class="form-input__item">
@@ -36,7 +36,7 @@ export default {
         return {
             title: '',
             status: '',
-            filenameData: 'i.png',
+            filenameData: '../storage/images/i.png',
             formData: {},
             disButton: false
         }
@@ -44,10 +44,8 @@ export default {
 
     methods: {
         storeImage(event) {
-            this.filename = event.target.files[0].name;
             this.file = event.target.files[0];
-
-            this.filenameData = this.filename
+            this.filenameData = URL.createObjectURL(this.file);
         },
 
         submit() {
