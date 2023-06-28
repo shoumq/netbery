@@ -48,7 +48,6 @@ export default {
                     this.btnDisabled = false
                 })
                 .catch(() => {
-                    this.resultData = 'Попробуйте еще раз :('
                     this.btnDisabled = false
                 })
         }
