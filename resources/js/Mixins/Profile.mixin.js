@@ -1,8 +1,10 @@
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
+import ButtonDanger from "@/Components/ButtonDanger.vue";
 
 export default {
     components: {
-        ButtonPrimary
+        ButtonPrimary,
+        ButtonDanger
     },
 
     data() {

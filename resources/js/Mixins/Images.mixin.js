@@ -1,4 +1,12 @@
+import ButtonPrimary from "@/Components/ButtonPrimary.vue";
+import ButtonDanger from "@/Components/ButtonDanger.vue";
+
 export default {
+    components: {
+        ButtonPrimary,
+        ButtonDanger
+    },
+
     props: ['images', 'user'],
 
     data() {

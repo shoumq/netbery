@@ -963,13 +963,6 @@ input[type=checkbox] {
   background: linear-gradient(#be6dff, #ba72ff);
   cursor: default;
 }
-.btn-danger {
-  background-color: #fd6363;
-  color: white;
-}
-.btn-danger:hover {
-  background-color: #ff4f4f;
-}
 .btn-outline {
   background-color: #fff;
   border: 1px solid #070538;
