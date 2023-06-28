@@ -1,4 +1,10 @@
+import ButtonPrimary from "@/Components/ButtonPrimary.vue";
+
 export default {
+    components: {
+        ButtonPrimary
+    },
+
     data() {
         return {
             body: '',

@@ -1,4 +1,10 @@
+import ButtonPrimary from "@/Components/ButtonPrimary.vue";
+
 export default {
+    components: {
+        ButtonPrimary
+    },
+
     props: ['users'],
 
     data() {
@@ -20,8 +26,12 @@ export default {
         searchUsers() {
             axios.post('/search_friends', {
                 searchInput: this.searchInput
-            }).then(response => {
-                console.log(response)
+            }).then((response) => {
+                this.usersData.length = 0
+
+                for (let i = 0; i < response.data.length; i++) {
+                    this.usersData.push(response.data[i])
+                }
             })
         }
     }

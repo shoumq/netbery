@@ -10,14 +10,13 @@ import {Link, Head} from "@inertiajs/vue3";
     <Layout>
         <div class="friends">
             <div class="friends-title__flex">
-<!--                <a href="#" class="friends-title friends-title__active">Друзья</a>-->
                 <Link href="#" class="friends-title">Все люди</Link>
             </div>
 
-            <div class="search">
+            <form class="search" @submit.prevent="searchUsers">
                 <input type="text" placeholder="Найти собеседника.." class="input friends-input" v-model="searchInput">
-                <button type="submit" class="btn btn-primary" @click="searchUsers">Найти</button>
-            </div>
+                <ButtonPrimary type="submit">Найти</ButtonPrimary>
+            </form>
 
             <div class="friends-flex">
                 <div class="profile friends-flex__item" v-for="item in usersData">
@@ -30,8 +29,6 @@ import {Link, Head} from "@inertiajs/vue3";
                                 <Link class="profile-info" v-if="item.show_email">Email: {{ item.email }}</Link>
                             </div>
                         </Link>
-
-<!--                        <button @click="createDialog" class="btn btn-primary" v-if="item.id !== $page.props.auth.user.id">Написаить сообщение</button>-->
                     </div>
                 </div>
             </div>
