@@ -6,6 +6,7 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import Vuelidate from '@vuelidate/core';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -18,6 +19,7 @@ createInertiaApp({
             .use(plugin)
             // .mixin({methods: {route: window}})
             .use(ZiggyVue, Ziggy)
+            .use(Vuelidate)
             .mount(el);
     },
     progress: {

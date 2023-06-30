@@ -24,6 +24,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@vuelidate/core": "^2.0.2",
+        "@vuelidate/validators": "^2.0.2",
         "fs": "^0.0.1-security",
         "i": "^0.3.7",
         "npm": "^9.6.6",

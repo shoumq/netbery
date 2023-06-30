@@ -1,4 +1,5 @@
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
+import ChatDto from "@/dtos/Chat.dto";
 
 export default {
     components: {
@@ -24,9 +25,11 @@ export default {
         },
 
         storeMessage() {
+            let chatDto = new ChatDto(this.body);
+
             this.sendButton = true
             axios.post(`/messages/${this.dialogData.id}`, {
-                body: this.body
+                body: chatDto.toRequest().message
             })
                 .then(() => {
                     this.sendButton = false
@@ -89,10 +92,6 @@ export default {
         },
     },
 
-    setup() {
-        this.getUserTime();
-    },
-
     mounted() {
         this.getUserTime();
         setInterval(this.getUserTime, 5000)
@@ -103,8 +102,6 @@ export default {
         window.Echo.channel('store_message_' + this.dialogData.id)
             .listen('.store_message', response => {
                 this.messagesData.push(response.message)
-
-                // const container = this.$refs.container;
                 try {
                     this.$refs.container.scrollTop = this.$refs.container.scrollHeight;
                 } catch (e) {
