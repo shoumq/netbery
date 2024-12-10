@@ -8,7 +8,7 @@ import {Link} from "@inertiajs/vue3";
             <div class="container">
                 <div class="header">
 <!--                    <Link href="/" class="header-title">SWANER</Link>-->
-                    <Link href="/" class="header-title">ЛЕБЕДЬ</Link>
+                    <Link href="/" class="header-title">Fusion</Link>
                     <div class="header-title" v-if="isMobile()" @click="isDrop = !isDrop">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list"
                              viewBox="0 0 16 16">
