@@ -215,4 +215,21 @@ class MessageController extends Controller
             return $ddialog[0]['id'];
         }
     }
+
+    public function filter() {
+//        $input = 'идиот';
+//        $output = shell_exec("./classifier $input 2>&1");
+//        var_dump($output);
+
+
+        $command = 'D:\Coding\php\netbery\public\mlstruct.exe';
+        $argument = 'хорошо123';
+        $fullCommand = 'D:\Coding\cpp\mlstruct\x64\Debug\mlstruct.exe привет';
+        $output = shell_exec($fullCommand);
+        if ($output === null) {
+            echo "Ошибка выполнения команды.";
+        } else {
+            echo "<pre>$output</pre>";
+        }
+    }
 }

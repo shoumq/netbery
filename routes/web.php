@@ -91,6 +91,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/add_icon/', [App\Http\Controllers\ProfileController::class, 'addIcon']);
 
     Route::get('/market', [App\Http\Controllers\MarketController::class, 'renderPage']);
+    Route::get('/filter', [App\Http\Controllers\MessageController::class, 'filter']);
 
     Route::get('/gpt', [App\Http\Controllers\HomeController::class, 'renderGPT']);
     Route::post('/get_gpt_answer/', [App\Http\Controllers\HomeController::class, 'gpt']);
