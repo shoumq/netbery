@@ -1,5 +1,6 @@
 import ButtonPrimary from "@/Components/ButtonPrimary.vue";
 import ChatDto from "@/dtos/Chat.dto";
+import axios from "axios";
 
 export default {
     components: {
@@ -24,22 +25,33 @@ export default {
             axios.post('/logout');
         },
 
-        storeMessage() {
+        async storeMessage() {
             let chatDto = new ChatDto(this.body);
+            this.sendButton = true;
 
-            this.sendButton = true
-            axios.post(`/messages/${this.dialogData.id}`, {
-                body: chatDto.toRequest().message
-            })
-                .then(() => {
-                    this.sendButton = false
-                    this.body = '';
-                    const container = this.$refs.container;
-                    container.scrollTop = container.scrollHeight;
-                })
-                .catch(() => {
-                    this.sendButton = false
-                })
+            try {
+                const filterResponse = await axios.get(`/filter/?text=${chatDto.toRequest()}`);
+
+                if (!filterResponse.data) {
+                    const confirmSend = window.confirm("Вы точно хотите отправить это сообщение?");
+                    if (!confirmSend) {
+                        this.sendButton = false;
+                        return; // Прекращаем выполнение функции
+                    }
+                }
+
+                await axios.post(`/messages/${this.dialogData.id}`, {
+                    body: chatDto.toRequest()
+                });
+
+                this.body = '';
+                const container = this.$refs.container;
+                container.scrollTop = container.scrollHeight;
+            } catch (error) {
+                console.error("Ошибка при отправке сообщения:", error);
+            } finally {
+                this.sendButton = false; // Убедитесь, что кнопка всегда будет отключена в конце
+            }
         },
 
         checkName(name1, name2) {

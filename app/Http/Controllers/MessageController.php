@@ -216,20 +216,9 @@ class MessageController extends Controller
         }
     }
 
-    public function filter() {
-//        $input = 'идиот';
-//        $output = shell_exec("./classifier $input 2>&1");
-//        var_dump($output);
-
-
-        $command = 'D:\Coding\php\netbery\public\mlstruct.exe';
-        $argument = 'хорошо123';
-        $fullCommand = 'D:\Coding\cpp\mlstruct\x64\Debug\mlstruct.exe привет';
+    public function filter(Request $request) {
+        $fullCommand = 'D:\Coding\php\netbery\public\mlstruct.exe ' . $request->input('text');
         $output = shell_exec($fullCommand);
-        if ($output === null) {
-            echo "Ошибка выполнения команды.";
-        } else {
-            echo "<pre>$output</pre>";
-        }
+        return response()->json((bool)$output);
     }
 }

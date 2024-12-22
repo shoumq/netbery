@@ -12,6 +12,6 @@ export default class ChatDto {
             delete formatted.message
         }
 
-        return formatted
+        return formatted.message
     }
 }
