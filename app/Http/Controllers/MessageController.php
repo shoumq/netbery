@@ -217,7 +217,7 @@ class MessageController extends Controller
     }
 
     public function filter(Request $request) {
-        $fullCommand = 'D:\Coding\php\netbery\public\mlstruct.exe ' . $request->input('text');
+        $fullCommand = './mlstruct ' . $request->input('text');
         $output = shell_exec($fullCommand);
         return response()->json((bool)$output);
     }
